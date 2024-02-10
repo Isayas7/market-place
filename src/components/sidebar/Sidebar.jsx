@@ -6,9 +6,10 @@ import {
 import { TbReorder } from "react-icons/tb";
 import { IoAnalytics } from "react-icons/io5";
 import SidebarLink from "./SidebarLink";
+import { FiAlignJustify } from "react-icons/fi";
+
 const menuUtems = [
   {
-    titile: "pages",
     List: [
       {
         titile: "Dashboard",
@@ -44,7 +45,9 @@ const Sidebar = () => {
       <ul>
         {menuUtems.map((menu) => (
           <li key={menu.titile}>
-            <span> {menu.titile}</span>
+            <div className="flex align-middle pl-3 py-5">
+              <FiAlignJustify />
+            </div>
             {menu.List.map((list) => (
               <SidebarLink list={list} key={list.titile} />
             ))}

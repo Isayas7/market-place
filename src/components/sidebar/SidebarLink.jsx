@@ -8,8 +8,8 @@ const SidebarLink = ({ list }) => {
   return (
     <Link
       href={list.path}
-      className={`flex gap-3 items-center dark:hover:bg-dark_tint hover:bg-light_tint  p-3 my-1 rounded-xl ${
-        path == list.path ? "dark:bg-dark_tint_active bg-light_tint_active" : ""
+      className={`flex gap-3 items-center hover:bg-hovered hover:text-foreground  p-3 my-1 rounded-xl ${
+        path == list.path ? "bg-active" : ""
       }`}
     >
       {list.icon}
