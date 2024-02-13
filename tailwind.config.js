@@ -54,9 +54,14 @@ module.exports = {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",
         },
+
         largeCard: {
           DEFAULT: "var(--largeCard)",
           foreground: "var(--largeCard-foreground)",
+        },
+        active: {
+          DEFAULT: "var(--active)",
+          foreground: "var(--active-foreground)",
         },
       },
       borderRadius: {
@@ -79,7 +84,8 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       gridTemplateColumns: {
-        custom: "17.5rem, 1fr",
+        notCollapsed: "15rem, 1fr",
+        collapsed: "6rem, 1fr",
       },
       gridTemplateRows: {
         custom: "auto, 1fr",

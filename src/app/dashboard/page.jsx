@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,6 +11,9 @@ import {
 import Image from "next/image";
 
 const Dashboard = () => {
+  const handleClick = () => {
+    console.log("first");
+  };
   return (
     <div>
       <div className="flex  gap-2 ">
@@ -20,13 +24,11 @@ const Dashboard = () => {
               <CardTitle className="text-2xl">Jaydon Frankie</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>
-                If you are going to use a passage of Lorem Ipsum, you need to be
-                sure there isn't anything.
-              </p>
+              If you are going to use a passage of Lorem Ipsum, you need to be
+              sure there isn't anything.
             </CardContent>
             <CardFooter>
-              <Button>Go Now</Button>
+              <Button onClick={handleClick}>Go Now</Button>
             </CardFooter>
           </div>
           <div className="flex-1 flex a justify-center items-center ">
@@ -55,6 +57,7 @@ const Dashboard = () => {
           </CardFooter>
         </Card>
       </div>
+
       <div className=" flex gap-5 mt-5">
         <Card className=" flex-1 ">
           <CardHeader>
@@ -62,11 +65,8 @@ const Dashboard = () => {
             <CardDescription>+2.6%</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl">18,765</p>
+            <p className="text-4xl">18,765</p>
           </CardContent>
-          <CardFooter>
-            <Button>View</Button>
-          </CardFooter>
         </Card>
         <Card className=" flex-1">
           <CardHeader>
@@ -74,11 +74,8 @@ const Dashboard = () => {
             <CardDescription>+2.6%</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl">18,765</p>
+            <p className="text-4xl">18,765</p>
           </CardContent>
-          <CardFooter>
-            <Button>View</Button>
-          </CardFooter>
         </Card>
         <Card className=" flex-1">
           <CardHeader>
@@ -86,11 +83,8 @@ const Dashboard = () => {
             <CardDescription>+2.6%</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl">18,765</p>
+            <p className="text-4xl">18,765</p>
           </CardContent>
-          <CardFooter>
-            <Button>View</Button>
-          </CardFooter>
         </Card>
       </div>
     </div>
