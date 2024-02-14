@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import { ModeToggle } from "../../themeprovider/mode-toggle";
-import { UserNav } from "./user-nav";
-import { Search } from "./search";
+import { ModeToggle } from "../../themeprovider/ModeToggle";
+import { UserNav } from "./UserNav";
+import { Search } from "./Search";
 
 const Navbar = () => {
   return (

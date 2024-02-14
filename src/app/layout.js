@@ -1,6 +1,6 @@
 import { Inter, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
-import ThemeProvider from "@/components/themeprovider/theme-Provider";
+import ThemeProvider from "@/components/themeprovider/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 const roboto = Poppins({ subsets: ["latin"], weight: "400" });
@@ -13,7 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={roboto.className}>
+      <body className={`${roboto.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

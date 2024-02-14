@@ -1,6 +1,6 @@
 "use client";
 
-import LoginForm from "@/components/login/login";
+import LoginForm from "@/components/login/LoginForm";
 import { Button } from "@/components/ui/button";
 import {
   Card,

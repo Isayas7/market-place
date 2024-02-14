@@ -1,7 +1,5 @@
 import { columns } from "@/components/dashboard/table/Column";
 import { DataTable } from "@/components/dashboard/table/DataTable";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Link from "next/link";
 
 async function getData() {
   // Fetch data from your API here.
@@ -128,28 +126,13 @@ async function getData() {
     },
   ];
 }
-const Users = async () => {
+const Store = async () => {
   const data = await getData();
   return (
     <div>
-      <Tabs defaultValue="account" className="w-full">
-        <TabsList>
-          <TabsTrigger value="account">Buyer</TabsTrigger>
-          <TabsTrigger value="password">Seller</TabsTrigger>
-          <TabsTrigger value="personnel">Pesonnel Delivery</TabsTrigger>
-        </TabsList>
-        <TabsContent value="account">
-          <DataTable columns={columns} data={data} />
-        </TabsContent>
-        <TabsContent value="password">
-          <DataTable columns={columns} data={data} />
-        </TabsContent>
-        <TabsContent value="personnel">
-          <DataTable columns={columns} renderd="dp" data={data} />
-        </TabsContent>
-      </Tabs>
+      <DataTable columns={columns} data={data} />
     </div>
   );
 };
 
-export default Users;
+export default Store;

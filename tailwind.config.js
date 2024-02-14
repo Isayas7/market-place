@@ -93,10 +93,6 @@ module.exports = {
       gridRow: {
         custom: "1 / -1",
       },
-      flex: {
-        1: 1,
-        2: 2,
-      },
     },
   },
   plugins: [require("tailwindcss-animate")],
