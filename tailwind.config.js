@@ -55,12 +55,9 @@ module.exports = {
           foreground: "var(--card-foreground)",
         },
 
-        largeCard: {
-          DEFAULT: "var(--largeCard)",
-          foreground: "var(--largeCard-foreground)",
-        },
         active: {
           DEFAULT: "var(--active)",
+          hovered: "var(--active-hovered)",
           foreground: "var(--active-foreground)",
         },
       },
@@ -147,9 +144,7 @@ module.exports = {
         },
         jade: {
           DEFAULT: "#00a76f",
-        },
-        jadeh: {
-          DEFAULT: "#007867",
+          200: "#007867",
         },
       },
       boxShadow: {

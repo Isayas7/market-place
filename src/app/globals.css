@@ -10,17 +10,14 @@
     --card: hsl(0 0% 100%);
     --card-foreground: hsl(214, 24%, 11%);
 
-    --largeCard: hsl(155.6, 57.1%, 89%);
-    --largeCard-foreground: hsl(214, 24%, 11%);
-
     --popover: hsl(0, 0%, 100%);
     --popover-foreground: hsl(214, 24%, 11%);
 
-    --primary: hsl(142, 60%, 91%);
-    --primary-foreground: hsl(142, 71%, 45%);
+    --primary: hsl(142.2, 60%, 91.2%);
+    --primary-foreground: hsl(159.9, 100%, 32.7%);
 
-    --secondary: hsl(210, 40%, 96.1%);
-    --secondary-foreground: hsl(222.2, 47.4%, 11.2%);
+    --secondary: hsl(39.5, 100%, 92%);
+    --secondary-foreground: hsl(36.1, 100%, 35.9%);
 
     --muted: hsl(210, 40%, 96.1%);
     --muted-foreground: hsl(215.4, 16.3%, 46.9%);
@@ -32,33 +29,31 @@
     --destructive-foreground: hsl(210, 40%, 98%);
 
     --border: hsl(167, 32%, 91%);
-    --input: hsl(214.3, 31.8%, 91.4%);
-    --ring: hsl(214, 24%, 11%);
+    --input: hsl(162, 78%, 28%);
+    --ring: hsl(135, 75%, 46%);
 
     --radius: 0.5rem;
 
     --hovered: hsl(210, 12.5%, 96.9%);
-    --active: hsl(204.3, 86%, 91.6%);
+    --active: hsl(161.5, 48.1%, 94.7%);
+    --active-hovered: hsl(160, 49.1%, 89.2%);
   }
 
   .dark {
-    --background: hsl(214, 24%, 11%);
+    --background: hsl(214.3, 24.1%, 11.4%);
     --foreground: hsl(206, 22%, 68%);
 
     --card: hsl(211, 24%, 17%);
     --card-foreground: hsl(210, 40%, 98%);
 
-    --largeCard: hsl(155.6, 57.1%, 89%);
-    --largeCard-foreground: hsl(214, 24%, 11%);
-
     --popover: hsl(214, 24%, 11%);
     --popover-foreground: hsl(210, 40%, 98%);
 
-    --primary: hsl(142, 71%, 45%);
-    --primary-foreground: hsl(210, 40%, 98%);
+    --primary: hsl(159.9, 100%, 32.7%);
+    --primary-foreground: hsl(142.2, 60%, 91.2%);
 
-    --secondary: hsl(217.2, 32.6%, 17.5%);
-    --secondary-foreground: hsl(210, 40%, 98%);
+    --secondary: hsl(40.2, 100%, 50%);
+    --secondary-foreground: hsl(211.4, 24.1%, 17.1%);
 
     --muted: hsl(217.2, 32.6%, 17.5%);
     --muted-foreground: hsl(215, 20.2%, 65.1%);
@@ -73,10 +68,9 @@
     --input: hsl(162, 78%, 28%);
     --ring: hsl(135, 75%, 46%);
 
-    --hovered: hsl(212, 20%, 15%);
-
-    --active: hsl(176, 47%, 13%);
-    --active-foreground: hsl(148, 72%, 63%);
+    --hovered: hsl(212, 19.5%, 15.1%);
+    --active: hsl(188.2, 35.5%, 12.2%);
+    --active-hovered: hsl(176.3, 47.1%, 13.3%);
   }
 }
 

@@ -12,39 +12,35 @@ import Image from "next/image";
 
 export const menuUtems = [
   {
-    List: [
-      {
-        title: "Dashboard",
-        path: "/dashboard",
-        icon: <MdOutlineDashboard />,
-      },
+    title: "Dashboard",
+    path: "/dashboard",
+    icon: <MdOutlineDashboard />,
+  },
 
-      {
-        title: "User",
-        path: "/dashboard/user",
-        icon: <MdPersonalInjury />,
-      },
-      {
-        title: "Product Category",
-        path: "/dashboard/productCategory",
-        icon: <FaStore />,
-      },
-      {
-        title: "Store",
-        path: "/dashboard/store",
-        icon: <FaStore />,
-      },
-      {
-        title: "Product",
-        path: "/dashboard/product",
-        icon: <MdProductionQuantityLimits />,
-      },
-      {
-        title: "Order",
-        path: "/dashboard/order",
-        icon: <TbReorder />,
-      },
-    ],
+  {
+    title: "User",
+    path: "/dashboard/user",
+    icon: <MdPersonalInjury />,
+  },
+  {
+    title: "Product Category",
+    path: "/dashboard/productCategory",
+    icon: <FaStore />,
+  },
+  {
+    title: "Store",
+    path: "/dashboard/store",
+    icon: <FaStore />,
+  },
+  {
+    title: "Product",
+    path: "/dashboard/product",
+    icon: <MdProductionQuantityLimits />,
+  },
+  {
+    title: "Order",
+    path: "/dashboard/order",
+    icon: <TbReorder />,
   },
 ];
 const Sidebar = ({ isCollapsed, open, setOpen }) => {
@@ -65,15 +61,14 @@ const Sidebar = ({ isCollapsed, open, setOpen }) => {
             className="size-12"
           />
         </div>
-        {menuUtems.map((menu) => (
-          <li key={menu.title}>
-            {menu.List.map((list) => (
-              <SidebarLink
-                isCollapsed={isCollapsed}
-                list={list}
-                key={list.title}
-              />
-            ))}
+
+        {menuUtems.map((list) => (
+          <li key={list.title}>
+            <SidebarLink
+              isCollapsed={isCollapsed}
+              list={list}
+              key={list.title}
+            />
           </li>
         ))}
       </ul>
@@ -90,15 +85,13 @@ const Sidebar = ({ isCollapsed, open, setOpen }) => {
                   className="size-12"
                 />
               </div>
-              {menuUtems.map((menu, index) => (
-                <li key={index}>
-                  {menu.List.map((list) => (
-                    <SidebarLink
-                      isCollapsed={isCollapsed}
-                      list={list}
-                      key={list.title}
-                    />
-                  ))}
+              {menuUtems.map((list) => (
+                <li key={list.title}>
+                  <SidebarLink
+                    isCollapsed={isCollapsed}
+                    list={list}
+                    key={list.title}
+                  />
                 </li>
               ))}
             </ul>

@@ -32,9 +32,8 @@ const Layout = ({ children }) => {
         </div>
         <div className="absolute -left-3 top-10  ">
           <Button
-            variant="secondary"
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="hidden lg:block rounded-full p-1 z-50 border dark:border-gray-600 border-dashed size-6"
+            className="hidden lg:block rounded-full p-1 z-50 border dark:border-gray-600 border-dashed size-6 text-palesky bg-white dark:bg-background"
           >
             <ChevronRightIcon
               className={`w-full h-full ${

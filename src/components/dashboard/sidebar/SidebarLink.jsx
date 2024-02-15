@@ -8,10 +8,10 @@ const SidebarLink = ({ list, isCollapsed }) => {
   return (
     <Link
       href={list.path}
-      className={`flex gap-3 items-center hover:bg-hovered pl-5 p-3 my-1 rounded-xl ${
+      className={`flex gap-3 items-center  pl-5 p-3 my-1 rounded-xl ${
         path == list.path
-          ? "bg-active text-active-foreground hover:text-active-foreground  hover:bg-active "
-          : ""
+          ? "bg-active  text-jade hover:bg-active-hovered "
+          : "hover:bg-hovered  text-palesky "
       } ${isCollapsed ? "w-[90%]" : "w-[90%]"}`}
     >
       <div className={` ${isCollapsed ? "text-xl" : ""}`}>{list.icon}</div>

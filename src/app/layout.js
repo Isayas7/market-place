@@ -5,7 +5,7 @@ import Navbar from "@/components/home/Navbar";
 import Footer from "@/components/home/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
-const roboto = Poppins({ subsets: ["latin"], weight: "400" });
+const roboto = Roboto({ subsets: ["latin"], weight: "400" });
 
 export const metadata = {
   title: "Create Next App",
