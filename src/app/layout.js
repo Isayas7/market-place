@@ -1,6 +1,8 @@
 import { Inter, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/themeprovider/ThemeProvider";
+import Navbar from "@/components/home/Navbar";
+import Footer from "@/components/home/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 const roboto = Poppins({ subsets: ["latin"], weight: "400" });
@@ -20,7 +22,9 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
+          <Navbar />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

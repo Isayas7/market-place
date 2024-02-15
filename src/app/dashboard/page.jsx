@@ -1,5 +1,13 @@
-"use client";
+import Image from "next/image";
+import React from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import {
   Card,
   CardContent,
@@ -8,96 +16,123 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+import { VscGraph } from "react-icons/vsc";
+import { MdAutoGraph } from "react-icons/md";
+import { BsGraphDownArrow } from "react-icons/bs";
+import { VscGraphLine } from "react-icons/vsc";
+// import PieChartWithPaddingAngle from "@/components/dashboard/PieChartWithPaddingAngle";
 
-import Image from "next/image";
+export const metadata = {
+  title: "Dashboard",
+  description: "This the admin dashboard",
+};
 
 const Dashboard = () => {
-  const handleClick = () => {
-    console.log("first");
-  };
-
   return (
-    <div>
-      <div className=" flex flex-col gap-2 lg:flex-row   ">
-        <Card className="w-full lg:w-2/3 flex  bg-largeCard text-largeCard-foreground">
-          <div className="w-2/3 ">
-            <CardHeader>
-              <CardTitle className="text-2xl">Welcome back 👋 </CardTitle>
-              <CardTitle className="text-2xl">Jaydon Frankie</CardTitle>
-            </CardHeader>
-            <CardContent>
-              If you are going to use a passage of Lorem Ipsum, you need to be
-              sure there isn't anything.
-            </CardContent>
-            <CardFooter>
-              <Button onClick={handleClick}>Go Now</Button>
-            </CardFooter>
-          </div>
-          <div className="w-1/3 flex a justify-center items-center ">
-            <Image
-              className="h-fit "
-              alt="man"
-              src="https://github.com/shadcn.png"
-              width={100}
-              height={50}
-            />
-          </div>
-        </Card>
-
-        <Card className=" w-full lg:w-1/3">
-          <CardHeader>
-            <CardTitle>Welcome back 👋 Jaydon Frankie</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>
+    <div className="w-full h-full">
+      <div className="flex  gap-8 flex-col lg:flex-row ">
+        <div className="w-full lg:w-2/3 bg-swansdown flex  rounded-lg p-8 justify-between flex-col lg:flex-row items-center lg:items-start gap-4">
+          {/* card content */}
+          <div className="bg-swansdown  h-3/4  text-center lg:text-start flex flex-col justify-between items-center lg:items-start ">
+            <div>
+              <h1 className=" dark:text-black text-2xl font-semibold">
+                Welcome back 👋
+              </h1>
+              <h1 className=" dark:text-black text-2xl font-semibold">
+                Isayas Melkamu
+              </h1>
+            </div>
+            <p className="text-jade">
               If you are going to use a passage of Lorem Ipsum, you need to be
               sure there isn't anything.
             </p>
+            <Button className="bg-jade hover:bg-jadeh text-white font-medium w-min ">
+              Go now
+            </Button>
+          </div>
+          <div className="3">
+            <Image src={"/dashboard.png"} alt="" width={300} height={200} />
+          </div>
+        </div>
+        <div className=" w-full xl:w-1/3 rounded-lg flex items-center ">
+          <Carousel>
+            <CarouselContent>
+              <CarouselItem>
+                <Image
+                  src={"/cru1.jpeg"}
+                  className="h-full w-full rounded-lg"
+                  alt=""
+                  width={700}
+                  height={300}
+                />
+              </CarouselItem>
+              <CarouselItem>
+                <Image
+                  src={"/cru2.jpg"}
+                  className="h-full w-full rounded-lg"
+                  alt=""
+                  width={700}
+                  height={300}
+                />
+              </CarouselItem>
+              <CarouselItem>
+                <Image
+                  src={"/cru3.jpg"}
+                  className="h-full w-full rounded-lg"
+                  alt=""
+                  width={700}
+                  height={300}
+                />
+              </CarouselItem>
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
+      </div>
+      <div className="mt-8 flex flex-col md:flex-row gap-4">
+        <Card className="w-full flex items-center py-6 justify-between pr-6">
+          <CardContent className="flex flex-col justify-between h-full gap-4">
+            <CardDescription className="text-black dark:text-white font-medium text-lg">
+              Total daily transaction
+            </CardDescription>
+            <CardDescription className="font-bold text-black dark:text-white flex gap-4">
+              <MdAutoGraph className="text-lg text-jade" />
+              +2.6%
+            </CardDescription>
+            <CardTitle className="font-bold text-4xl">18,765</CardTitle>
           </CardContent>
-          <CardFooter>
-            <Button>Go Now</Button>
-          </CardFooter>
+          <VscGraph className="text-6xl text-jade" />
+        </Card>
+        <Card className="w-full flex items-center py-6 justify-between pr-6">
+          <CardContent className="flex flex-col justify-between h-full gap-4">
+            <CardDescription className="text-black dark:text-white font-medium text-lg">
+              Total daily sales
+            </CardDescription>
+            <CardDescription className="font-bold text-black dark:text-white flex gap-4">
+              <VscGraphLine className="text-lg text-red-500" />
+              +2.6%
+            </CardDescription>
+            <CardTitle className="font-bold text-4xl">4,250</CardTitle>
+          </CardContent>
+          <BsGraphDownArrow className="text-6xl text-jade" />
+        </Card>
+        <Card className="w-full flex items-center py-6 justify-between pr-6">
+          <CardContent className="flex flex-col justify-between h-full gap-4">
+            <CardDescription className="text-black dark:text-white font-medium text-lg">
+              Total active users
+            </CardDescription>
+            <CardDescription className="font-bold text-black dark:text-white flex gap-4">
+              <MdAutoGraph className="text-lg text-jade" />
+              +2.6%
+            </CardDescription>
+            <CardTitle className="font-bold text-4xl">765</CardTitle>
+          </CardContent>
+          <VscGraph className="text-6xl text-jade" />
         </Card>
       </div>
-
-      <div className=" flex flex-col lg:flex-row  gap-5 mt-5">
-        <Card className=" flex-1 ">
-          <CardHeader>
-            <CardTitle>Total Active Users</CardTitle>
-            <CardDescription>+2.6%</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl">18,765</p>
-          </CardContent>
-        </Card>
-        <Card className=" flex-1">
-          <CardHeader>
-            <CardTitle>Total Active Users</CardTitle>
-            <CardDescription>+2.6%</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl">18,765</p>
-          </CardContent>
-        </Card>
-        <Card className=" flex-1">
-          <CardHeader>
-            <CardTitle>Total Active Users</CardTitle>
-            <CardDescription>+2.6%</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl">18,765</p>
-          </CardContent>
-        </Card>
+      <div className="mt-4">
+        {/* <Card><PieChartWithPaddingAngle /></Card> */}
       </div>
     </div>
   );

@@ -4,40 +4,43 @@ import {
   MdPersonalInjury,
 } from "react-icons/md";
 import { TbReorder } from "react-icons/tb";
-import { IoAnalytics } from "react-icons/io5";
 import SidebarLink from "./SidebarLink";
-import { FiAlignJustify } from "react-icons/fi";
 import { FaStore } from "react-icons/fa6";
-
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import Image from "next/image";
 
 export const menuUtems = [
   {
     List: [
       {
-        titile: "Dashboard",
+        title: "Dashboard",
         path: "/dashboard",
         icon: <MdOutlineDashboard />,
       },
 
       {
-        titile: "User",
+        title: "User",
         path: "/dashboard/user",
         icon: <MdPersonalInjury />,
       },
       {
-        titile: "Store",
+        title: "Product Category",
+        path: "/dashboard/productCategory",
+        icon: <FaStore />,
+      },
+      {
+        title: "Store",
         path: "/dashboard/store",
         icon: <FaStore />,
       },
       {
-        titile: "Product",
+        title: "Product",
         path: "/dashboard/product",
         icon: <MdProductionQuantityLimits />,
       },
       {
-        titile: "Order",
+        title: "Order",
         path: "/dashboard/order",
         icon: <TbReorder />,
       },
@@ -53,32 +56,47 @@ const Sidebar = ({ isCollapsed, open, setOpen }) => {
 
   return (
     <>
-      <ul className="hidden md:block">
+      <ul className="hidden md:block pl-5 ">
+        <div className={`ml-3 py-4`}>
+          <Image
+            src={"/icon.png"}
+            width={100}
+            height={100}
+            className="size-12"
+          />
+        </div>
         {menuUtems.map((menu) => (
-          <li key={menu.titile}>
-            <div className="flex items-center pl-3 py-5"></div>
+          <li key={menu.title}>
             {menu.List.map((list) => (
               <SidebarLink
                 isCollapsed={isCollapsed}
                 list={list}
-                key={list.titile}
+                key={list.title}
               />
             ))}
           </li>
         ))}
       </ul>
+
       <div className="xl:hidden">
         <Drawer direction="left" open={open} onOpenChange={setOpen}>
           <DrawerContent className="border-none overflow-y-scroll">
             <ul>
-              {menuUtems.map((menu) => (
-                <li key={menu.titile}>
-                  <div className="flex items-center pl-3 py-5"></div>
+              <div className={`ml-3 py-4`}>
+                <Image
+                  src={"/icon.png"}
+                  width={100}
+                  height={100}
+                  className="size-12"
+                />
+              </div>
+              {menuUtems.map((menu, index) => (
+                <li key={index}>
                   {menu.List.map((list) => (
                     <SidebarLink
                       isCollapsed={isCollapsed}
                       list={list}
-                      key={list.titile}
+                      key={list.title}
                     />
                   ))}
                 </li>
