@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { registerSchema } from "@/schema/user";
+import { useMutation } from "react-query";
 
 export default function RegistrationForm() {
   const form = useForm({
@@ -31,6 +32,13 @@ export default function RegistrationForm() {
   function onSubmit(values) {
     console.log(values);
   }
+
+  const mutation = useMutation(postTodo, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries('register')
+    },
+  })
 
   return (
     <Form {...form}>

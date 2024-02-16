@@ -7,7 +7,7 @@ import { TbReorder } from "react-icons/tb";
 import SidebarLink from "./sidebar-link";
 import { FaStore } from "react-icons/fa6";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import Image from "next/image";
 
 export const menuUtems = [
