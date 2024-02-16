@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -20,14 +22,18 @@ import { VscGraph } from "react-icons/vsc";
 import { MdAutoGraph } from "react-icons/md";
 import { BsGraphDownArrow } from "react-icons/bs";
 import { VscGraphLine } from "react-icons/vsc";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 // import PieChartWithPaddingAngle from "@/components/dashboard/PieChartWithPaddingAngle";
 
-export const metadata = {
-  title: "Dashboard",
-  description: "This the admin dashboard",
-};
-
 const Dashboard = () => {
+  const session = useSession();
+  const router = useRouter();
+
+  // if (session.status) {
+  //   router.replace("/");
+  // }
+
   return (
     <div className="w-full h-full">
       <div className="flex  gap-8 flex-col lg:flex-row ">
@@ -61,7 +67,7 @@ const Dashboard = () => {
                 <Image
                   src={"/cru1.jpeg"}
                   className="h-full w-full rounded-lg"
-                  alt=""
+                  alt="my"
                   width={700}
                   height={300}
                 />
@@ -70,7 +76,7 @@ const Dashboard = () => {
                 <Image
                   src={"/cru2.jpg"}
                   className="h-full w-full rounded-lg"
-                  alt=""
+                  alt="my"
                   width={700}
                   height={300}
                 />
@@ -79,7 +85,7 @@ const Dashboard = () => {
                 <Image
                   src={"/cru3.jpg"}
                   className="h-full w-full rounded-lg"
-                  alt=""
+                  alt="my"
                   width={700}
                   height={300}
                 />

@@ -4,7 +4,7 @@ import {
   MdPersonalInjury,
 } from "react-icons/md";
 import { TbReorder } from "react-icons/tb";
-import SidebarLink from "./SidebarLink";
+import SidebarLink from "./sidebar-link";
 import { FaStore } from "react-icons/fa6";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/useMediaQuery";

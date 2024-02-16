@@ -1,5 +1,5 @@
-import { columns } from "@/components/dashboard/table/Column";
-import { DataTable } from "@/components/dashboard/table/DataTable";
+import { columns } from "@/components/dashboard/table/column";
+import { DataTable } from "@/components/dashboard/table/data_table";
 
 async function getData() {
   // Fetch data from your API here.

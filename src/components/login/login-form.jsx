@@ -47,10 +47,10 @@ export default function LoginForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>email</FormLabel>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
-                    className="p-3"
+                    className="py-6"
                     placeholder="ebo@gmail.com"
                     {...field}
                   />
@@ -64,10 +64,10 @@ export default function LoginForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>password</FormLabel>
+                <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input
-                    className="p-3"
+                    className="py-6"
                     type="password"
                     placeholder="enter password"
                     {...field}
@@ -79,7 +79,7 @@ export default function LoginForm() {
           />
         </div>
 
-        <Button className="w-full text-xl" type="submit">
+        <Button className="w-full text-xl py-6" type="submit">
           Login
         </Button>
       </form>

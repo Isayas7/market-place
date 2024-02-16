@@ -1,5 +1,5 @@
 "use client";
-import Navbar from "@/components/dashboard/navbar/Navbar";
+import Navbar from "@/components/dashboard/navbar/navbar";
 import Sidebar from "@/components/dashboard/sidebar/Sidebar";
 import { Button } from "@/components/ui/button";
 import { ChevronRightIcon } from "@radix-ui/react-icons";

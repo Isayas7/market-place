@@ -1,5 +1,5 @@
-import { columns } from "@/components/dashboard/table/Column";
-import { DataTable } from "@/components/dashboard/table/DataTable";
+import { columns } from "@/components/dashboard/table/column";
+import { DataTable } from "@/components/dashboard/table/data_table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 
