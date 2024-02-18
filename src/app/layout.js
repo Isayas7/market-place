@@ -1,8 +1,8 @@
 import { Inter, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/themeprovider/theme-provider";
-import Navbar from "@/components/home/navbar";
-import Footer from "@/components/home/footer";
+import Navbar from "@/components/home/navbar/navbar";
+import Footer from "@/components/home/footer/footer";
 import AuthProvider from "@/components/authprovider/auth-provider";
 import QueryProvider from "@/components/queryprovider/query-provider";
 
@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
           <QueryProvider>
             <AuthProvider>
               <Navbar />
-              {children}
+              <main className="container  mx-auto ">{children}</main>
               <Footer />
             </AuthProvider>
           </QueryProvider>

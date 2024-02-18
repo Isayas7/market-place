@@ -139,6 +139,49 @@ const Dashboard = () => {
       </div>
       <div className="mt-4">
         {/* <Card><PieChartWithPaddingAngle /></Card> */}
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio rem
+        aliquam nam, quos numquam perspiciatis possimus non nobis commodi saepe
+        delectus omnis autem! Voluptate dicta nemo id odio corporis adipisci
+        modi! Mollitia deleniti nobis sed impedit. Sit non dolorum quod quae
+        atque ipsa optio debitis nemo nihil harum ad corrupti libero,
+        praesentium doloribus possimus voluptate. Nihil corporis blanditiis
+        iusto, quidem pariatur incidunt veniam adipisci totam facilis voluptate
+        tempore explicabo nulla ea illum natus dolor a fuga! Voluptate obcaecati
+        doloribus nobis eligendi, et ipsa illum architecto cupiditate sit dolor
+        ab quas quae. Animi eveniet deleniti rem. Omnis magnam similique
+        voluptatem quaerat accusantium doloremque nihil dicta, nam sed nulla
+        aliquid amet nobis, sapiente, animi ut consequuntur numquam est hic
+        dolor iste soluta laboriosam aspernatur esse? Eius quos ratione, cumque
+        maxime dicta commodi esse deserunt quam accusantium recusandae iusto est
+        harum et iure non, nobis nesciunt doloremque unde ex. Dolore eaque
+        mollitia provident error ab assumenda, impedit itaque vero inventore
+        minima? Dolorem, amet? Alias praesentium beatae nesciunt pariatur
+        officia vero vitae quod voluptatum assumenda autem, voluptates illum
+        modi deleniti iste veniam sit repudiandae. Quasi, eos corporis! Eaque
+        mollitia molestiae aspernatur quidem nobis suscipit animi aperiam iusto,
+        ad sapiente culpa similique perferendis iste quae necessitatibus cumque
+        voluptate delectus recusandae aut facilis, magnam ullam repellendus
+        itaque. In accusantium doloremque laborum, dolorum laudantium
+        perspiciatis facere nisi! Provident temporibus omnis nihil rem odit vel
+        culpa atque, quidem consectetur, eum repellat a nemo. At explicabo eaque
+        maxime temporibus, libero quaerat asperiores earum eum suscipit debitis
+        optio magnam quos autem veritatis itaque similique neque beatae.
+        Perferendis temporibus nostrum delectus illo enim autem, ut assumenda
+        eos qui! Omnis sapiente quas tempora dolorum facilis illum magni
+        reiciendis quod veritatis ut itaque aliquid, provident nam, impedit
+        quasi esse voluptates quo nemo modi velit odit sunt facere
+        necessitatibus delectus. Reprehenderit nisi excepturi ab quia quidem
+        exercitationem nemo, ipsum eaque id ea libero eum. Porro, voluptate!
+        Quidem, dicta. Ab id aspernatur dolorum. Aut, delectus quaerat neque
+        eveniet repudiandae quasi vero obcaecati nisi reprehenderit repellat
+        voluptatem perferendis cupiditate eum praesentium magnam. Vero commodi
+        nulla voluptatum quis praesentium illum magni, excepturi sed. Eos magni
+        eum harum, inventore nostrum quidem iste nobis minus, id porro, est
+        mollitia quam labore ea consequuntur voluptate. Sequi unde omnis vero
+        reprehenderit voluptatum neque temporibus corporis ipsa iure mollitia
+        distinctio, maiores, tenetur eveniet quo soluta quae magni tempore
+        repellendus. Officia harum praesentium a explicabo repellendus nulla
+        blanditiis dolores, qui error pariatur. Cum.
       </div>
     </div>
   );

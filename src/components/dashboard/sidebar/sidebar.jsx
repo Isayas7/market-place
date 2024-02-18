@@ -9,6 +9,7 @@ import { FaStore } from "react-icons/fa6";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import Image from "next/image";
+import Link from "next/link";
 
 export const menuUtems = [
   {
@@ -54,12 +55,14 @@ const Sidebar = ({ isCollapsed, open, setOpen }) => {
     <>
       <ul className="hidden md:block pl-5 ">
         <div className={`ml-3 py-4`}>
-          <Image
-            src={"/icon.png"}
-            width={100}
-            height={100}
-            className="size-12"
-          />
+          <Link href="/">
+            <Image
+              src={"/icon.png"}
+              width={100}
+              height={100}
+              className="size-12"
+            />
+          </Link>
         </div>
 
         {menuUtems.map((list) => (

@@ -146,6 +146,9 @@ module.exports = {
           DEFAULT: "#00a76f",
           200: "#007867",
         },
+        headercolor: {
+          default: "rgb(35, 47, 62)",
+        },
       },
       boxShadow: {
         side: "0 0 1200px 1200px rgba(33, 49, 60, 0.7)",

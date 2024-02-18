@@ -33,13 +33,6 @@ export default function RegistrationForm() {
     console.log(values);
   }
 
-  const mutation = useMutation(postTodo, {
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries('register')
-    },
-  })
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

@@ -5,7 +5,6 @@ import React from "react";
 
 const Footer = () => {
   const currentUrl = usePathname();
-  console.log(currentUrl);
 
   return (
     <div

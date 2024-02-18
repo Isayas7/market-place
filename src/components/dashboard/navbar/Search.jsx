@@ -1,12 +1,16 @@
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
-export function Search() {
+export function Search({ placeholder, className }) {
   return (
     <div>
       <Input
         type="search"
-        placeholder="Search..."
-        className=" lg:w-[300px] rounded-3xl"
+        placeholder={placeholder}
+        className={cn(
+          "w-[160px] sm:w-[200px] md:w-[400px] rounded-3xl",
+          className
+        )}
       />
     </div>
   );
