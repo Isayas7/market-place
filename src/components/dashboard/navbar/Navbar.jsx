@@ -6,7 +6,7 @@ import { Search } from "./search";
 
 const Navbar = () => {
   return (
-    <div className="flex justify-between py-6">
+    <div className="flex justify-between">
       <Search placeholder="Search..." className=" p-2" />
       <div className="flex gap-2 items-center">
         <ModeToggle />
