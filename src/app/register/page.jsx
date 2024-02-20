@@ -27,7 +27,7 @@ export default function Login() {
           />
         </div>
       </div>
-      <div className=" h-[65%] w-[90%] sm:w-[70%] lg:w-3/4 xl:w-2/5 transition-all duration-300 ">
+      <div className="w-[90%] h-fit sm:w-[70%] lg:w-3/4 xl:w-2/5 transition-all duration-300 ">
         <Card className="h-full flex flex-col justify-center">
           <CardHeader className="space-y-1 text-center">
             <CardTitle className="text-2xl">

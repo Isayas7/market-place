@@ -1,4 +1,4 @@
-import { columns } from "@/components/dashboard/table/column";
+import { columns } from "@/components/dashboard/table/user-column";
 import { DataTable } from "@/components/dashboard/table/data_table";
 
 async function getData() {

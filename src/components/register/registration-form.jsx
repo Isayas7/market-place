@@ -17,43 +17,73 @@ import {
 import { Input } from "@/components/ui/input";
 import { registerSchema } from "@/schema/user";
 import { useMutation } from "react-query";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { UseRegisterQuery } from "@/hooks/use-users-query";
 
 export default function RegistrationForm() {
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      username: "",
+      firstName: "",
+      middleName: "",
       email: "",
       password: "",
       confirm_password: "",
     },
   });
 
-  function onSubmit(values) {
-    console.log(values);
+  const { mutate: register, isSuccess } = UseRegisterQuery();
+
+  if (isSuccess) {
+    router.push("/login");
+  } else {
+    console.log("Error");
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(register)} className="space-y-8">
         <div>
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input
-                    className="py-6"
-                    placeholder="isaiasmelkmau"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex space-x-4">
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="py-4"
+                      placeholder="First Name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="middleName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="py-4"
+                      placeholder="Last Name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
           <FormField
             control={form.control}
             name="email"
@@ -62,8 +92,8 @@ export default function RegistrationForm() {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
-                    className="py-6"
-                    placeholder="isayas@gmail.com"
+                    className="py-4"
+                    placeholder="examle@gmail.com"
                     {...field}
                   />
                 </FormControl>
@@ -79,7 +109,7 @@ export default function RegistrationForm() {
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input
-                    className="py-6"
+                    className="py-4"
                     type="password"
                     placeholder="Enter password"
                     {...field}
@@ -97,7 +127,7 @@ export default function RegistrationForm() {
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
                   <Input
-                    className="py-6"
+                    className="py-4"
                     type="password"
                     placeholder="Confirm password"
                     {...field}

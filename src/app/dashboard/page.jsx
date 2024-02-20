@@ -22,24 +22,16 @@ import { VscGraph } from "react-icons/vsc";
 import { MdAutoGraph } from "react-icons/md";
 import { BsGraphDownArrow } from "react-icons/bs";
 import { VscGraphLine } from "react-icons/vsc";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+
 // import PieChartWithPaddingAngle from "@/components/dashboard/PieChartWithPaddingAngle";
 
 const Dashboard = () => {
-  const session = useSession();
-  const router = useRouter();
-
-  // if (session.status) {
-  //   router.replace("/");
-  // }
-
   return (
-    <div className="w-full h-full">
-      <div className="flex  gap-8 flex-col lg:flex-row ">
-        <div className="w-full lg:w-2/3 bg-swansdown flex  rounded-lg p-8 justify-between flex-col lg:flex-row items-center lg:items-start gap-4">
+    <div className="">
+      <div className="flex w-full  space-x-6 flex-col xl:flex-row  ">
+        <div className="w-full xl:w-2/3 bg-swansdown flex  rounded-lg p-8 justify-between flex-col lg:flex-row items-center lg:items-start gap-4">
           {/* card content */}
-          <div className="bg-swansdown  h-3/4  text-center lg:text-start flex flex-col justify-between items-center lg:items-start ">
+          <div className="bg-swansdown   h-3/4  text-center lg:text-start flex flex-col justify-between items-center lg:items-start ">
             <div>
               <h1 className=" dark:text-black text-2xl font-semibold">
                 Welcome back 👋
@@ -56,12 +48,18 @@ const Dashboard = () => {
               Go now
             </Button>
           </div>
-          <div className="3">
-            <Image src={"/dashboard.png"} alt="" width={300} height={200} />
+          <div className=" xl:aspect-[9/6]">
+            <Image
+              src={"/dashboard.png"}
+              className="size-full"
+              alt=""
+              width={300}
+              height={200}
+            />
           </div>
         </div>
-        <div className=" w-full xl:w-1/3 rounded-lg flex items-center ">
-          <Carousel>
+        <div className="h-full w-full xl:w-1/3 rounded-lg flex bg-card items-center">
+          <Carousel className="h-full w-full ">
             <CarouselContent>
               <CarouselItem>
                 <Image
@@ -69,7 +67,7 @@ const Dashboard = () => {
                   className="h-full w-full rounded-lg"
                   alt="my"
                   width={700}
-                  height={300}
+                  height={500}
                 />
               </CarouselItem>
               <CarouselItem>

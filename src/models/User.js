@@ -4,10 +4,34 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema(
   {
-    username: {
+    firstName: {
       type: String,
-      unique: true,
       required: true,
+    },
+    middleName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+    },
+    identificationCard: {
+      type: String,
+    },
+    nationalId: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    phoneNumber: {
+      type: String,
+    },
+    bankInfo: {
+      type: String,
+    },
+    accountNumber: {
+      type: String,
     },
     email: {
       type: String,
