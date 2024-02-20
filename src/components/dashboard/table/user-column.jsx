@@ -37,9 +37,15 @@ export const columns = [
     enableHiding: false,
   },
   {
-    accessorKey: "status",
+    accessorKey: "firstName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Fist Name" />
+    ),
+  },
+  {
+    accessorKey: "middleName",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Middle Name" />
     ),
   },
   {
@@ -47,21 +53,6 @@ export const columns = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Email" />
     ),
-  },
-  {
-    accessorKey: "amount",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Amount" />
-    ),
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className=" font-medium">{formatted}</div>;
-    },
   },
   {
     id: "actions",

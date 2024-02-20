@@ -17,18 +17,16 @@ import { FaSquareFacebook } from "react-icons/fa6";
 
 export default function Login() {
   return (
-    <div className=" flex items-center justify-center w-[90%] xl:w-[70%] mx-auto h-screen  ">
-      <div className="w-full h-[65%] hidden lg:block lg:w-3/5 xl:w-3/5 transition-all duration-300">
-        <div className="flex flex-col justify-center items-center h-full">
-          <h1 className="text-4xl">Welcome Back!</h1>
-          <Image
-            src={"/illustration_dashboard.png"}
-            className="w-full"
-            alt="my"
-            width={500}
-            height={500}
-          />
-        </div>
+    <div className=" flex items-center justify-center w-[90%] xl:w-[70%] mx-auto h-screen space-x-8 ">
+      <div className="w-full h-[65%] hidden lg:flex lg:w-3/5 xl:w-3/5 transition-all duration-300  lg:flex-col justify-center items-center">
+        <h1 className="text-4xl">Welcome Back!</h1>
+        <Image
+          src={"/illustration_dashboard.png"}
+          className="w-full"
+          alt="my"
+          width={500}
+          height={500}
+        />
       </div>
       <div className=" h-[65%] w-[90%] sm:w-[70%] lg:w-3/4 xl:w-2/5 transition-all duration-300 ">
         <Card className="h-full flex flex-col justify-center">
@@ -55,7 +53,7 @@ export default function Login() {
               <Button variant="outline" onClick={() => signIn("google")}>
                 <FcGoogle className="text-2xl" />
               </Button>
-              <Button variant="outline">
+              <Button variant="outline" onClick={() => signIn("facebook")}>
                 <FaSquareFacebook className="text-blue-500 text-2xl" />
               </Button>
             </div>

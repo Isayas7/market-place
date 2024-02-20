@@ -11,16 +11,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export function UserNav() {
   const router = useRouter();
-
-  const handleSignout = () => {
-    signOut();
-    router.replace("/");
-  };
+  const session = useSession();
 
   return (
     <DropdownMenu>
@@ -49,7 +45,7 @@ export function UserNav() {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="border-b dark:border-gray-600 border-dashed" />
-        <DropdownMenuItem onClick={handleSignout}>Log out</DropdownMenuItem>
+        <DropdownMenuItem onClick={signOut}>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
