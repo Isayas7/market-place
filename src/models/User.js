@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
+// delete mongoose.connection.models["User"];
+
 const userSchema = new Schema(
   {
     firstName: {
@@ -15,8 +17,22 @@ const userSchema = new Schema(
     lastName: {
       type: String,
     },
+
     identificationCard: {
-      type: String,
+      public_id: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
+    },
+    nationalId: {
+      public_id: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
     },
     nationalId: {
       type: String,
@@ -39,6 +55,9 @@ const userSchema = new Schema(
       required: true,
     },
     password: {
+      type: String,
+    },
+    role: {
       type: String,
       required: true,
     },

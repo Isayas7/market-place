@@ -15,6 +15,7 @@ import { deliveryPersonnelSchema } from "@/schema/user";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import { useDPRegisterQuery } from "@/hooks/use-users-query";
 
 const DeliveryPersonnelForm = () => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
@@ -36,7 +37,7 @@ const DeliveryPersonnelForm = () => {
     },
   });
 
-  function onSubmit(values) {}
+  const { mutate: registerDP, isSuccess } = useDPRegisterQuery();
 
   return (
     <div className="flex flex-col md:flex-row gap-5">
@@ -57,7 +58,7 @@ const DeliveryPersonnelForm = () => {
       </Card>
       <div className=" w-full md:w-3/5 ">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(registerDP)} className="space-y-8">
             <Card className=" grid grid-cols-1 sm:grid-cols-2 sm:gap-5 p-7">
               <div>
                 <FormField
@@ -69,7 +70,7 @@ const DeliveryPersonnelForm = () => {
                       <FormControl>
                         <Input
                           className="p-3"
-                          placeholder="fist name"
+                          placeholder="first name"
                           {...field}
                         />
                       </FormControl>
@@ -159,13 +160,6 @@ const DeliveryPersonnelForm = () => {
                           type="file"
                           placeholder="Id card"
                           {...field}
-                          id="fileInput"
-                          onBlur={field.onBlur}
-                          onChange={(e) => {
-                            field.onChange(e.target.files);
-                            setSelectedIdCardImage(e.target.files?.[0] || null);
-                          }}
-                          ref={field.ref}
                         />
                       </FormControl>
                       <FormMessage />
@@ -184,13 +178,6 @@ const DeliveryPersonnelForm = () => {
                           className="p-3"
                           placeholder="natioal Id"
                           {...field}
-                          id="fileInput"
-                          onBlur={field.onBlur}
-                          onChange={(e) => {
-                            field.onChange(e.target.files);
-                            setSelectedIdImage(e.target.files?.[0] || null);
-                          }}
-                          ref={field.ref}
                         />
                       </FormControl>
                       <FormMessage />

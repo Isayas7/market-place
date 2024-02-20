@@ -1,5 +1,5 @@
-import List from "@/components/home/list/list";
-import { CustomCard } from "@/components/home/customcard/custom-card";
+import { CustomCard } from "@/components/home/custom-card";
+import List from "@/components/home/list";
 export const listenNowAlbums = [
   {
     name: "t-shirt",
@@ -77,7 +77,7 @@ export const listenNowAlbums = [
 
 export default async function Home() {
   return (
-    <div className=" pt-32 pb-5 xl:flex   gap-10">
+    <div className=" pt-32 pb-5 xl:flex   gap-10 container">
       <div className="  z-50 xl:fixed ">
         <List />
       </div>

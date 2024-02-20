@@ -21,3 +21,11 @@ export const UseRegisterQuery = () => {
     },
   });
 };
+export const useDPRegisterQuery = () => {
+  return useMutation({
+    mutationFn: (newUser) => {
+      console.log("newUser", newUser);
+      return axios.post("http://localhost:3000/api/users", newUser);
+    },
+  });
+};

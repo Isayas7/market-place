@@ -12,18 +12,19 @@ export const POST = async (request) => {
     return new NextResponse("Invalid", { status: 400 });
   }
 
-  const { firstName, middleName, email, password } = values;
+  const { password, ...other } = values;
 
   await connect();
 
   const hashedPassword = await bcrypt.hash(password, 5);
 
   const newUser = new User({
-    firstName,
-    middleName,
-    email,
     password: hashedPassword,
+    role: "buyer",
+    ...other,
   });
+
+  console.log(newUser);
   try {
     await newUser.save();
     return new NextResponse("User has been created", { status: 201 });

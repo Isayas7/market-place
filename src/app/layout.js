@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
           <QueryProvider>
             <AuthProvider>
               <Navbar />
-              <main className="container  mx-auto ">{children}</main>
+              <main className=" mx-auto ">{children}</main>
               <Footer />
             </AuthProvider>
           </QueryProvider>
