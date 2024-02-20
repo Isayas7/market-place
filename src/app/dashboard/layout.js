@@ -40,17 +40,17 @@ const Layout = ({ children }) => {
             : " lg:grid-cols-notCollapsed   "
         }`}
       >
-        <header className=" relative  py-3 px-12  rounded-sm ">
+        <header className=" relative  py-5 px-12  rounded-sm ">
           <div className="flex items-center space-x-5">
             <div className="lg:hidden py-3">
               <RiMenu4Line className="size-8" onClick={() => setOpen(!open)} />
             </div>
 
-            <div className="flex-1">
+            <div className="flex-1 py-1.5">
               <Navbar />
             </div>
           </div>
-          <div className="absolute -left-3 top-10  ">
+          <div className="absolute -left-3 top-8  ">
             <Button
               onClick={() => setIsCollapsed(!isCollapsed)}
               className="hidden lg:block rounded-full p-1 z-50 border dark:border-gray-600 border-dashed size-6 text-palesky bg-white dark:bg-background"
@@ -68,7 +68,7 @@ const Layout = ({ children }) => {
           <Sidebar isCollapsed={isCollapsed} open={open} setOpen={setOpen} />
         </aside>
 
-        <main className="pt-10 overflow-y-scroll container ">{children}</main>
+        <main className=" container pt-7 overflow-y-scroll  ">{children}</main>
       </div>
     );
   }

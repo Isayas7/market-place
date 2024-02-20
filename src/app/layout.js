@@ -5,6 +5,7 @@ import Navbar from "@/components/home/navbar/navbar";
 import Footer from "@/components/home/footer/footer";
 import AuthProvider from "@/components/authprovider/auth-provider";
 import QueryProvider from "@/components/queryprovider/query-provider";
+import Main from "@/components/home/main";
 
 const inter = Inter({ subsets: ["latin"] });
 const roboto = Roboto({ subsets: ["latin"], weight: "400" });
@@ -27,7 +28,7 @@ export default function RootLayout({ children }) {
           <QueryProvider>
             <AuthProvider>
               <Navbar />
-              <main className="container  mx-auto ">{children}</main>
+              <Main children={children} />
               <Footer />
             </AuthProvider>
           </QueryProvider>

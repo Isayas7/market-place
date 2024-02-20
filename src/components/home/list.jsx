@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { menuItems } from "../navbar/custom-sheet";
+import { menuItems } from "./navbar/custom-sheet";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -16,29 +16,36 @@ const List = () => {
       >
         {menuItems.map((category) => {
           return (
-            <div
-              key={category.category}
-              onMouseEnter={() => {
-                setIsHover(true);
-                setCategoryName(category.category);
+            <Link
+              href={{
+                pathname: "/category",
+                query: { category: category.category },
               }}
-              className="flex justify-between items-center px-3 py-1 hover:bg-active-hovered cursor-pointer w-full"
             >
-              <div className=" flex gap-5 items-center">
-                <Image
-                  src="/cru2.jpg"
-                  alt="sss"
-                  width={100}
-                  height={100}
-                  className=" w-10 h-10"
-                />
-                <div className=" flex flex-col">
-                  <span>{category.category}</span>
-                  <span className=" text-xs text-gray-400">1,250 ads</span>
+              <div
+                key={category.category}
+                onMouseEnter={() => {
+                  setIsHover(true);
+                  setCategoryName(category.category);
+                }}
+                className="flex justify-between items-center px-3 py-1 hover:bg-active-hovered cursor-pointer w-full"
+              >
+                <div className=" flex gap-5 items-center">
+                  <Image
+                    src="/cru2.jpg"
+                    alt="sss"
+                    width={100}
+                    height={100}
+                    className=" w-10 h-10"
+                  />
+                  <div className=" flex flex-col">
+                    <span>{category.category}</span>
+                    <span className=" text-xs text-gray-400">1,250 ads</span>
+                  </div>
                 </div>
+                <span>{">"}</span>
               </div>
-              <span>{">"}</span>
-            </div>
+            </Link>
           );
         })}
         {isHover && (
