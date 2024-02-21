@@ -12,7 +12,7 @@ const List = () => {
     <>
       <div
         onMouseLeave={() => setIsHover(false)}
-        className=" bg-card text-card-foreground   hidden xl:flex flex-col relative shadow-lg h-96 pt-1 w-80"
+        className=" bg-card text-card-foreground   hidden xl:flex flex-col relative shadow-lg h-[515px] pt-1 w-80"
       >
         {menuItems.map((category) => {
           return (
@@ -49,7 +49,7 @@ const List = () => {
           );
         })}
         {isHover && (
-          <div className="bg-card text-card-foreground flex flex-col w-full border-l-2 pt-1 border-input shadow-lg absolute inset-y-0 inset-x-full z-10  h-96">
+          <div className="bg-card text-card-foreground flex flex-col w-full border-l-2 pt-1 border-input shadow-lg absolute inset-y-0 inset-x-full z-10  h-[515px]">
             {menuItems.map((category, categoryIndex) => {
               if (categoryName === category.category) {
                 return category.items.map((cat, index) => (

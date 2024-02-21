@@ -13,6 +13,7 @@ const handler = NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
+
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
@@ -54,6 +55,33 @@ const handler = NextAuth({
       },
     }),
   ],
-  // pages: { error: "/login" }/,
+  callbacks: {
+    async session({ session }) {
+      return session;
+    },
+    async signIn({ profile }) {
+      try {
+        await connect();
+        const userExist = await User.findOne({ email: profile.email });
+        if (!userExist) {
+          const name = profile.name.split(" ");
+          const firstName = name[0];
+          const middleName = name[1];
+
+          const user = await User.create({
+            firstName,
+            middleName,
+            email: profile.email,
+            role: "buyer",
+          });
+        }
+
+        return true;
+      } catch (error) {
+        return false;
+      }
+    },
+  },
+  pages: { error: "/login" },
 });
 export { handler as POST, handler as GET };
