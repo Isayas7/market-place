@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
+delete mongoose.connection.models["ProductCategory"];
+
 const productCategorySchema = new Schema(
   {
     categoryName: {
@@ -11,11 +13,9 @@ const productCategorySchema = new Schema(
     image: {
       public_id: {
         type: String,
-        required: true,
       },
       url: {
         type: String,
-        required: true,
       },
     },
     productNames: [
