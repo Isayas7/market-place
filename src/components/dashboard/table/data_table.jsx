@@ -33,7 +33,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Link from "next/link";
 
-export function DataTable({ columns, data, renderd }) {
+export function DataTable({ columns, data, rendered }) {
   const [sorting, setSorting] = useState();
   const [columnFilters, setColumnFilters] = useState();
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -63,7 +63,7 @@ export function DataTable({ columns, data, renderd }) {
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
+          placeholder={"Filter table..."}
           value={table.getColumn("email")?.getFilterValue() ?? ""}
           onChange={(event) =>
             table.getColumn("email")?.setFilterValue(event.target.value)
@@ -97,12 +97,14 @@ export function DataTable({ columns, data, renderd }) {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          {renderd === "dp" && (
-            <Link
-              href="user/new"
-              className=" h-9 px-4 py-2 rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground"
-            >
-              +New User
+          {rendered === "delivery_personnel" && (
+            <Link href="user/new">
+              <Button variant="outline"> +New User</Button>
+            </Link>
+          )}
+          {rendered === "category" && (
+            <Link href="category/new">
+              <Button variant="outline"> +New Category</Button>
             </Link>
           )}
         </div>

@@ -5,6 +5,7 @@ import React from "react";
 
 const SidebarLink = ({ list, isCollapsed }) => {
   const path = usePathname();
+  
   return (
     <Link
       href={list.path}
