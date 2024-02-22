@@ -4,6 +4,8 @@ import { columns } from "@/components/dashboard/table/user-column";
 import { DataTable } from "@/components/dashboard/table/data_table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UsebuyersQuery } from "@/hooks/use-users-query";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { delivery_columns } from "@/components/dashboard/table/delivery-personnel-column";
 
 const data = [
   {
@@ -20,8 +22,6 @@ const data = [
 
 const Users = () => {
   const { data: buyers, isLoading } = UsebuyersQuery();
-  console.log(buyers?.data);
-  // const data = getData();
   if (buyers) {
     return (
       <div>
@@ -38,13 +38,21 @@ const Users = () => {
             <DataTable columns={columns} data={buyers?.data} />
           </TabsContent>
           <TabsContent value="personnel">
-            <DataTable columns={columns} renderd="dp" data={buyers?.data} />
+            <DataTable
+              columns={delivery_columns}
+              rendered="delivery_personnel"
+              data={buyers?.data}
+            />
           </TabsContent>
         </Tabs>
       </div>
     );
   } else {
-    return <div>loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-1/2">
+        <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
+      </div>
+    );
   }
 };
 

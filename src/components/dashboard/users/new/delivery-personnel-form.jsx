@@ -16,10 +16,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { useDPRegisterQuery } from "@/hooks/use-users-query";
+import { useRouter } from "next/navigation";
 
 const DeliveryPersonnelForm = () => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
   const [selectedId, setSelectedIdImage] = useState(null);
+  const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(deliveryPersonnelSchema),
@@ -29,15 +31,20 @@ const DeliveryPersonnelForm = () => {
       lastName: "",
       email: "",
       address: "",
-      identificationCard: undefined,
-      nationalId: undefined,
+      identificationCard: null,
+      nationalId: null,
       phoneNumber: "",
       bankInfo: "",
       accountNumber: "",
     },
   });
 
-  const { mutate: registerDP, isSuccess } = useDPRegisterQuery();
+  const { mutate: registerDP, isSuccess, isLoading } = useDPRegisterQuery();
+
+  const onSubmit = (values) => {
+    registerDP(values);
+    router.push("/dashboard/user");
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-5">
@@ -58,7 +65,7 @@ const DeliveryPersonnelForm = () => {
       </Card>
       <div className=" w-full md:w-3/5 ">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(registerDP)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <Card className=" grid grid-cols-1 sm:grid-cols-2 sm:gap-5 p-7">
               <div>
                 <FormField
@@ -176,7 +183,7 @@ const DeliveryPersonnelForm = () => {
                         <Input
                           type="file"
                           className="p-3"
-                          placeholder="natioal Id"
+                          placeholder="national Id"
                           {...field}
                         />
                       </FormControl>
@@ -238,7 +245,11 @@ const DeliveryPersonnelForm = () => {
               </div>
             </Card>
 
-            <Button className="w-full ml-auto text-xl" type="submit">
+            <Button
+              disabled={isLoading}
+              className="w-full ml-auto text-xl"
+              type="submit"
+            >
               Submit
             </Button>
           </form>

@@ -1,24 +1,16 @@
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 50 * 1024 * 1024;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
-
 // registration validator
 export const registerSchema = z
   .object({
     firstName: z.string().min(2, {
-      message: "plase enter name",
+      message: "please enter name",
     }),
     middleName: z.string().min(2, {
-      message: "plase enter  name",
+      message: "please enter  name",
     }),
     email: z.string().min(2, {
-      message: "plase enter email",
+      message: "please enter email",
     }),
     password: z.string().min(2, {
       message: "password required",
@@ -35,7 +27,7 @@ export const registerSchema = z
 // login validator
 export const loginSchema = z.object({
   email: z.string().min(2, {
-    message: "plase enter email",
+    message: "please enter email",
   }),
   password: z.string().min(2, {
     message: "password required",
@@ -62,22 +54,21 @@ export const deliveryPersonnelSchema = z.object({
   phoneNumber: z.string().min(2, {
     message: "Please enter a valid phone number.",
   }),
-  // identificationCard: z
-  //   .any()
-  //   .refine(
-  //     (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-  //     "Only .jpg, .jpeg, .png and .webp formats are supported."
-  //   ),
-  // nationalId: z
-  //   .any()
-  //   .refine(
-  //     (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-  //     "Only .jpg, .jpeg, .png and .webp formats are supported."
-  //   ),
+
   bankInfo: z.string().min(2, {
     message: "Please enter valid bank information.",
   }),
   accountNumber: z.string().min(2, {
     message: "Please enter a valid account number.",
+  }),
+});
+
+// category validator
+export const categorySchema = z.object({
+  categoryName: z.string().min(2, {
+    message: "please enter category Name",
+  }),
+  productNames: z.string().min(2, {
+    message: "please enter category Name",
   }),
 });

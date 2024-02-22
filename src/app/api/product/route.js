@@ -1,6 +1,4 @@
 import Product from "@/models/Product";
-import ProductCategory from "@/models/ProductCategory";
-import StoreFront from "@/models/StoreFront";
 import connect from "@/utils/db";
 import { NextResponse } from "next/server";
 

@@ -25,7 +25,7 @@ export const menuUtems = [
   },
   {
     title: "Product Category",
-    path: "/dashboard/productCategory",
+    path: "/dashboard/category",
     icon: <FaStore />,
   },
   {

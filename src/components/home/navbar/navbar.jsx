@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import React from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { ModeToggle } from "../../themeprovider/mode-toggle";
 import Image from "next/image";
 import { Search } from "@/components/dashboard/navbar/search";
 import CustomSheet from "./custom-sheet";
 import { UserNav } from "@/components/dashboard/navbar/user-nav";
 import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
 
 const links = [
   {
@@ -20,11 +21,7 @@ const links = [
 
 const Navbar = () => {
   const currentUrl = usePathname();
-  const router = useRouter();
-
-  const handleLoginClick = () => {
-    router.push("/login");
-  };
+  const session = useSession();
 
   return (
     <div
@@ -50,8 +47,13 @@ const Navbar = () => {
           />
           <div className="flex items-center space-x-4 lg:space-x-6  xl:space-x-8">
             <Button variant="outline">Sell</Button>
-            <Link href={"/login"}>Login</Link>
-            <Link href={"/dashboard"}>Dashboard</Link>
+
+            {session.status === "unauthenticated" && (
+              <Link href={"/login"}>Login</Link>
+            )}
+            {session.status === "authenticated" && (
+              <Link href={"/dashboard"}>Dashboard</Link>
+            )}
             <UserNav />
           </div>
         </div>
