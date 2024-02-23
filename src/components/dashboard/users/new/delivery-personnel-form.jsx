@@ -17,10 +17,13 @@ import { Button } from "@/components/ui/button";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { useDPRegisterQuery } from "@/hooks/use-users-query";
 import { useRouter } from "next/navigation";
+import { BsPaperclip } from "react-icons/bs";
 
 const DeliveryPersonnelForm = () => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
   const [selectedId, setSelectedIdImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const router = useRouter();
 
   const form = useForm({
@@ -40,11 +43,35 @@ const DeliveryPersonnelForm = () => {
   });
 
   const { mutate: registerDP, isSuccess, isLoading } = useDPRegisterQuery();
-
-  const onSubmit = (values) => {
-    registerDP(values);
-    router.push("/dashboard/user");
+  
+  const setFileToBase = (file, callback) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      const base64Data = reader.result;
+      callback(base64Data);
+    };
   };
+  const onSubmit = async (values) => {
+    console.log(values);
+    const convertFileToBase64AndUpdateValues = async (fieldName) => {
+      if (values[fieldName]) {
+        const file = values[fieldName][0];
+        return new Promise((resolve) => {
+          setFileToBase(file, (base64Data) => {
+            values[`${fieldName}Base64`] = base64Data;
+            resolve();
+          });
+        });
+      }
+    };
+    await convertFileToBase64AndUpdateValues('identificationCard');
+    await convertFileToBase64AndUpdateValues('nationalId');
+    console.log('Updated values:', values);
+      registerDP(values);
+    // router.push("/dashboard/user");
+  };
+  
 
   return (
     <div className="flex flex-col md:flex-row gap-5">
@@ -163,10 +190,16 @@ const DeliveryPersonnelForm = () => {
                       <FormLabel>Identification Card</FormLabel>
                       <FormControl>
                         <Input
-                          className="p-3"
                           type="file"
-                          placeholder="Id card"
-                          {...field}
+                          className="p-3"
+                          id="fileInput"
+                          onBlur={field.onBlur}
+                          name={field.name}
+                          onChange={(e) => {
+                            field.onChange(e.target.files);
+                            setSelectedIdCardImage(e.target.files?.[0] || null);
+                          }}
+                          ref={field.ref}
                         />
                       </FormControl>
                       <FormMessage />
@@ -178,13 +211,19 @@ const DeliveryPersonnelForm = () => {
                   name="nationalId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>National ID</FormLabel>
+                      <FormLabel>National Id</FormLabel>
                       <FormControl>
                         <Input
                           type="file"
                           className="p-3"
-                          placeholder="national Id"
-                          {...field}
+                          id="fileInput"
+                          onBlur={field.onBlur}
+                          name={field.name}
+                          onChange={(e) => {
+                            field.onChange(e.target.files);
+                            setSelectedIdImage(e.target.files?.[0] || null);
+                          }}
+                          ref={field.ref}
                         />
                       </FormControl>
                       <FormMessage />
