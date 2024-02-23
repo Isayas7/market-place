@@ -46,7 +46,11 @@ const Navbar = () => {
             className="rounded-md lg:w-[400px] "
           />
           <div className="flex items-center space-x-4 lg:space-x-6  xl:space-x-8">
-            <Button variant="outline">Sell</Button>
+            {session.status === "authenticated" && (
+              <Button variant="outline">
+                <Link href={"/storefront"}>Sell</Link>
+              </Button>
+            )}
 
             {session.status === "unauthenticated" && (
               <Link href={"/login"}>Login</Link>

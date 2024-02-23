@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Form,
   FormControl,
@@ -11,27 +10,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { deliveryPersonnelSchema } from "@/schema/user";
+import { storefrontSchema } from "@/schema/user";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { useDPRegisterQuery } from "@/hooks/use-users-query";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useStorefrontCreationQuery } from "@/hooks/use-users-query";
+import { useState } from "react";
 
-const DeliveryPersonnelForm = () => {
+const StorefrontForm = () => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
   const [selectedId, setSelectedIdImage] = useState(null);
   const router = useRouter();
   const session = useSession();
 
   const form = useForm({
-    resolver: zodResolver(deliveryPersonnelSchema),
+    resolver: zodResolver(storefrontSchema),
     defaultValues: {
-      firstName: "",
-      middleName: "",
       lastName: "",
-      email: "",
       address: "",
       identificationCard: null,
       nationalId: null,
@@ -41,13 +38,16 @@ const DeliveryPersonnelForm = () => {
     },
   });
 
-  console.log(session);
-
-  const { mutate: registerDP, isSuccess, isLoading } = useDPRegisterQuery();
+  const {
+    mutate: createStorefront,
+    isSuccess,
+    isLoading,
+  } = useStorefrontCreationQuery();
 
   const onSubmit = (values) => {
-    registerDP(values);
-    router.push("/dashboard/user");
+    console.log(values);
+    values.email = session.data.user.email;
+    createStorefront(values);
   };
 
   return (
@@ -74,40 +74,6 @@ const DeliveryPersonnelForm = () => {
               <div>
                 <FormField
                   control={form.control}
-                  name="firstName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>First Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="first name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="middleName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Middle Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="middle name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
@@ -123,29 +89,13 @@ const DeliveryPersonnelForm = () => {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="examle@gmail.com"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+
                 <FormField
                   control={form.control}
                   name="address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Address</FormLabel>
+                      <FormLabel>Your Address</FormLabel>
                       <FormControl>
                         <Input
                           className="p-3"
@@ -157,8 +107,23 @@ const DeliveryPersonnelForm = () => {
                     </FormItem>
                   )}
                 />
-              </div>
-              <div>
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Store Location</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="p-3"
+                          placeholder="store location"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="identificationCard"
@@ -177,6 +142,8 @@ const DeliveryPersonnelForm = () => {
                     </FormItem>
                   )}
                 />
+              </div>
+              <div>
                 <FormField
                   control={form.control}
                   name="nationalId"
@@ -249,11 +216,7 @@ const DeliveryPersonnelForm = () => {
               </div>
             </Card>
 
-            <Button
-              disabled={isLoading}
-              className="w-full ml-auto text-xl"
-              type="submit"
-            >
+            <Button className="w-full ml-auto text-xl" type="submit">
               Submit
             </Button>
           </form>
@@ -263,4 +226,4 @@ const DeliveryPersonnelForm = () => {
   );
 };
 
-export default DeliveryPersonnelForm;
+export default StorefrontForm;

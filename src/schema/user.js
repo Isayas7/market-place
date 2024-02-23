@@ -63,6 +63,27 @@ export const deliveryPersonnelSchema = z.object({
   }),
 });
 
+// delivery personnel information validator
+export const storefrontSchema = z.object({
+  lastName: z.string().min(2, {
+    message: "Please enter a valid last name.",
+  }),
+
+  address: z.string().min(2, {
+    message: "Please enter a valid address.",
+  }),
+  phoneNumber: z.string().min(2, {
+    message: "Please enter a valid phone number.",
+  }),
+
+  bankInfo: z.string().min(2, {
+    message: "Please enter valid bank information.",
+  }),
+  accountNumber: z.string().min(2, {
+    message: "Please enter a valid account number.",
+  }),
+});
+
 // category validator
 export const categorySchema = z.object({
   categoryName: z.string().min(2, {

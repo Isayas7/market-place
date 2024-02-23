@@ -27,3 +27,10 @@ export const useDPRegisterQuery = () => {
     },
   });
 };
+export const useStorefrontCreationQuery = () => {
+  return useMutation({
+    mutationFn: (newStore) => {
+      return axios.post("http://localhost:3000/api/storefront", newStore);
+    },
+  });
+};

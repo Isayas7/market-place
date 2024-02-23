@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/sheet";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { AlignJustify, ArrowLeft, ChevronRight } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -42,6 +43,7 @@ export const menuItems = [
 
 const CustomSheet = () => {
   const [expandedCategory, setExpandedCategory] = useState(null);
+  const session = useSession();
 
   return (
     <Sheet>
@@ -56,7 +58,7 @@ const CustomSheet = () => {
           <div className="flex justify-between items-center fixed w-[22.8rem] pl-8 pr-2 bg-headercolor-default  py-2.5">
             <div className="flex space-x-6 items-center cursor-pointer">
               <Avatar className="h-8 w-8">
-                <AvatarImage src="https://github.com/shadcn.png" alt="man" />
+                <AvatarImage src={session?.data?.user?.image} alt="man" />
                 <AvatarFallback>SC</AvatarFallback>
               </Avatar>
               <SheetTitle>
