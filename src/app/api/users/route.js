@@ -19,34 +19,51 @@ export const POST = async (request) => {
   const values = await request.json();
   const validationResult = deliveryPersonnelSchema.safeParse(values);
 
-  if (!validationResult.success) {
-    return new NextResponse("Invalid", { status: 400 });
-  }
+  const { identificationCardBase64, nationalIdBase64, ...other } = values;
 
-  const { identificationCard, nationalId, ...other } = values;
+  // if (!validationResult.success) {
+  //   return new NextResponse("Invalid", { status: 400 });
+  // }
 
   await connect();
   const password = "ABCabc123@#";
   const hashedPassword = await bcrypt.hash(password, 5);
 
-  // const resultId = await cloudinary.uploader.upload(identificationCard, {
-  //   folder: "marketplace",
-  // });
-  // const resultNationalId = await cloudinary.uploader.upload(nationalId, {
-  //   folder: "marketplace",
-  // });
-
-  // if (!resultId || resultNationalId) {
-  //   return new NextResponse("Failed to upload images", { status: 400 });
-  // }
-  const role = "delivery_personnel";
-  const newUser = new User({
-    ...other,
-    password: hashedPassword,
-    role,
-  });
   try {
+    // const resultId = await cloudinary.uploader.upload(
+    //   identificationCardBase64,
+    //   {
+    //     folder: "marketplace",
+    //   }
+    // );
+    // const resultNationalId = await cloudinary.uploader.upload(
+    //   nationalIdBase64,
+    //   {
+    //     folder: "marketplace",
+    //   }
+    // );
+
+    // if (!resultId || resultNationalId) {
+    //   console.log(resultId);
+    //   return new NextResponse("Failed to upload images", { status: 400 });
+    // }
+    const role = "delivery_personnel";
+    const newUser = new User({
+      ...other,
+      // identificationCard: {
+      //   public_id: resultId.public_id,
+      //   url: resultId.secure_url,
+      // },
+      // nationalId: {
+      //   public_id: resultNationalId.public_id,
+      //   url: resultNationalId.secure_url,
+      // },
+      password: hashedPassword,
+      role,
+    });
+
     await newUser.save();
+
     return new NextResponse("User has been created", { status: 201 });
   } catch (error) {
     return new NextResponse(error.message, { status: 500 });

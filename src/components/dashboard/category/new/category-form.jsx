@@ -53,7 +53,7 @@ const CategoryForm = () => {
                       <FormControl>
                         <Input
                           className="p-3"
-                          placeholder="first name"
+                          placeholder="category name"
                           {...field}
                         />
                       </FormControl>
@@ -70,26 +70,7 @@ const CategoryForm = () => {
                       <FormControl>
                         <Input
                           className="p-3"
-                          placeholder="first name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="image"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Image</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          type="file"
-                          placeholder="Id card"
+                          placeholder="product names"
                           {...field}
                         />
                       </FormControl>
@@ -98,6 +79,37 @@ const CategoryForm = () => {
                   )}
                 />
               </div>
+              <Card className=" w-full md:w-full ">
+                <CardContent className="flex items-center justify-center">
+                  <FormField
+                    control={form.control}
+                    name="image"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          <div className=" flex justify-center items-center p-3 rounded-full   border  dark:border-gray-600 border-dashed">
+                            <Button className="size-28 rounded-full  flex-col justify-center items-center ">
+                              <div>
+                                <FaCloudUploadAlt className="size-8" />
+                              </div>
+                              <p className="text-xs">upload photo</p>
+                            </Button>
+                          </div>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            className="p-3"
+                            type="file"
+                            placeholder="Id card"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+              </Card>
             </Card>
 
             <Button
