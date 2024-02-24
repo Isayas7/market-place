@@ -22,6 +22,7 @@ const data = [
 
 const Users = () => {
   const { data: buyers, isLoading } = UsebuyersQuery();
+  
   if (buyers) {
     return (
       <div>

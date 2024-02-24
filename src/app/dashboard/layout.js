@@ -9,6 +9,7 @@ import { RiMenu4Line } from "react-icons/ri";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TabProvider } from "@/components/tabprovider/tab-provider";
 
 const Layout = ({ children }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -67,8 +68,11 @@ const Layout = ({ children }) => {
         <aside className=" hidden lg:block overflow-y-scroll overflow-x-hidden row-custom border-r dark:border-gray-600 border-dashed  ">
           <Sidebar isCollapsed={isCollapsed} open={open} setOpen={setOpen} />
         </aside>
-
-        <main className=" container pt-7 overflow-y-scroll  ">{children}</main>
+        <TabProvider>
+          <main className=" container pt-7 overflow-y-scroll  ">
+            {children}
+          </main>
+        </TabProvider>
       </div>
     );
   }

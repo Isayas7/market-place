@@ -13,6 +13,18 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { useRouter } from "next/navigation";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useState } from "react";
 
 export const delivery_columns = [
   {
@@ -88,6 +100,8 @@ export const delivery_columns = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const [open, setOpen] = useState(false);
+
       const user = row.original;
       const router = useRouter();
 
@@ -96,6 +110,10 @@ export const delivery_columns = [
       };
       const handleViewClick = () => {
         router.push(`user/view`, { user });
+      };
+
+      const handleDeactivate = (user) => {
+        console.log(user);
       };
 
       return (
@@ -114,12 +132,29 @@ export const delivery_columns = [
               Update
             </DropdownMenuItem>
             {/* <DropdownMenuSeparator /> */}
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(user.id)}
-            >
-              Deactivate
+            <DropdownMenuItem onClick={() => setOpen(true)}>
+              Deativate
             </DropdownMenuItem>
           </DropdownMenuContent>
+          <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Are you sure do you want to delete this user?
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently deactivate
+                  this account and remove some data from our users.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => handleDeactivate(user)}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </DropdownMenu>
       );
     },
