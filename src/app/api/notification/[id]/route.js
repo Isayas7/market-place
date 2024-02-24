@@ -24,7 +24,7 @@ export const PUT = async (request, { params }) => {
   try {
     await connect();
 
-    const updated = await Notification.findOneAndUpdate(
+    const updatedNotification = await Notification.findOneAndUpdate(
       { _id: id },
       { $set: other },
       { new: true }
