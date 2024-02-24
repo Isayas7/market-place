@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Form,
   FormControl,
@@ -11,33 +10,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { deliveryPersonnelSchema } from "@/schema/user";
+import { storefrontSchema } from "@/schema/user";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { useDPRegisterQuery } from "@/hooks/use-users-query";
 import { useRouter } from "next/navigation";
-<<<<<<< HEAD
-import { BsPaperclip } from "react-icons/bs";
-=======
 import { useSession } from "next-auth/react";
->>>>>>> mybranch
+import { useStorefrontCreationQuery } from "@/hooks/use-users-query";
+import { useState } from "react";
 
-const DeliveryPersonnelForm = () => {
+const StorefrontForm = () => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
   const [selectedId, setSelectedIdImage] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
-
   const router = useRouter();
   const session = useSession();
 
   const form = useForm({
-    resolver: zodResolver(deliveryPersonnelSchema),
+    resolver: zodResolver(storefrontSchema),
     defaultValues: {
-      firstName: "",
-      middleName: "",
       lastName: "",
-      email: "",
       address: "",
       identificationCard: null,
       nationalId: null,
@@ -47,38 +38,17 @@ const DeliveryPersonnelForm = () => {
     },
   });
 
-  console.log(session);
+  const {
+    mutate: createStorefront,
+    isSuccess,
+    isLoading,
+  } = useStorefrontCreationQuery();
 
-  const { mutate: registerDP, isSuccess, isLoading } = useDPRegisterQuery();
-  
-  const setFileToBase = (file, callback) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const base64Data = reader.result;
-      callback(base64Data);
-    };
-  };
-  const onSubmit = async (values) => {
+  const onSubmit = (values) => {
     console.log(values);
-    const convertFileToBase64AndUpdateValues = async (fieldName) => {
-      if (values[fieldName]) {
-        const file = values[fieldName][0];
-        return new Promise((resolve) => {
-          setFileToBase(file, (base64Data) => {
-            values[`${fieldName}Base64`] = base64Data;
-            resolve();
-          });
-        });
-      }
-    };
-    await convertFileToBase64AndUpdateValues('identificationCard');
-    await convertFileToBase64AndUpdateValues('nationalId');
-    console.log('Updated values:', values);
-      registerDP(values);
-    // router.push("/dashboard/user");
+    values.email = session.data.user.email;
+    createStorefront(values);
   };
-  
 
   return (
     <div className="flex flex-col md:flex-row gap-5">
@@ -104,40 +74,6 @@ const DeliveryPersonnelForm = () => {
               <div>
                 <FormField
                   control={form.control}
-                  name="firstName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>First Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="first name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="middleName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Middle Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="middle name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
@@ -153,29 +89,13 @@ const DeliveryPersonnelForm = () => {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="examle@gmail.com"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+
                 <FormField
                   control={form.control}
                   name="address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Address</FormLabel>
+                      <FormLabel>Your Address</FormLabel>
                       <FormControl>
                         <Input
                           className="p-3"
@@ -187,26 +107,17 @@ const DeliveryPersonnelForm = () => {
                     </FormItem>
                   )}
                 />
-              </div>
-              <div>
                 <FormField
                   control={form.control}
-                  name="identificationCard"
+                  name="location"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Identification Card</FormLabel>
+                      <FormLabel>Store Location</FormLabel>
                       <FormControl>
                         <Input
-                          type="file"
                           className="p-3"
-                          id="fileInput"
-                          onBlur={field.onBlur}
-                          name={field.name}
-                          onChange={(e) => {
-                            field.onChange(e.target.files);
-                            setSelectedIdCardImage(e.target.files?.[0] || null);
-                          }}
-                          ref={field.ref}
+                          placeholder="store location"
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
@@ -215,22 +126,36 @@ const DeliveryPersonnelForm = () => {
                 />
                 <FormField
                   control={form.control}
+                  name="identificationCard"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Identification Card</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="p-3"
+                          type="file"
+                          placeholder="Id card"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
                   name="nationalId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>National Id</FormLabel>
+                      <FormLabel>National ID</FormLabel>
                       <FormControl>
                         <Input
                           type="file"
                           className="p-3"
-                          id="fileInput"
-                          onBlur={field.onBlur}
-                          name={field.name}
-                          onChange={(e) => {
-                            field.onChange(e.target.files);
-                            setSelectedIdImage(e.target.files?.[0] || null);
-                          }}
-                          ref={field.ref}
+                          placeholder="national Id"
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
@@ -291,11 +216,7 @@ const DeliveryPersonnelForm = () => {
               </div>
             </Card>
 
-            <Button
-              disabled={isLoading}
-              className="w-full ml-auto text-xl"
-              type="submit"
-            >
+            <Button className="w-full ml-auto text-xl" type="submit">
               Submit
             </Button>
           </form>
@@ -305,4 +226,4 @@ const DeliveryPersonnelForm = () => {
   );
 };
 
-export default DeliveryPersonnelForm;
+export default StorefrontForm;
