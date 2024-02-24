@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-// delete mongoose.connection.models["User"];
+delete mongoose.connection.models["User"];
 
 const userSchema = new Schema(
   {
@@ -60,6 +60,10 @@ const userSchema = new Schema(
     role: {
       type: String,
       required: true,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }

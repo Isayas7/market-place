@@ -6,7 +6,7 @@ export const UsebuyersQuery = () => {
   return useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:3000/api/users");
+      const res = await axios.get("http://localhost:3000/api/user");
 
       return res;
     },
@@ -23,7 +23,7 @@ export const UseRegisterQuery = () => {
 export const useDPRegisterQuery = () => {
   return useMutation({
     mutationFn: (newUser) => {
-      return axios.post("http://localhost:3000/api/users", newUser);
+      return axios.post("http://localhost:3000/api/user", newUser);
     },
   });
 };
