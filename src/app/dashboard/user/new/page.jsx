@@ -1,11 +1,11 @@
 "use client";
-import DeliveryPersonnelForm from "@/components/dashboard/users/new/delivery-personnel-form";
+import NewDeliveryPersonnelForm from "@/components/dashboard/user/new-dp-form";
 import React from "react";
 
 const NewUser = () => {
   return (
     <div>
-      <DeliveryPersonnelForm />
+      <NewDeliveryPersonnelForm />
     </div>
   );
 };

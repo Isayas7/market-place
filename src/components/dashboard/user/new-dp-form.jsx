@@ -18,13 +18,15 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import { useDPRegisterQuery } from "@/hooks/use-users-query";
 import { useRouter } from "next/navigation";
 import { BsPaperclip } from "react-icons/bs";
+import { useSession } from "next-auth/react";
 
-const DeliveryPersonnelForm = () => {
+const NewDeliveryPersonnelForm = () => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
   const [selectedId, setSelectedIdImage] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
   const router = useRouter();
+  const session = useSession();
 
   const form = useForm({
     resolver: zodResolver(deliveryPersonnelSchema),
@@ -42,8 +44,10 @@ const DeliveryPersonnelForm = () => {
     },
   });
 
+  console.log(session);
+
   const { mutate: registerDP, isSuccess, isLoading } = useDPRegisterQuery();
-  
+
   const setFileToBase = (file, callback) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -65,13 +69,12 @@ const DeliveryPersonnelForm = () => {
         });
       }
     };
-    await convertFileToBase64AndUpdateValues('identificationCard');
-    await convertFileToBase64AndUpdateValues('nationalId');
-    console.log('Updated values:', values);
-      registerDP(values);
+    await convertFileToBase64AndUpdateValues("identificationCard");
+    await convertFileToBase64AndUpdateValues("nationalId");
+    console.log("Updated values:", values);
+    registerDP(values);
     // router.push("/dashboard/user");
   };
-  
 
   return (
     <div className="flex flex-col md:flex-row gap-5">
@@ -298,4 +301,4 @@ const DeliveryPersonnelForm = () => {
   );
 };
 
-export default DeliveryPersonnelForm;
+export default NewDeliveryPersonnelForm;
