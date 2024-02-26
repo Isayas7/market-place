@@ -106,7 +106,7 @@ export const delivery_columns = [
       const router = useRouter();
 
       const handleUpdateClick = () => {
-        router.push(`user/update`, { user });
+        router.push(`user/update/${user._id}`);
       };
       const handleViewClick = () => {
         router.push(`user/view`, { user });

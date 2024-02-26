@@ -1,13 +1,14 @@
 "use client";
+
 import UpdateDeliveryPersonnelForm from "@/components/dashboard/user/update-dp-form";
 import React from "react";
 
-const NewUser = () => {
+const UpdateUser = ({ params }) => {
   return (
     <div>
-      <UpdateDeliveryPersonnelForm />
+      <UpdateDeliveryPersonnelForm userId={params.id} />
     </div>
   );
 };
 
-export default NewUser;
+export default UpdateUser;
