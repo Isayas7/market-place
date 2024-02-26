@@ -12,6 +12,16 @@ export const UsebuyersQuery = () => {
     },
   });
 };
+export const UseDPQuery = (id) => {
+  return useQuery({
+    queryKey: ["delivery_personnel"],
+    queryFn: async () => {
+      console.log(id);
+      const res = await axios.get(`http://localhost:3000/api/user/${id}`);
+      return res;
+    },
+  });
+};
 
 export const UseRegisterQuery = () => {
   return useMutation({

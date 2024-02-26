@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Form,
   FormControl,
@@ -15,38 +15,44 @@ import { deliveryPersonnelSchema } from "@/schema/user";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { useDPRegisterQuery } from "@/hooks/use-users-query";
+import {
+  UseDPQuery,
+  UsebuyersQuery,
+  useDPRegisterQuery,
+} from "@/hooks/use-users-query";
 import { useRouter } from "next/navigation";
 import { BsPaperclip } from "react-icons/bs";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 
-const UpdateDeliveryPersonnelForm = () => {
+const UpdateDeliveryPersonnelForm = ({ userId }) => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
   const [selectedId, setSelectedIdImage] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
   const router = useRouter();
   const session = useSession();
+  const { data: delivery_personnel, isLoading } = UseDPQuery(userId);
 
   const form = useForm({
     resolver: zodResolver(deliveryPersonnelSchema),
-    defaultValues: {
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      email: "",
-      address: "",
-      identificationCard: null,
-      nationalId: null,
-      phoneNumber: "",
-      bankInfo: "",
-      accountNumber: "",
+    defaultValues: async () => {
+      const res = await axios.get(`http://localhost:3000/api/user/${userId}`);
+
+      return {
+        firstName: res?.data.firstName,
+        middleName: res?.data.middleName,
+        lastName: res?.data.lastName,
+        email: res?.data.email,
+        address: res?.data.address,
+        identificationCard: null,
+        nationalId: null,
+        phoneNumber: res?.data.phoneNumber,
+        bankInfo: res?.data.bankInfo,
+        accountNumber: res?.data.accountNumber,
+      };
     },
   });
-
-  console.log(session);
-
-  const { mutate: registerDP, isSuccess, isLoading } = useDPRegisterQuery();
 
   const setFileToBase = (file, callback) => {
     const reader = new FileReader();
@@ -58,21 +64,6 @@ const UpdateDeliveryPersonnelForm = () => {
   };
   const onSubmit = async (values) => {
     console.log(values);
-    const convertFileToBase64AndUpdateValues = async (fieldName) => {
-      if (values[fieldName]) {
-        const file = values[fieldName][0];
-        return new Promise((resolve) => {
-          setFileToBase(file, (base64Data) => {
-            values[`${fieldName}Base64`] = base64Data;
-            resolve();
-          });
-        });
-      }
-    };
-    await convertFileToBase64AndUpdateValues("identificationCard");
-    await convertFileToBase64AndUpdateValues("nationalId");
-    console.log("Updated values:", values);
-    registerDP(values);
     // router.push("/dashboard/user");
   };
 
