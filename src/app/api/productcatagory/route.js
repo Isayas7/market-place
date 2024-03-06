@@ -5,25 +5,38 @@ import { NextResponse } from "next/server";
 export const GET = async (request) => {
   try {
     await connect();
-    const productCategory = await ProductCategory.find();
-
-    return new NextResponse(JSON.stringify(productCategory), { status: 200 });
+    const productCategories = await ProductCategory.find();
+    const modifiedCategories = productCategories.map((category) => {
+      const products = category.productNames.map((product) => product.name);
+      return { ...category.toObject(), productNames: products };
+    });
+    return new NextResponse(JSON.stringify(modifiedCategories), {
+      status: 200,
+    });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });
   }
 };
 export const POST = async (request) => {
-  const values = await request.json();
-  const { categoryName, productNames, user } = values;
+  const formData = await request.formData();
 
-  const product = [];
+  // Extract form values
+  const values = {};
+  for (const [key, value] of formData.entries()) {
+    values[key] = value;
+  }
+  const { categoryName, productNames, user, selectedImage } = values;
 
-  // pushing product names
-  productNames.forEach((name) => {
-    product.push({
-      name: name,
-    });
-  });
+  console.log(values);
+
+  // const product = [];
+
+  // // pushing product names
+  // productNames.forEach((name) => {
+  //   product.push({
+  //     name: name,
+  //   });
+  // });
 
   const newProductCategory = new ProductCategory({
     categoryName,
@@ -32,7 +45,7 @@ export const POST = async (request) => {
   });
 
   try {
-    await newProductCategory.save();
+    // await newProductCategory.save();
     return new NextResponse("Product category Created Successfully", {
       status: 201,
     });

@@ -21,7 +21,6 @@ import { BsPaperclip } from "react-icons/bs";
 
 import { useSession } from "next-auth/react";
 
-
 const NewDeliveryPersonnelForm = () => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
   const [selectedId, setSelectedIdImage] = useState(null);
@@ -46,35 +45,19 @@ const NewDeliveryPersonnelForm = () => {
     },
   });
 
-  console.log(session);
-
   const { mutate: registerDP, isSuccess, isLoading } = useDPRegisterQuery();
 
-  const setFileToBase = (file, callback) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const base64Data = reader.result;
-      callback(base64Data);
-    };
-  };
-  const onSubmit = async (values) => {
-    console.log(values);
-    const convertFileToBase64AndUpdateValues = async (fieldName) => {
-      if (values[fieldName]) {
-        const file = values[fieldName][0];
-        return new Promise((resolve) => {
-          setFileToBase(file, (base64Data) => {
-            values[`${fieldName}Base64`] = base64Data;
-            resolve();
-          });
-        });
-      }
-    };
-    await convertFileToBase64AndUpdateValues("identificationCard");
-    await convertFileToBase64AndUpdateValues("nationalId");
-    console.log("Updated values:", values);
-    registerDP(values);
+  const onSubmit = async (formValues) => {
+    const formData = new FormData();
+    for (const key in formValues) {
+      formData.append(key, formValues[key]);
+    }
+    console.log(selectedIdCard);
+    formData.append("selectedIdCard", selectedIdCard);
+    formData.append("selectedId", selectedId);
+    console.log(formData);
+    registerDP(formData);
+
     // router.push("/dashboard/user");
   };
 

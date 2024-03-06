@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "./data-table-column-header";
+import { DataTableColumnHeader } from "../data-table-column-header";
 import { useRouter } from "next/navigation";
 import {
   AlertDialog,
@@ -25,6 +25,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
+import { UseDeactivateQuery } from "@/hooks/use-users-query";
 
 export const delivery_columns = [
   {
@@ -101,6 +102,7 @@ export const delivery_columns = [
     id: "actions",
     cell: ({ row }) => {
       const [open, setOpen] = useState(false);
+      const { mutate: deactivate, isSuccess, isLoading } = UseDeactivateQuery();
 
       const user = row.original;
       const router = useRouter();
@@ -109,11 +111,11 @@ export const delivery_columns = [
         router.push(`user/update/${user._id}`);
       };
       const handleViewClick = () => {
-        router.push(`user/view`, { user });
+        router.push(`user/view/${user._id}`);
       };
 
-      const handleDeactivate = (user) => {
-        console.log(user);
+      const handleDeactivate = () => {
+        const deactivatedUser = deactivate(user._id);
       };
 
       return (

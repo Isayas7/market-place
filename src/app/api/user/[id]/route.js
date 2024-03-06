@@ -8,7 +8,6 @@ export const GET = async (request, { params }) => {
     await connect();
 
     const user = await User.findById(id);
-    console.log(user);
     return new NextResponse(JSON.stringify(user), { status: 200 });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });
@@ -17,16 +16,14 @@ export const GET = async (request, { params }) => {
 
 export const PUT = async (request, { params }) => {
   const { id } = params;
-  const values = request.json();
-
-  const { ...other } = values;
+  const values = await request.json();
 
   try {
     await connect();
 
     const updatedUser = await User.findOneAndUpdate(
       { _id: id },
-      { $set: other },
+      { $set: values },
       { new: true }
     );
 
@@ -51,7 +48,6 @@ export const DELETE = async (request, { params }) => {
     }
     user.isActive = false;
     await user.save();
-
     return new NextResponse(JSON.stringify(user), { status: 200 });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });

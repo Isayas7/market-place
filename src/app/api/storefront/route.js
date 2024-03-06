@@ -37,6 +37,7 @@ export const POST = async (request) => {
     phoneNumber,
     bankInfo,
     accountNumber,
+    role: "seller",
   };
 
   // Find the user

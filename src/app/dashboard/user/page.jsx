@@ -3,26 +3,20 @@
 import { columns } from "@/components/dashboard/table/user-column";
 import { DataTable } from "@/components/dashboard/table/data_table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { UsebuyersQuery } from "@/hooks/use-users-query";
+import {
+  UseDPsQuery,
+  UseSellersQuery,
+  UseBuyersQuery,
+} from "@/hooks/use-users-query";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { delivery_columns } from "@/components/dashboard/table/delivery-personnel-column";
-
-const data = [
-  {
-    _id: "new ObjectId('65d230ad0148647e1e72b4d6')",
-    firstName: "Elsabet",
-    middleName: "Awraris",
-    email: "elsabet@gmail.com",
-    password: "$2a$05$ICCblNKhf1f.NnbK0uCasOwcWB6zrDuZJuav5x8ZN5CJhwzBaIlDq",
-    createdAt: "2024-02-18T16:30:37.274Z",
-    updatedAt: "2024-02-18T16:30:37.274Z",
-    __v: "0",
-  },
-];
+import { delivery_columns } from "@/components/dashboard/table/column/delivery-personnel-column";
+import { seller_column } from "@/components/dashboard/table/column/seller-column";
 
 const Users = () => {
-  const { data: buyers, isLoading } = UsebuyersQuery();
-  
+  const { data: buyers } = UseBuyersQuery();
+  const { data: sellers } = UseSellersQuery();
+  const { data: delivery_personnels } = UseDPsQuery();
+
   if (buyers) {
     return (
       <div>
@@ -36,13 +30,13 @@ const Users = () => {
             <DataTable columns={columns} data={buyers?.data} />
           </TabsContent>
           <TabsContent value="password">
-            <DataTable columns={columns} data={buyers?.data} />
+            <DataTable columns={seller_column} data={sellers?.data} />
           </TabsContent>
           <TabsContent value="personnel">
             <DataTable
               columns={delivery_columns}
               rendered="delivery_personnel"
-              data={buyers?.data}
+              data={delivery_personnels?.data}
             />
           </TabsContent>
         </Tabs>

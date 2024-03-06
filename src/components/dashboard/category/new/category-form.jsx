@@ -14,9 +14,9 @@ import { useForm } from "react-hook-form";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { useDPRegisterQuery } from "@/hooks/use-users-query";
 import { useRouter } from "next/navigation";
 import { categorySchema } from "@/schema/user";
+import { useCategoryRegisterQuery } from "@/hooks/use-product-category-query";
 
 const CategoryForm = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -26,15 +26,29 @@ const CategoryForm = () => {
     resolver: zodResolver(categorySchema),
     defaultValues: {
       categoryName: "",
-      image: undefined,
+      categoryImage: undefined,
+      productNames: "",
     },
   });
 
-  const { mutate: registerDP, isSuccess, isLoading } = useDPRegisterQuery();
+  const {
+    mutate: registerCategory,
+    isSuccess,
+    isLoading,
+  } = useCategoryRegisterQuery();
 
-  const onSubmit = (values) => {
-    registerDP(values);
-    router.push("/dashboard/category");
+  const onSubmit = async (formValues) => {
+    console.log(formValues.productNames);
+
+    const formData = new FormData();
+    for (const key in formValues) {
+      formData.append(key, formValues[key]);
+    }
+    formData.append("selectedImage", selectedImage);
+    console.log(formData);
+    registerCategory(formData);
+
+    // router.push("/dashboard/user");
   };
 
   return (
@@ -46,7 +60,7 @@ const CategoryForm = () => {
               <div>
                 <FormField
                   control={form.control}
-                  name="category"
+                  name="categoryName"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Category Name</FormLabel>
@@ -70,7 +84,7 @@ const CategoryForm = () => {
                       <FormControl>
                         <Input
                           className="p-3"
-                          placeholder="product names"
+                          placeholder="Enter product names separated by commas"
                           {...field}
                         />
                       </FormControl>
@@ -79,31 +93,40 @@ const CategoryForm = () => {
                   )}
                 />
               </div>
-              <Card className=" w-full md:w-full ">
+              <Card className=" w-full md:w-full p-4 ">
                 <CardContent className="flex items-center justify-center">
                   <FormField
                     control={form.control}
-                    name="image"
+                    name="categoryImage"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          <div className=" flex justify-center items-center p-3 rounded-full   border  dark:border-gray-600 border-dashed">
-                            <Button className="size-28 rounded-full  flex-col justify-center items-center ">
-                              <div>
-                                <FaCloudUploadAlt className="size-8" />
-                              </div>
-                              <p className="text-xs">upload photo</p>
-                            </Button>
-                          </div>
-                        </FormLabel>
                         <FormControl>
-                          <Input
-                            className="p-3"
-                            type="file"
-                            placeholder="Id card"
-                            {...field}
-                          />
+                          <Button
+                            className="size-28 rounded-full  flex-col justify-center items-center "
+                            type="button"
+                          >
+                            <input
+                              type="file"
+                              className="hidden"
+                              id="fileInput"
+                              onBlur={field.onBlur}
+                              name={field.name}
+                              onChange={(e) => {
+                                field.onChange(e.target.files);
+                                setSelectedImage(e.target.files?.[0] || null);
+                              }}
+                              ref={field.ref}
+                            />
+                            <label
+                              htmlFor="fileInput"
+                              className=" flex flex-col justify-center items-center "
+                            >
+                              <FaCloudUploadAlt className="size-8" />
+                              <p className="text-xs">upload photo</p>
+                            </label>
+                          </Button>
                         </FormControl>
+
                         <FormMessage />
                       </FormItem>
                     )}

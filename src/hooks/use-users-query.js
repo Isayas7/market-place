@@ -2,16 +2,38 @@ import axios from "axios";
 import React from "react";
 import { useMutation, useQuery } from "react-query";
 
-export const UsebuyersQuery = () => {
+// get all user
+export const UseBuyersQuery = () => {
   return useQuery({
-    queryKey: ["users"],
+    queryKey: ["buyers"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:3000/api/user");
-
+      const res = await axios.get("http://localhost:3000/api/user/buyer");
       return res;
     },
   });
 };
+export const UseSellersQuery = () => {
+  return useQuery({
+    queryKey: ["sellers"],
+    queryFn: async () => {
+      const res = await axios.get("http://localhost:3000/api/user/seller");
+      return res;
+    },
+  });
+};
+export const UseDPsQuery = () => {
+  return useQuery({
+    queryKey: ["delivery_personnels"],
+    queryFn: async () => {
+      const res = await axios.get(
+        "http://localhost:3000/api/user/deliverypersonnel"
+      );
+      return res;
+    },
+  });
+};
+
+// get individual delivery personnel
 export const UseDPQuery = (id) => {
   return useQuery({
     queryKey: ["delivery_personnel"],
@@ -23,6 +45,7 @@ export const UseDPQuery = (id) => {
   });
 };
 
+// user registration
 export const UseRegisterQuery = () => {
   return useMutation({
     mutationFn: (newUser) => {
@@ -30,6 +53,8 @@ export const UseRegisterQuery = () => {
     },
   });
 };
+
+// delivery personnel registration
 export const useDPRegisterQuery = () => {
   return useMutation({
     mutationFn: (newUser) => {
@@ -37,6 +62,26 @@ export const useDPRegisterQuery = () => {
     },
   });
 };
+
+// user or delivery personnel update
+export const UseUpdateDPQuery = () => {
+  return useMutation({
+    mutationFn: ({ updateUser, id }) => {
+      return axios.put(`http://localhost:3000/api/user/${id}`, updateUser);
+    },
+  });
+};
+
+// user or delivery personnel update
+export const UseDeactivateQuery = () => {
+  return useMutation({
+    mutationFn: (id) => {
+      return axios.delete(`http://localhost:3000/api/user/${id}`);
+    },
+  });
+};
+
+// store front creation
 export const useStorefrontCreationQuery = () => {
   return useMutation({
     mutationFn: (newStore) => {

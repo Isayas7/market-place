@@ -17,7 +17,8 @@ import { Button } from "@/components/ui/button";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import {
   UseDPQuery,
-  UsebuyersQuery,
+  UseUpdateDPQuery,
+  UseBuyersQuery,
   useDPRegisterQuery,
 } from "@/hooks/use-users-query";
 import { useRouter } from "next/navigation";
@@ -28,17 +29,18 @@ import axios from "axios";
 const UpdateDeliveryPersonnelForm = ({ userId }) => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
   const [selectedId, setSelectedIdImage] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [id, setId] = useState("");
 
   const router = useRouter();
   const session = useSession();
   const { data: delivery_personnel, isLoading } = UseDPQuery(userId);
+  const { mutate: updateDP, isSuccess } = UseUpdateDPQuery();
 
   const form = useForm({
     resolver: zodResolver(deliveryPersonnelSchema),
     defaultValues: async () => {
       const res = await axios.get(`http://localhost:3000/api/user/${userId}`);
-
+      setId(res?.data._id);
       return {
         firstName: res?.data.firstName,
         middleName: res?.data.middleName,
@@ -63,7 +65,8 @@ const UpdateDeliveryPersonnelForm = ({ userId }) => {
     };
   };
   const onSubmit = async (values) => {
-    console.log(values);
+    // console.log(id);
+    updateDP({ updateUser: values, id: id });
     // router.push("/dashboard/user");
   };
 

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "./data-table-column-header";
+import { DataTableColumnHeader } from "../data-table-column-header";
 import { useRouter } from "next/navigation";
 
 export const category_columns = [
@@ -41,6 +41,12 @@ export const category_columns = [
     accessorKey: "categoryName",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Category Name" />
+    ),
+  },
+  {
+    accessorKey: "productNames",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Product Names" />
     ),
   },
   {

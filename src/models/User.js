@@ -34,9 +34,6 @@ const userSchema = new Schema(
         type: String,
       },
     },
-    nationalId: {
-      type: String,
-    },
     address: {
       type: String,
     },
