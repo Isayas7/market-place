@@ -25,7 +25,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={` pt-3 fixed z-50 w-full bg-background ${
+      className={` py-2 fixed z-50 w-full bg-background shadow-md ${
         currentUrl.includes("/dashboard") ? "hidden" : ""
       } `}
     >
@@ -33,14 +33,21 @@ const Navbar = () => {
         <div
           className={`container  mx-auto flex  justify-between items-center transition-all duration-300  `}
         >
-          <Link href="/">
-            <Image
-              src={"/icon.png"}
-              width={100}
-              height={100}
-              className="size-12"
-            />
-          </Link>
+          <div className="flex items-center space-x-5">
+            <span className={`  ${currentUrl === "/" ? "xl:hidden " : ""} `}>
+              <CustomSheet />
+            </span>
+            <Link href="/">
+              <Image
+                src={"/icon.png"}
+                alt="logo"
+                width={100}
+                height={100}
+                className="size-12"
+              />
+            </Link>
+          </div>
+
           <Search
             placeholder="Search Products... "
             className="rounded-md lg:w-[400px] "
@@ -59,20 +66,8 @@ const Navbar = () => {
               <Link href={"/dashboard"}>Dashboard</Link>
             )}
             <UserNav />
+            <ModeToggle />
           </div>
-        </div>
-      </div>
-      <div className="bg-swansdown dark:bg-headercolor-default   ">
-        <div className="container mx-auto flex items-center justify-between  py-2 ">
-          <div className="flex items-center  space-x-5 ">
-            <span className="xl:hidden  flex items-center">
-              <CustomSheet />
-            </span>
-
-            <span>Trending</span>
-          </div>
-
-          <ModeToggle />
         </div>
       </div>
     </div>

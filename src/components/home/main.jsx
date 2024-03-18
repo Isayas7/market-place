@@ -8,7 +8,7 @@ const Main = ({ children }) => {
   return (
     <main
       className={` ${
-        currentUrl.includes("dashboard") ? "" : "container mx-auto pt-32 pb-5"
+        currentUrl.includes("dashboard") ? "" : "container mx-auto pt-28 pb-5"
       } `}
     >
       {children}

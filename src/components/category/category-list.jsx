@@ -1,29 +1,36 @@
 "use client";
 import React from "react";
 import { menuItems } from "../home/navbar/custom-sheet";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-const CategoryList = () => {
-  const currentUrl = usePathname().split("/")[1];
+const CategoryList = ({ currentCategory, currentType }) => {
   return (
     <div className=" bg-card text-card-foreground  rounded-md h-fit  ">
       <h2 className=" bg-primary text-xl font-semibold text-white rounded-t-md  p-2">
         Categories
       </h2>
-      <h3 className=" uppercase p-2">{currentUrl}</h3>
+      <Link
+        href={`/${currentCategory}`}
+        className={`capitalize p-2 ${
+          currentType === undefined ? "text-blue-900 text-lg  font-bold" : ""
+        }`}
+      >
+        {currentCategory}
+      </Link>
 
       {menuItems.map((category) => {
-        if (currentUrl === category.category) {
-          return category.typeName.map((cat, index) => (
+        if (currentCategory === category.category) {
+          return category.items.map((cat, index) => (
             <div key={index} className="flex flex-col px-5 gap-1">
-              <Link href={`/${category.category}`}>
+              <Link href={`/${category.category}/${cat.title}`}>
                 <span
                   className={` ${
-                    type === cat ? "text-blue-900 text-lg  font-bold" : ""
+                    decodeURIComponent(currentType) === cat.title
+                      ? "text-blue-900 text-lg  font-bold"
+                      : ""
                   }`}
                 >
-                  {cat} | 132
+                  {cat.title} | 132
                 </span>
               </Link>
             </div>
