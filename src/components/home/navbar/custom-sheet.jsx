@@ -18,7 +18,7 @@ import { useState } from "react";
 
 export const menuItems = [
   {
-    category: "Shop by Department",
+    category: "electronics",
     items: [
       { title: "shoes" },
       { title: "T-shirt" },
@@ -29,7 +29,7 @@ export const menuItems = [
     ],
   },
   {
-    category: "Digital Content & Devices",
+    category: "clothing",
     items: [
       { title: "Dashboard" },
       { title: "User" },
@@ -48,7 +48,7 @@ const CustomSheet = () => {
   return (
     <Sheet>
       <SheetTrigger>
-        <AlignJustify />
+        <AlignJustify className="size-7" />
       </SheetTrigger>
       <SheetContent
         side={"left"}
@@ -90,12 +90,18 @@ const CustomSheet = () => {
               {menuItems
                 .find((item) => item.category === expandedCategory)
                 .items.map((item) => (
-                  <div
-                    key={item.title}
+                  <SheetClose
+                    asChild
                     className="pl-8 pr-2 flex justify-between py-2 hover:bg-hovered cursor-pointer text-palesky"
                   >
-                    <Link href={`/${item.title}`}>{item.title}</Link>
-                  </div>
+                    <Link
+                      href={`/${expandedCategory}/${item.title}`}
+                      key={item.title}
+                      className=""
+                    >
+                      {item.title}
+                    </Link>
+                  </SheetClose>
                 ))}
             </div>
           ) : (
