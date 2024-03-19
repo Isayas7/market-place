@@ -8,6 +8,7 @@ import QueryProvider from "@/components/queryprovider/query-provider";
 import Main from "@/components/home/main";
 
 const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({ subsets: ["latin"], weight: "200" });
 const roboto = Roboto({ subsets: ["latin"], weight: "400" });
 
 export const metadata = {
@@ -18,7 +19,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className}`}>
+      <body className={roboto.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

@@ -2,17 +2,24 @@
 import React from "react";
 import { menuItems } from "../home/navbar/custom-sheet";
 import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 
 const CategoryList = ({ currentCategory, currentType }) => {
   return (
-    <div className=" bg-card text-card-foreground  rounded-md h-fit  ">
-      <h2 className=" bg-primary text-xl font-semibold text-white rounded-t-md  p-2">
-        Categories
-      </h2>
+    <Card>
+      <div className="  bg-primary text-card-foreground text-xl font-semibold text-white rounded-t-md  p-4 mb-2">
+        <CardTitle className="text-card-foreground"> Categories</CardTitle>
+      </div>
       <Link
         href={`/${currentCategory}`}
-        className={`capitalize p-2 ${
-          currentType === undefined ? "text-blue-900 text-lg  font-bold" : ""
+        className={`capitalize px-4 ${
+          currentType === undefined ? " font-bold" : ""
         }`}
       >
         {currentCategory}
@@ -21,12 +28,12 @@ const CategoryList = ({ currentCategory, currentType }) => {
       {menuItems.map((category) => {
         if (currentCategory === category.category) {
           return category.items.map((cat, index) => (
-            <div key={index} className="flex flex-col px-5 gap-1">
+            <div key={index} className=" pl-8 mt-1">
               <Link href={`/${category.category}/${cat.title}`}>
                 <span
                   className={` ${
                     decodeURIComponent(currentType) === cat.title
-                      ? "text-blue-900 text-lg  font-bold"
+                      ? " font-bold"
                       : ""
                   }`}
                 >
@@ -38,13 +45,7 @@ const CategoryList = ({ currentCategory, currentType }) => {
         }
         return null;
       })}
-
-      <div className="py-1 px-5">
-        <span className="  text-green-500 border-b border-dashed inline  border-green-600 ">
-          show all | 5
-        </span>
-      </div>
-    </div>
+    </Card>
   );
 };
 
