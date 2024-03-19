@@ -13,7 +13,7 @@ const Footer = () => {
         currentUrl.includes("/dashboard") ? "hidden" : ""
       }`}
     >
-      <Image src={"/commerce.jpg"} width={1000} height={200} alt="" />
+      Footer
     </div>
   );
 };
