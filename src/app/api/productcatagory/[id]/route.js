@@ -6,9 +6,7 @@ export const GET = async (request, { params }) => {
   const { id } = params;
   try {
     await connect();
-
     const productcategory = await ProductCategory.findById(id);
-    console.log(productcategory);
     return new NextResponse(JSON.stringify(productcategory), { status: 200 });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });

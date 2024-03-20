@@ -118,4 +118,13 @@ export const categorySchema = z.object({
   categoryName: z.string().min(2, {
     message: "please enter category Name",
   }),
+  productNames: z.string().min(2, {
+    message: "please enter product Names",
+  }),
+});
+// category validator
+export const roleSchema = z.object({
+  name: z.string().min(2, {
+    message: "please enter role Name",
+  }),
 });

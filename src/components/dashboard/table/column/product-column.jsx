@@ -14,45 +14,46 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "../data-table-column-header";
 import { useRouter } from "next/navigation";
 
-export const category_columns = [
+export const product_columns = [
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "categoryName",
+    accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Category Name" />
-    ),
-  },
-  {
-    accessorKey: "products",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Product Names" />
+      <DataTableColumnHeader column={column} title="Product Name" />
     ),
   },
   {
-    accessorKey: "numberOfProducts",
+    accessorKey: "brands",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Number of Products" />
+      <DataTableColumnHeader column={column} title="Brands" />
+    ),
+    cell: ({ row }) => <span>{row.original.brands.join(", ")}</span>,
+  },
+  {
+    accessorKey: "numberOfAdds",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Number of Adds" />
     ),
   },
   {
@@ -61,12 +62,7 @@ export const category_columns = [
       <DataTableColumnHeader column={column} title="Status" />
     ),
   },
-  {
-    accessorKey: "creator",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Creator" />
-    ),
-  },
+
   {
     id: "actions",
     cell: ({ row }) => {
@@ -92,11 +88,7 @@ export const category_columns = [
               Update
             </DropdownMenuItem>
             {/* <DropdownMenuSeparator /> */}
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(user.id)}
-            >
-              Deactivate
-            </DropdownMenuItem>
+            <DropdownMenuItem>Deactivate</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

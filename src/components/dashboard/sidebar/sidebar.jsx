@@ -10,6 +10,8 @@ import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import Image from "next/image";
 import Link from "next/link";
+import { BsFillPersonLinesFill } from "react-icons/bs";
+import { SiHomeassistantcommunitystore } from "react-icons/si";
 
 export const menuUtems = [
   {
@@ -31,7 +33,7 @@ export const menuUtems = [
   {
     title: "Store",
     path: "/dashboard/store",
-    icon: <FaStore />,
+    icon: <SiHomeassistantcommunitystore />,
   },
   {
     title: "Product",
@@ -42,6 +44,11 @@ export const menuUtems = [
     title: "Order",
     path: "/dashboard/order",
     icon: <TbReorder />,
+  },
+  {
+    title: "Role",
+    path: "/dashboard/role",
+    icon: <BsFillPersonLinesFill />,
   },
 ];
 const Sidebar = ({ isCollapsed, open, setOpen }) => {

@@ -1,9 +1,6 @@
 "use client";
 
 import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -29,11 +26,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import Link from "next/link";
 
-export function DataTable({ columns, data, rendered }) {
+import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import usePermissionStore from "@/store/role-store";
+import { useRoleUpdateQuery } from "@/hooks/use-role-query";
+
+export function DataTable({ columns, data, rendered, myparams }) {
   const [sorting, setSorting] = useState();
   const [columnFilters, setColumnFilters] = useState();
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -59,22 +59,24 @@ export function DataTable({ columns, data, rendered }) {
     },
   });
 
+  const updatedPermission = usePermissionStore(
+    (state) => state.updatedPermission
+  );
+  const { mutate: updateRole, isSuccess, isLoading } = useRoleUpdateQuery();
+
+  const handleSave = () => {
+    updateRole(updatedPermission);
+    usePermissionStore.setState({ updatedPermission: {} });
+  };
+
   return (
     <div>
       <div className="flex items-center py-4">
         <Input
           placeholder={"Filter table..."}
-          value={
-            rendered === "category"
-              ? table.getColumn("categoryName")?.getFilterValue() ?? ""
-              : table.getColumn("email")?.getFilterValue() ?? ""
-          }
+          value={table.getColumn(myparams)?.getFilterValue()}
           onChange={(event) =>
-            rendered === "category"
-              ? table
-                  .getColumn("categoryName")
-                  ?.setFilterValue(event.target.value)
-              : table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn(myparams)?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -114,6 +116,11 @@ export function DataTable({ columns, data, rendered }) {
             <Link href="category/new">
               <Button variant="outline"> +New Category</Button>
             </Link>
+          )}
+          {rendered === "role" && (
+            <Button variant="outline" onClick={handleSave}>
+              Save
+            </Button>
           )}
         </div>
       </div>

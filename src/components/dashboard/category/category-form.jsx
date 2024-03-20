@@ -17,10 +17,12 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { categorySchema } from "@/schema/user";
 import { useCategoryRegisterQuery } from "@/hooks/use-product-category-query";
+import { useSession } from "next-auth/react";
 
 const CategoryForm = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const router = useRouter();
+  const session = useSession();
 
   const form = useForm({
     resolver: zodResolver(categorySchema),
@@ -38,16 +40,14 @@ const CategoryForm = () => {
   } = useCategoryRegisterQuery();
 
   const onSubmit = async (formValues) => {
-    console.log(formValues.productNames);
-
     const formData = new FormData();
     for (const key in formValues) {
       formData.append(key, formValues[key]);
     }
     formData.append("selectedImage", selectedImage);
-    console.log(formData);
-    registerCategory(formData);
+    formData.append("email", session.data.user.email);
 
+    registerCategory(formData);
     // router.push("/dashboard/user");
   };
 
@@ -84,7 +84,7 @@ const CategoryForm = () => {
                       <FormControl>
                         <Input
                           className="p-3"
-                          placeholder="Enter product names separated by commas"
+                          placeholder="product names"
                           {...field}
                         />
                       </FormControl>

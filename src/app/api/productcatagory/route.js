@@ -1,6 +1,8 @@
 import ProductCategory from "@/models/ProductCategory";
 import connect from "@/utils/db";
 import { NextResponse } from "next/server";
+import { uploadImage } from "@/utils/cloudinary";
+import User from "@/models/User";
 
 export const GET = async (request) => {
   try {
@@ -8,7 +10,7 @@ export const GET = async (request) => {
     const productCategories = await ProductCategory.find();
     const modifiedCategories = productCategories.map((category) => {
       const products = category.productNames.map((product) => product.name);
-      return { ...category.toObject(), productNames: products };
+      return { ...category.toObject(), products: products };
     });
     return new NextResponse(JSON.stringify(modifiedCategories), {
       status: 200,
@@ -25,27 +27,36 @@ export const POST = async (request) => {
   for (const [key, value] of formData.entries()) {
     values[key] = value;
   }
-  const { categoryName, productNames, user, selectedImage } = values;
+  const { categoryName, productNames, email, selectedImage } = values;
+  let productNameArray = productNames.split(",");
 
-  console.log(values);
+  const product = [];
 
-  // const product = [];
+  // pushing product names
+  productNameArray.forEach((name) => {
+    product.push({
+      name: name,
+    });
+  });
+  const categoryImage = await uploadImage(
+    selectedImage,
+    "marketplace-category"
+  );
 
-  // // pushing product names
-  // productNames.forEach((name) => {
-  //   product.push({
-  //     name: name,
-  //   });
-  // });
+  const creator = await User.findOne({ email: email });
 
   const newProductCategory = new ProductCategory({
     categoryName,
     productNames: product,
-    user,
+    user: creator._id,
+    image: {
+      public_id: categoryImage.public_id,
+      url: categoryImage.secure_url,
+    },
   });
 
   try {
-    // await newProductCategory.save();
+    await newProductCategory.save();
     return new NextResponse("Product category Created Successfully", {
       status: 201,
     });
