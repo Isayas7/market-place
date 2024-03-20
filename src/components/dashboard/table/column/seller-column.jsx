@@ -108,7 +108,7 @@ export const seller_column = [
       const router = useRouter();
 
       const handleViewClick = () => {
-        router.push(`user/view`, { user });
+        router.push(`user/view/${user._id}`);
       };
 
       const handleDeactivate = () => {
@@ -139,11 +139,11 @@ export const seller_column = [
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  Are you sure do you want to delete this user?
+                  Are you sure do you want to deactivate this user?
                 </AlertDialogTitle>
                 <AlertDialogDescription>
                   This action cannot be undone. This will permanently deactivate
-                  this account and remove some data from our users.
+                  this account and hide some data from our users.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

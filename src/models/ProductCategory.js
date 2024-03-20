@@ -22,7 +22,13 @@ const productCategorySchema = new Schema(
       {
         name: {
           type: String,
+          required: true,
         },
+        brands: [
+          {
+            type: String,
+          },
+        ],
       },
     ],
     user: {

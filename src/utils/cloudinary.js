@@ -8,26 +8,6 @@ cloudinary.config({
   secure: true,
 });
 
-// async function uploadImage(file) {
-//   return new Promise((resolve, reject) => {
-//     const options = {
-//       folder: "marketplace",
-//       transformation: [],
-//     };
-
-//     const upload = cloudinary.uploader.upload_stream(
-//       options,
-//       (error, result) => {
-//         if (error) return reject(error);
-//         resolve(result);
-//       }
-//     );
-
-//     toStream(file.buffer).pipe(upload);
-//   });
-// }
-
-// module.exports = { uploadImage };
 
 export const uploadImage = async (file, folder) => {
   const buffer = await file.arrayBuffer();

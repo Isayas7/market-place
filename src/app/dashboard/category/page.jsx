@@ -7,7 +7,6 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Category = () => {
   const { data: product_category, isLoading } = UseCategoryQuery();
-  console.log(product_category);
 
   if (product_category) {
     return (
@@ -16,6 +15,7 @@ const Category = () => {
           columns={category_columns}
           rendered="category"
           data={product_category?.data}
+          myparams="categoryName"
         />
       </div>
     );

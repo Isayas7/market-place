@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-delete mongoose.connection.models["User"];
+// delete mongoose.connection.models["User"];
 
 const userSchema = new Schema(
   {
@@ -54,6 +54,13 @@ const userSchema = new Schema(
     password: {
       type: String,
     },
+    // role: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Role",
+    //     required: true,
+    //   },
+    // ],
     role: {
       type: String,
       required: true,

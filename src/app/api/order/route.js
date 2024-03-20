@@ -23,7 +23,6 @@ export const POST = async (request) => {
     await newOrder.save();
     return new NextResponse("Order Created Successfully", { status: 201 });
   } catch (error) {
-    console.log(error);
     return new NextResponse("Database Error", { status: 500 });
   }
 };

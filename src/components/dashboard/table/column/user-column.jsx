@@ -9,9 +9,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "./data-table-column-header";
+import { DataTableColumnHeader } from "../data-table-column-header";
+import { useRouter } from "next/navigation";
+import { UseDeactivateQuery } from "@/hooks/use-users-query";
+import { useState } from "react";
 
 export const columns = [
   {
@@ -57,7 +71,19 @@ export const columns = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
+      const [open, setOpen] = useState(false);
+      const { mutate: deactivate, isSuccess, isLoading } = UseDeactivateQuery();
+
+      const user = row.original;
+      const router = useRouter();
+
+      const handleViewClick = () => {
+        router.push(`user/view/${user._id}`);
+      };
+
+      const handleDeactivate = () => {
+        const deactivatedUser = deactivate(user._id);
+      };
 
       return (
         <DropdownMenu>
@@ -68,16 +94,36 @@ export const columns = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem onClick={handleViewClick}>
+              View customer
+            </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+          onClick={() => setOpen(true)}
             >
               Deactivate
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
           </DropdownMenuContent>
+          <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Are you sure do you want to deactivate this user?
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently deactivate
+                  this account and hide some data from our users.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => handleDeactivate(user)}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </DropdownMenu>
       );
     },

@@ -1,6 +1,6 @@
 "use client";
 
-import { columns } from "@/components/dashboard/table/user-column";
+import { columns } from "@/components/dashboard/table/column/user-column";
 import { DataTable } from "@/components/dashboard/table/data_table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -27,16 +27,21 @@ const Users = () => {
             <TabsTrigger value="personnel">Pesonnel Delivery</TabsTrigger>
           </TabsList>
           <TabsContent value="account">
-            <DataTable columns={columns} data={buyers?.data} />
+            <DataTable columns={columns} data={buyers?.data} myparams="email" />
           </TabsContent>
           <TabsContent value="password">
-            <DataTable columns={seller_column} data={sellers?.data} />
+            <DataTable
+              columns={seller_column}
+              data={sellers?.data}
+              myparams="email"
+            />
           </TabsContent>
           <TabsContent value="personnel">
             <DataTable
               columns={delivery_columns}
               rendered="delivery_personnel"
               data={delivery_personnels?.data}
+              myparams="email"
             />
           </TabsContent>
         </Tabs>
