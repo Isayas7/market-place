@@ -2,20 +2,24 @@ import React from "react";
 import Image from "next/image";
 const ProfileHeader = ({ name, bio, profilePicture, backgroundImage }) => {
   return (
-    <div className="">
+    <div className="relative p-1">
+      <div className="absolute bottom-[-40px] right-40">
+        <Image
+          src={profilePicture}
+          alt={`${name}'s profile picture`}
+          width={80}
+          height={80}
+          className=" size-28 rounded-full object-cover"
+        />
+        {name}
+      </div>
       <Image
-        className="w-full size-64 relative"
-        width={500}
-        height={500}
-        src={"/green.jpg"}
+        className="w-full size-64 object-cover bg-black "
+        width={1500}
+        height={1500}
+        src={"/banner.jpg"}
       />
-      <Image
-        src={profilePicture}
-        alt={`${name}'s profile picture`}
-        width={80}
-        height={80}
-        className="absolute b-[-10] l-10"
-      />
+
       <div className=""></div>
     </div>
   );

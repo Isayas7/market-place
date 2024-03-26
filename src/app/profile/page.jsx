@@ -20,9 +20,8 @@ export default function Profile() {
         profilePicture="/profile.jpg"
         backgroundImage="/dashboard.png"
       />
-      <div className="w-full flex justify-between">
-        <div></div>
-        <Tabs defaultValue="personal-info" className="w-[80%]">
+      <div className="w-full flex ">
+        <Tabs defaultValue="personal-info" className="w-full">
           <TabsList>
             <TabsTrigger value="personal-info">
               <ImProfile />

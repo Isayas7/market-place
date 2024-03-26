@@ -28,7 +28,7 @@ function Security() {
   const onSubmit = () => {};
 
   return (
-    <Form {...form}>
+    <Form {...form} className="w-3/4">
       <form onSubmit={form.handleSubmit(onSubmit)} className="">
         <FormField
           control={form.control}
