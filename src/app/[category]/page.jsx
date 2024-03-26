@@ -5,7 +5,7 @@ import { listenNowAlbums } from "../page";
 
 const Category = ({ params }) => {
   return (
-    <div className=" flex gap-5 ">
+    <div className=" flex gap-5  ">
       <div className="w-80 hidden lg:flex flex-col gap-2">
         <CategoryList currentCategory={params.category} />
       </div>

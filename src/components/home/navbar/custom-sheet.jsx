@@ -41,6 +41,63 @@ export const menuItems = [
   },
 ];
 
+export const menuItems2 = [
+  {
+    category: "electronics",
+    items: [
+      { title: "shoes" },
+      { title: "T-shirt" },
+      { title: "Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+  {
+    category: "clothing",
+    items: [
+      { title: "Dashboard" },
+      { title: "User" },
+      { title: "Product Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+  {
+    category: "clothing",
+    items: [
+      { title: "Dashboard" },
+      { title: "User" },
+      { title: "Product Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+  {
+    category: "clothing",
+    items: [
+      { title: "Dashboard" },
+      { title: "User" },
+      { title: "Product Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+  {
+    category: "clothing",
+    items: [
+      { title: "Dashboard" },
+      { title: "User" },
+      { title: "Product Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+];
 const CustomSheet = () => {
   const [expandedCategory, setExpandedCategory] = useState(null);
   const session = useSession();

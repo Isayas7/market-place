@@ -23,7 +23,7 @@ export default function SingleProduct() {
       </div>
       <div className=" mt-6">
         <h3 className="text-2xl">Similar products</h3>
-        <div className="grid  grid-cols-2 md:grid-cols-5  gap-5">
+        <div className="grid  grid-cols-2  md:grid-cols-3 lg:grid-cols-4  gap-5">
           {listenNowAlbums.map((album) => (
             <CustomCard
               key={album.name}

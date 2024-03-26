@@ -3,13 +3,21 @@ import { usePathname } from "next/navigation";
 import React from "react";
 
 const Main = ({ children }) => {
-  const currentUrl = usePathname().split("/")[1];
+  const currentUrl = usePathname();
 
   return (
     <main
-      className={` ${
-        currentUrl.includes("dashboard") ? "" : "container mx-auto pt-28 pb-5"
-      } `}
+      className={`${
+        currentUrl === "/"
+          ? "container"
+          : currentUrl.includes("dashboard")
+          ? ""
+          : "container "
+      }${
+        currentUrl !== "/" && !currentUrl.includes("dashboard")
+          ? "pt-10 pb-5"
+          : ""
+      }`}
     >
       {children}
     </main>

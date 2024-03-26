@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useStorefrontCreationQuery } from "@/hooks/use-users-query";
 import { useState } from "react";
+import { StoreFrontCrationForm } from "@/form/Form";
 
 const StorefrontForm = () => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
@@ -45,13 +46,12 @@ const StorefrontForm = () => {
   } = useStorefrontCreationQuery();
 
   const onSubmit = (values) => {
-    console.log(values);
     values.email = session.data.user.email;
     createStorefront(values);
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-5">
+    <div className="flex flex-col md:flex-row gap-5 ">
       <Card className=" w-full md:w-2/5 ">
         <CardContent className="flex justify-center items-center mt-24  ">
           <div className=" size-36 flex justify-center items-center p-3 rounded-full   border  dark:border-gray-600 border-dashed">
@@ -71,17 +71,18 @@ const StorefrontForm = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <Card className=" grid grid-cols-1 sm:grid-cols-2 sm:gap-5 p-7">
-              <div>
+              {StoreFrontCrationForm.map((item) => (
                 <FormField
                   control={form.control}
-                  name="lastName"
+                  name={item.name}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Last Name</FormLabel>
+                      <FormLabel>{item.label}</FormLabel>
                       <FormControl>
                         <Input
                           className="p-3"
-                          placeholder="lastName"
+                          type={item.type}
+                          placeholder={item.placeholder}
                           {...field}
                         />
                       </FormControl>
@@ -89,131 +90,7 @@ const StorefrontForm = () => {
                     </FormItem>
                   )}
                 />
-
-                <FormField
-                  control={form.control}
-                  name="address"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Your Address</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="address"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="location"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Store Location</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="store location"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="identificationCard"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Identification Card</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          type="file"
-                          placeholder="Id card"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div>
-                <FormField
-                  control={form.control}
-                  name="nationalId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>National ID</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          className="p-3"
-                          placeholder="national Id"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="phoneNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="phone number"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="bankInfo"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Bank</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="bank information"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="accountNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Account Number</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="account number"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              ))}
             </Card>
 
             <Button className="w-full ml-auto text-xl" type="submit">

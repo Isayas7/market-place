@@ -1,4 +1,5 @@
 import Product from "@/models/Product";
+import { productSchema } from "@/schema/user";
 import connect from "@/utils/db";
 import { NextResponse } from "next/server";
 
@@ -12,17 +13,19 @@ export const GET = async (request) => {
     return new NextResponse("Database Error", { status: 500 });
   }
 };
+
 export const POST = async (request) => {
   const values = await request.json();
-  const { brand, model, price, description, storeFront } = values;
 
-  const newProduct = new Product({
-    brand,
-    model,
-    price,
-    description,
-    storeFront,
-  });
+  const validationResult = await productSchema.safeParse(values);
+  console.log("validationResult", validationResult);
+
+  if (!validationResult.success) {
+    return new NextResponse("Invalid", { status: 400 });
+  }
+
+  await connect();
+  const newProduct = new Product(values);
 
   try {
     await newProduct.save();

@@ -1,5 +1,4 @@
 import axios from "axios";
-import React from "react";
 import { useMutation, useQuery } from "react-query";
 
 // get all user
