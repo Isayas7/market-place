@@ -25,15 +25,16 @@ const Navbar = () => {
 
   return (
     <div
-      className={` py-2 fixed z-50 w-full bg-background shadow-md ${
-        currentUrl.includes("/dashboard") ? "hidden" : ""
-      } `}
+      className={` py-1 sticky z-50 top-0 w-full  
+      
+      border-b border-slate-900/10 dark:border-slate-300/10   bg-background
+      ${currentUrl.includes("/dashboard") ? "hidden" : ""} `}
     >
       <div>
         <div
           className={`container  mx-auto flex  justify-between items-center transition-all duration-300  `}
         >
-          <div className="flex items-center space-x-5">
+          <div className="flex items-center gap-5">
             <span className={`  ${currentUrl === "/" ? "xl:hidden " : ""} `}>
               <CustomSheet />
             </span>

@@ -5,38 +5,42 @@ const { Schema } = mongoose;
 
 const productSchema = new Schema(
   {
-    brand: {
+    productImage: {
+      type: [String],
+      required: true,
+    },
+    categoryId: {
+      // type: mongoose.Schema.Types.ObjectId,
+      // ref: "ProductCategory",
       type: String,
       required: true,
     },
-    model: {
+    productType: {
       type: String,
       required: true,
+    },
+    brand: {
+      type: String,
+    },
+    productName: {
+      type: String,
+      required: true,
+    },
+    size: {
+      type: [String],
     },
     price: {
       type: Number,
       required: true,
     },
+    color: {
+      type: [String],
+    },
+    model: {
+      type: String,
+    },
     description: {
       type: String,
-      required: true,
-    },
-    image: {
-      public_id: {
-        type: String,
-      },
-      url: {
-        type: String,
-      },
-    },
-    productCatagory: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "ProductCategory",
-    },
-    storeFront: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Storefront",
-      required: true,
     },
   },
   { timestamps: true }

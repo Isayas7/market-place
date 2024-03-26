@@ -1,5 +1,6 @@
 import List from "@/components/home/list";
 import { CustomCard } from "@/components/home/custom-card";
+
 export const listenNowAlbums = [
   {
     category: "electronics",
@@ -101,11 +102,11 @@ export const listenNowAlbums = [
 
 export default async function Home() {
   return (
-    <div className="xl:flex gap-10">
-      <div className=" z-10 xl:sticky top-20 self-start ">
+    <div className="xl:flex gap-7  w-full">
+      <div className="  h-[calc(100vh-57px)] sticky top-[57px] pt-2    overflow-y-scroll hidden  xl:block w-80 pr-4  border-r border-slate-900/10 dark:border-slate-300/10">
         <List />
       </div>
-      <div className="relative w-full lg:ml-auto   xl:w-[70%]">
+      <div className=" w-full py-2">
         <h1 className="mb-2 text-xl">Trending</h1>
         <div className=" grid  grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-5 ">
           {listenNowAlbums.map((album) => (

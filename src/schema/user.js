@@ -57,25 +57,6 @@ export const deliveryPersonnelSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
-  // identificationCard: z
-  //   .any()
-  //   .refine((files) => {
-  //     return files?.[0]?.size <= MAX_FILE_SIZE;
-  //   }, `Max image size is 5MB.`)
-  //   .refine(
-  //     (files) => ACCEPTED_IMAGE_MIME_TYPES.includes(files?.[0]?.type),
-  //     "Only .jpg, .jpeg, .png and .webp formats are supported."
-  //   ),
-
-  // nationalId: z
-  //   .any()
-  //   .refine((files) => {
-  //     return files?.[0]?.size <= MAX_FILE_SIZE;
-  //   }, `Max image size is 5MB.`)
-  //   .refine(
-  //     (files) => ACCEPTED_IMAGE_MIME_TYPES.includes(files?.[0]?.type),
-  //     "Only .jpg, .jpeg, .png and .webp formats are supported."
-  //   ),
 
   address: z.string().min(2, {
     message: "Please enter a valid address.",
@@ -114,6 +95,44 @@ export const storefrontSchema = z.object({
   location: z.string().min(2, {
     message: "Please enter a valid location",
   }),
+});
+
+// product information validator
+export const productSchema = z.object({
+  productImage: z.array(z.string()).min(1, {
+    message: "Please provide at least one product image.",
+  }),
+  categoryId: z.string().min(2, {
+    message: "Please sellect one category.",
+  }),
+  productType: z.string().min(2, {
+    message: "Please sellect one product type.",
+  }),
+  brand: z.string().min(2, {
+    message: "Please enter brand name.",
+  }),
+  productName: z.string().min(2, {
+    message: "Please enter product name.",
+  }),
+
+  size: z.array(z.string()).min(1, {
+    message: "Please enter at least one size.",
+  }),
+  price: z.string().min(1, {
+    message: "Please enter a price.",
+  }),
+  color: z.array(z.string()).min(1, {
+    message: "Please enter at least one color.",
+  }),
+
+  model: z.string().min(2, {
+    message: "Please enter a model.",
+  }),
+  description: z
+    .string()
+    .min(2, { message: "Description must be at least 2 characters long." })
+    .max(200)
+    .trim(),
 });
 
 // category validator

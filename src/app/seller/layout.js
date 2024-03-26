@@ -6,6 +6,7 @@ import {
 } from "react-icons/md";
 import { TbReorder } from "react-icons/tb";
 import { FaStore } from "react-icons/fa6";
+import { Card } from "@/components/ui/card";
 
 export const menuUtems = [
   {
@@ -33,7 +34,7 @@ export const menuUtems = [
 const SellerLayout = ({ children }) => {
   return (
     <div className="flex flex-col xl:flex-row gap-10 ">
-      <div className="container bg-card text-card-foreground xl:sticky top-20 self-start py-4 rounded-lg w-full xl:w-1/4 ">
+      <Card className="container xl:sticky top-20 self-start py-4 rounded-lg w-full xl:w-1/4 ">
         <ul className="  flex  flex-wrap xl:flex-col">
           {menuUtems.map((list) => (
             <li key={list.title}>
@@ -41,7 +42,7 @@ const SellerLayout = ({ children }) => {
             </li>
           ))}
         </ul>
-      </div>
+      </Card>
       <div className="w-full xl:w-3/4">{children}</div>
     </div>
   );

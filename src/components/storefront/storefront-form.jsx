@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useStorefrontCreationQuery } from "@/hooks/use-users-query";
 import { useState } from "react";
+import { StoreFrontCrationForm } from "@/form/Form";
 
 const StorefrontForm = () => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
@@ -46,6 +47,7 @@ const StorefrontForm = () => {
     isLoading,
   } = useStorefrontCreationQuery();
 
+<<<<<<< HEAD
   const onSubmit = (formValues) => {
     console.log(formValues);
     const formData = new FormData();
@@ -56,10 +58,15 @@ const StorefrontForm = () => {
     formData.append("selectedId", selectedId);
     formData.append("email", session.data.user.email);
     createStorefront(formData);
+=======
+  const onSubmit = (values) => {
+    values.email = session.data.user.email;
+    createStorefront(values);
+>>>>>>> A
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-5">
+    <div className="flex flex-col md:flex-row gap-5 ">
       <Card className=" w-full md:w-2/5 ">
         <CardContent className="flex justify-center items-center mt-24  ">
           <div className=" size-36 flex justify-center items-center p-3 rounded-full   border  dark:border-gray-600 border-dashed">
@@ -79,17 +86,18 @@ const StorefrontForm = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <Card className=" grid grid-cols-1 sm:grid-cols-2 sm:gap-5 p-7">
-              <div>
+              {StoreFrontCrationForm.map((item) => (
                 <FormField
                   control={form.control}
-                  name="lastName"
+                  name={item.name}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Last Name</FormLabel>
+                      <FormLabel>{item.label}</FormLabel>
                       <FormControl>
                         <Input
                           className="p-3"
-                          placeholder="lastName"
+                          type={item.type}
+                          placeholder={item.placeholder}
                           {...field}
                         />
                       </FormControl>
@@ -97,6 +105,7 @@ const StorefrontForm = () => {
                     </FormItem>
                   )}
                 />
+<<<<<<< HEAD
 
                 <FormField
                   control={form.control}
@@ -234,6 +243,9 @@ const StorefrontForm = () => {
                   )}
                 />
               </div>
+=======
+              ))}
+>>>>>>> A
             </Card>
 
             <Button className="w-full ml-auto text-xl" type="submit">

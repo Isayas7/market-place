@@ -65,7 +65,7 @@ const Layout = ({ children }) => {
           </div>
         </header>
 
-        <aside className=" hidden lg:block overflow-y-scroll overflow-x-hidden row-custom border-r dark:border-gray-600 border-dashed  ">
+        <aside className=" hidden lg:block overflow-y-scroll overflow-x-hidden row-span-full border-r dark:border-gray-600 border-dashed  ">
           <Sidebar isCollapsed={isCollapsed} open={open} setOpen={setOpen} />
         </aside>
         <TabProvider>
