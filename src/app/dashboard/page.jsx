@@ -29,7 +29,7 @@ const Dashboard = () => {
   return (
     <div className="">
       <div className="flex w-full  gap-6 flex-col xl:flex-row  ">
-        <div className="w-full xl:w-2/3 bg-swansdown flex  rounded-lg p-8 justify-between flex-col lg:flex-row items-center lg:items-start gap-4 ">
+        <div className="w-full xl:w-2/3 bg-swansdown flex  rounded-lg p-8 justify-between flex-col lg:flex-row items-center lg:items-start gap-4">
           {/* card content */}
           <div className="bg-swansdown   h-3/4  text-center lg:text-start flex flex-col justify-between items-center lg:items-start ">
             <div>
