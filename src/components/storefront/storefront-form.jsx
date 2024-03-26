@@ -22,6 +22,7 @@ import { useState } from "react";
 const StorefrontForm = () => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
   const [selectedId, setSelectedIdImage] = useState(null);
+
   const router = useRouter();
   const session = useSession();
 
@@ -30,6 +31,7 @@ const StorefrontForm = () => {
     defaultValues: {
       lastName: "",
       address: "",
+      location: "",
       identificationCard: null,
       nationalId: null,
       phoneNumber: "",
@@ -44,10 +46,16 @@ const StorefrontForm = () => {
     isLoading,
   } = useStorefrontCreationQuery();
 
-  const onSubmit = (values) => {
-    console.log(values);
-    values.email = session.data.user.email;
-    createStorefront(values);
+  const onSubmit = (formValues) => {
+    console.log(formValues);
+    const formData = new FormData();
+    for (const key in formValues) {
+      formData.append(key, formValues[key]);
+    }
+    formData.append("selectedIdCard", selectedIdCard);
+    formData.append("selectedId", selectedId);
+    formData.append("email", session.data.user.email);
+    createStorefront(formData);
   };
 
   return (
@@ -132,10 +140,16 @@ const StorefrontForm = () => {
                       <FormLabel>Identification Card</FormLabel>
                       <FormControl>
                         <Input
-                          className="p-3"
                           type="file"
-                          placeholder="Id card"
-                          {...field}
+                          className="p-3"
+                          id="fileInput"
+                          onBlur={field.onBlur}
+                          name={field.name}
+                          onChange={(e) => {
+                            field.onChange(e.target.files);
+                            setSelectedIdCardImage(e.target.files?.[0] || null);
+                          }}
+                          ref={field.ref}
                         />
                       </FormControl>
                       <FormMessage />
@@ -149,13 +163,19 @@ const StorefrontForm = () => {
                   name="nationalId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>National ID</FormLabel>
+                      <FormLabel>National Id</FormLabel>
                       <FormControl>
                         <Input
                           type="file"
                           className="p-3"
-                          placeholder="national Id"
-                          {...field}
+                          id="fileInput"
+                          onBlur={field.onBlur}
+                          name={field.name}
+                          onChange={(e) => {
+                            field.onChange(e.target.files);
+                            setSelectedIdImage(e.target.files?.[0] || null);
+                          }}
+                          ref={field.ref}
                         />
                       </FormControl>
                       <FormMessage />

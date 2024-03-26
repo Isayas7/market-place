@@ -4,6 +4,7 @@ import connect from "@/utils/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { uploadImage } from "@/utils/cloudinary";
+import Role from "@/models/Role";
 
 export const GET = async (request) => {
   try {
@@ -35,7 +36,10 @@ export const POST = async (request) => {
   // Hash password
   const password = "ABCabc123@#";
   const hashedPassword = await bcrypt.hash(password, 5);
-  const role = "delivery_personnel";
+  const role = "Delivery Personnel";
+
+  const myrole = await Role.find({ name: role });
+
   try {
     const newUser = new User({
       ...other,
@@ -48,7 +52,7 @@ export const POST = async (request) => {
         public_id: nationlId.public_id,
         url: nationlId.secure_url,
       },
-      role,
+      role: myrole[0]._id,
     });
 
     await newUser.save();

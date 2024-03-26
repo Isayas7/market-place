@@ -7,21 +7,22 @@ import { RiEdit2Line } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { UseDPQuery } from "@/hooks/use-users-query";
+import { UseApproveQuery, UseDPQuery } from "@/hooks/use-users-query";
 
 const ViewUser = ({ params }) => {
   const router = useRouter();
 
   const { data: user } = UseDPQuery(params.id);
-  console.log(user);
   const handleUpdateClick = () => {
     router.push(`/dashboard/user/update/${params.id}`);
   };
 
+  const { mutate: approve, isSuccess, isLoading } = UseApproveQuery("sellers");
+
   return (
     <div>
       <h1 className="text-xl">User Information</h1>
-      <div className="flex flex-col w-full md:flex-row gap-5 mt-10">
+      <div className="flex flex-col w-full md:flex-row gap-5 mt-2">
         <Card className=" w-full p-7  items-center ">
           <div className="relative flex flex-col justify-center items-center">
             <Avatar className="h-24 w-24  ">
@@ -118,6 +119,18 @@ const ViewUser = ({ params }) => {
                 alt="id"
               />
             </div>
+          </CardContent>
+          <CardContent>
+            {user?.data.status ? (
+              <Button onClick={() => approve(params.id)}>Approved</Button>
+            ) : (
+              <Button
+                className="bg-destructive"
+                onClick={() => approve(params.id)}
+              >
+                Approve
+              </Button>
+            )}
           </CardContent>
         </Card>
       </div>

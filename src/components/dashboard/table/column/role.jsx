@@ -5,14 +5,6 @@ import usePermissionStore from "@/store/role-store";
 import { permissions } from "@/utils/permission";
 
 export const role_columns = (operation) => {
-  // const dynamicColumns = [
-  //   { accessorKey: "view-single-user", title: "View Single User" },
-  //   { accessorKey: "view-all-user", title: "View All Users" },
-  //   { accessorKey: "create-user", title: "Create User" },
-  //   { accessorKey: "update-single-user", title: "Update Single User" },
-  //   { accessorKey: "update-all-user", title: "Update All Users" },
-  //   { accessorKey: "deactivate-user", title: "Deactivate User" },
-  // ];
   const permissionsToDynamicColumns = (permissionArray) => {
     return permissionArray?.map((permission) => {
       return {
@@ -31,8 +23,13 @@ export const role_columns = (operation) => {
   const updatePermission = usePermissionStore(
     (state) => state.updatePermission
   );
+  // const updateMyPermission = usePermissionStore(
+  //   (state) => state.updateMyPermission
+  // );
 
   const handleCheckboxChange = (name, permission, value) => {
+    // updateMyPermission(name, permission);
+
     updatePermission(name, permission, value);
     return value;
   };

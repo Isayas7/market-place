@@ -111,6 +111,9 @@ export const storefrontSchema = z.object({
   accountNumber: z.string().min(2, {
     message: "Please enter a valid account number.",
   }),
+  location: z.string().min(2, {
+    message: "Please enter a valid location",
+  }),
 });
 
 // category validator

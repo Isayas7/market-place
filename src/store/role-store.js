@@ -3,7 +3,7 @@ import { create } from "zustand";
 const usePermissionStore = create((set) => {
   return {
     permission: [],
-    // updatePermission: (name, mypermission) => {
+    // updateMyPermission: (name, mypermission) => {
     //   set((state) => {
     //     const permissions = [...state.permission];
     //     const index = permissions.findIndex((role) => role.name === name);

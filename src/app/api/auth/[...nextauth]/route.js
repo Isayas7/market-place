@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import User from "@/models/User";
 import connect from "@/utils/db";
 import { loginSchema } from "@/schema/user";
+import Role from "@/models/Role";
 
 const handler = NextAuth({
   providers: [
@@ -40,8 +41,7 @@ const handler = NextAuth({
               credentials.password,
               user.password
             );
-
-            if (isPasswordCorrect) {
+            if (isPasswordCorrect && user.isActive) {
               return user;
             } else {
               throw new Error("Wrong Credentials!");
@@ -59,7 +59,10 @@ const handler = NextAuth({
     async session({ session }) {
       return session;
     },
-    async signIn({ profile }) {
+    async signIn({ profile, account }) {
+      if (account.provider === "credentials") {
+        return true;
+      }
       try {
         await connect();
         const userExist = await User.findOne({ email: profile.email });
@@ -68,20 +71,26 @@ const handler = NextAuth({
           const firstName = name[0];
           const middleName = name[1];
 
+          const myrole = await Role.find({ name: "Buyer" });
+
           const user = await User.create({
             firstName,
             middleName,
             email: profile.email,
-            role: "buyer",
+            role: myrole[0]._id,
           });
         }
 
         return true;
       } catch (error) {
+        console.error("Error during sign-in:", error.message);
         return false;
       }
     },
   },
   pages: { error: "/login" },
+  redirects: {
+    signIn: "/",
+  },
 });
 export { handler as POST, handler as GET };

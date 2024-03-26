@@ -24,9 +24,29 @@ const productCategorySchema = new Schema(
           type: String,
           required: true,
         },
+        image: {
+          public_id: {
+            type: String,
+          },
+          url: {
+            type: String,
+          },
+        },
         brands: [
           {
-            type: String,
+            name: {
+              type: String,
+              required: true,
+            },
+
+            image: {
+              public_id: {
+                type: String,
+              },
+              url: {
+                type: String,
+              },
+            },
           },
         ],
       },

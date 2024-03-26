@@ -46,7 +46,10 @@ export const DELETE = async (request, { params }) => {
     if (!user) {
       return new NextResponse("User not found", { status: 404 });
     }
-    user.isActive = false;
+
+    // Toggle isActive property
+    user.isActive = !user.isActive;
+
     await user.save();
     return new NextResponse(JSON.stringify(user), { status: 200 });
   } catch (error) {

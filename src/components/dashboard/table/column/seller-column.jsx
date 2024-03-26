@@ -25,7 +25,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
-import { UseDeactivateQuery } from "@/hooks/use-users-query";
+import { UseApproveQuery, UseDeactivateQuery } from "@/hooks/use-users-query";
 
 export const seller_column = [
   {
@@ -99,10 +99,55 @@ export const seller_column = [
     ),
   },
   {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Sell Status" />
+    ),
+    cell: ({ row }) => {
+      const user = row.original;
+
+      const {
+        mutate: approve,
+        isSuccess,
+        isLoading,
+      } = UseApproveQuery("sellers");
+      const status = row.original.status;
+
+      if (status) {
+        return <Button onClick={() => approve(user._id)}>Approved</Button>;
+      } else {
+        return (
+          <Button className="bg-destructive" onClick={() => approve(user._id)}>
+            Approve
+          </Button>
+        );
+      }
+    },
+  },
+  {
+    accessorKey: "isActive",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => {
+      const status = row.original.isActive;
+      if (status) {
+        return <Button>Active</Button>;
+      } else {
+        return <Button className="bg-destructive">Banned</Button>;
+      }
+    },
+  },
+
+  {
     id: "actions",
     cell: ({ row }) => {
       const [open, setOpen] = useState(false);
-      const { mutate: deactivate, isSuccess, isLoading } = UseDeactivateQuery();
+      const {
+        mutate: deactivate,
+        isSuccess,
+        isLoading,
+      } = UseDeactivateQuery("sellers");
 
       const user = row.original;
       const router = useRouter();
@@ -114,6 +159,7 @@ export const seller_column = [
       const handleDeactivate = () => {
         const deactivatedUser = deactivate(user._id);
       };
+      const status = row.original.isActive;
 
       return (
         <DropdownMenu>
@@ -127,23 +173,26 @@ export const seller_column = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
             <DropdownMenuItem onClick={handleViewClick}>View </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleUpdateClick}>
-              Update
-            </DropdownMenuItem>
-            {/* <DropdownMenuSeparator /> */}
             <DropdownMenuItem onClick={() => setOpen(true)}>
-              Deativate
+              {status ? "Deactivate" : "Activate"}
             </DropdownMenuItem>
           </DropdownMenuContent>
           <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  Are you sure do you want to deactivate this user?
+                  {status
+                    ? " Are you sure do you want to deactivate this user?"
+                    : " Are you sure do you want to activate this user?"}
                 </AlertDialogTitle>
                 <AlertDialogDescription>
                   This action cannot be undone. This will permanently deactivate
                   this account and hide some data from our users.
+                  {status
+                    ? "  This action cannot be undone. This will  deactivate" +
+                      "this account and hide some data from our users."
+                    : "  This action cannot be undone. This will  activate" +
+                      "this account and unhide some data to our users."}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

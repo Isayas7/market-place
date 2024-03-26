@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 // get all user
 export const UseBuyersQuery = () => {
@@ -38,7 +38,6 @@ export const UseDPQuery = (id) => {
   return useQuery({
     queryKey: ["delivery_personnel"],
     queryFn: async () => {
-      console.log(id);
       const res = await axios.get(`http://localhost:3000/api/user/${id}`);
       return res;
     },
@@ -72,11 +71,29 @@ export const UseUpdateDPQuery = () => {
   });
 };
 
-// user or delivery personnel update
-export const UseDeactivateQuery = () => {
+// user or delivery personnel deactivate
+export const UseDeactivateQuery = (myparams) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id) => {
       return axios.delete(`http://localhost:3000/api/user/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(myparams);
+    },
+  });
+};
+
+// user or seller approve
+export const UseApproveQuery = (myparams) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => {
+      return axios.delete(`http://localhost:3000/api/user/seller/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(myparams);
+      queryClient.invalidateQueries("delivery_personnel");
     },
   });
 };
@@ -86,6 +103,38 @@ export const useStorefrontCreationQuery = () => {
   return useMutation({
     mutationFn: (newStore) => {
       return axios.post("http://localhost:3000/api/storefront", newStore);
+    },
+  });
+};
+
+// get all user
+export const UseBanksQuery = () => {
+  const config = {
+    headers: {
+      Authorization: "Bearer CHASECK_TEST-1x94uO95pov8QpnzHXI1bNgUl6FwLMyH",
+      "Content-Type": "application/json",
+    },
+  };
+
+  return useQuery({
+    queryKey: ["banks"],
+    queryFn: async () => {
+      var myHeaders = new Headers();
+      myHeaders.append(
+        "Authorization",
+        "Bearer CHASECK_TEST-1x94uO95pov8QpnzHXI1bNgUl6FwLMyH"
+      );
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      await fetch("https://api.chapa.co/v1/banks", requestOptions)
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => console.log("error", error));
     },
   });
 };

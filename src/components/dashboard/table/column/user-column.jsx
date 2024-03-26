@@ -69,10 +69,28 @@ export const columns = [
     ),
   },
   {
+    accessorKey: "isActive",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => {
+      const status = row.original.isActive;
+      if (status) {
+        return <Button>Active</Button>;
+      } else {
+        return <Button className="bg-destructive">Banned</Button>;
+      }
+    },
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       const [open, setOpen] = useState(false);
-      const { mutate: deactivate, isSuccess, isLoading } = UseDeactivateQuery();
+      const {
+        mutate: deactivate,
+        isSuccess,
+        isLoading,
+      } = UseDeactivateQuery("buyers");
 
       const user = row.original;
       const router = useRouter();
@@ -84,6 +102,7 @@ export const columns = [
       const handleDeactivate = () => {
         const deactivatedUser = deactivate(user._id);
       };
+      const status = row.original.isActive;
 
       return (
         <DropdownMenu>
@@ -97,10 +116,8 @@ export const columns = [
             <DropdownMenuItem onClick={handleViewClick}>
               View customer
             </DropdownMenuItem>
-            <DropdownMenuItem
-          onClick={() => setOpen(true)}
-            >
-              Deactivate
+            <DropdownMenuItem onClick={() => setOpen(true)}>
+              {status ? "Deactivate" : "Activate"}
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
@@ -109,11 +126,18 @@ export const columns = [
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  Are you sure do you want to deactivate this user?
+                  {status
+                    ? " Are you sure do you want to deactivate this user?"
+                    : " Are you sure do you want to activate this user?"}
                 </AlertDialogTitle>
                 <AlertDialogDescription>
                   This action cannot be undone. This will permanently deactivate
                   this account and hide some data from our users.
+                  {status
+                    ? "  This action cannot be undone. This will  deactivate" +
+                      "this account and hide some data from our users."
+                    : "  This action cannot be undone. This will  activate" +
+                      "this account and unhide some data to our users."}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

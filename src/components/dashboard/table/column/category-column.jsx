@@ -13,6 +13,7 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "../data-table-column-header";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export const category_columns = [
   {
@@ -36,6 +37,24 @@ export const category_columns = [
     ),
     enableSorting: false,
     enableHiding: false,
+  },
+  {
+    accessorKey: "image",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Image" />
+    ),
+    cell: ({ row }) => {
+      const image = row.original.image.url;
+
+      return (
+        <Image
+          src={image || "/nullid.jpg"}
+          width={500}
+          height={500}
+          className="rounded-full object-cover size-8"
+        />
+      );
+    },
   },
   {
     accessorKey: "categoryName",
@@ -70,11 +89,15 @@ export const category_columns = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const user = row.original;
+      const category = row.original;
       const router = useRouter();
 
-      const handleUpdateClick = () => {};
-      const handleViewClick = () => {};
+      const handleUpdateClick = () => {
+        router.push(`category/update/${category._id}`);
+      };
+      const handleViewClick = () => {
+        router.push(`category/view/${category._id}`);
+      };
 
       return (
         <DropdownMenu>

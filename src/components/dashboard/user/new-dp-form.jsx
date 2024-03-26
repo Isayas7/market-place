@@ -15,7 +15,7 @@ import { deliveryPersonnelSchema } from "@/schema/user";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { useDPRegisterQuery } from "@/hooks/use-users-query";
+import { UseBanksQuery, useDPRegisterQuery } from "@/hooks/use-users-query";
 import { useRouter } from "next/navigation";
 import { BsPaperclip } from "react-icons/bs";
 
@@ -24,7 +24,6 @@ import { useSession } from "next-auth/react";
 const NewDeliveryPersonnelForm = () => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
   const [selectedId, setSelectedIdImage] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
 
   const router = useRouter();
   const session = useSession();
@@ -46,20 +45,22 @@ const NewDeliveryPersonnelForm = () => {
   });
 
   const { mutate: registerDP, isSuccess, isLoading } = useDPRegisterQuery();
+  const { data: banks } = UseBanksQuery();
 
   const onSubmit = async (formValues) => {
     const formData = new FormData();
     for (const key in formValues) {
       formData.append(key, formValues[key]);
     }
-    console.log(selectedIdCard);
     formData.append("selectedIdCard", selectedIdCard);
     formData.append("selectedId", selectedId);
-    console.log(formData);
     registerDP(formData);
-
-    // router.push("/dashboard/user");
   };
+  if (isSuccess) {
+    router.push("/dashboard/user");
+  }
+
+  console.log(banks);
 
   return (
     <div className="flex flex-col md:flex-row gap-5">

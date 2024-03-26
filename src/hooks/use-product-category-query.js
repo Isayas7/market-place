@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 // get all category
 export const UseCategoryQuery = () => {
@@ -34,6 +34,22 @@ export const UseSingleCategoryQuery = (id) => {
         `http://localhost:3000/api/productcatagory/${id}`
       );
       return res;
+    },
+  });
+};
+
+// category registration
+export const useBrandRegisterQuery = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (newBrand, id) => {
+      return axios.post(
+        `http://localhost:3000/api/productcatagory/${id}`,
+        newBrand
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries("single_category");
     },
   });
 };

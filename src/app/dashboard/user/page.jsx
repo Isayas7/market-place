@@ -17,43 +17,54 @@ const Users = () => {
   const { data: sellers } = UseSellersQuery();
   const { data: delivery_personnels } = UseDPsQuery();
 
-  if (buyers) {
-    return (
-      <div>
-        <Tabs defaultValue="account" className="w-full">
-          <TabsList>
-            <TabsTrigger value="account">Buyer</TabsTrigger>
-            <TabsTrigger value="password">Seller</TabsTrigger>
-            <TabsTrigger value="personnel">Pesonnel Delivery</TabsTrigger>
-          </TabsList>
-          <TabsContent value="account">
+  
+  return (
+    <div>
+      <Tabs defaultValue="account" className="w-full">
+        <TabsList>
+          <TabsTrigger value="account">Buyer</TabsTrigger>
+          <TabsTrigger value="password">Seller</TabsTrigger>
+          <TabsTrigger value="personnel">Pesonnel Delivery</TabsTrigger>
+        </TabsList>
+        <TabsContent value="account">
+          {buyers ? (
             <DataTable columns={columns} data={buyers?.data} myparams="email" />
-          </TabsContent>
-          <TabsContent value="password">
+          ) : (
+            <div className="flex items-center justify-center h-1/2">
+              <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
+            </div>
+          )}
+        </TabsContent>
+        <TabsContent value="password">
+          {sellers ? (
             <DataTable
               columns={seller_column}
               data={sellers?.data}
               myparams="email"
             />
-          </TabsContent>
-          <TabsContent value="personnel">
+          ) : (
+            <div className="flex items-center justify-center h-1/2">
+              <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
+            </div>
+          )}
+        </TabsContent>
+        <TabsContent value="personnel">
+          {delivery_personnels ? (
             <DataTable
               columns={delivery_columns}
               rendered="delivery_personnel"
               data={delivery_personnels?.data}
               myparams="email"
             />
-          </TabsContent>
-        </Tabs>
-      </div>
-    );
-  } else {
-    return (
-      <div className="flex items-center justify-center h-1/2">
-        <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
-      </div>
-    );
-  }
+          ) : (
+            <div className="flex items-center justify-center h-1/2">
+              <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
 };
 
 export default Users;

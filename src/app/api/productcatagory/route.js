@@ -27,36 +27,51 @@ export const POST = async (request) => {
   for (const [key, value] of formData.entries()) {
     values[key] = value;
   }
-  const { categoryName, productNames, email, selectedImage } = values;
-  let productNameArray = productNames.split(",");
 
-  const product = [];
+  const { categoryName, email, selectedImage } = values;
+  let product = [];
 
-  // pushing product names
-  productNameArray.forEach((name) => {
-    product.push({
-      name: name,
-    });
+  Object.keys(values).forEach(async (key) => {
+    if (key.startsWith("image_")) {
+      const index = key.split("_")[1];
+      const productNameKey = `productName_${index}`;
+      if (values[productNameKey]) {
+        const productName = values[productNameKey];
+        const imageFile = values[key];
+
+        const myImage = await uploadImage(imageFile, "marketplace-product");
+
+        product.push({
+          name: productName,
+          image: {
+            public_id: myImage.public_id,
+            url: myImage.secure_url,
+          },
+        });
+      }
+    }
   });
+
   const categoryImage = await uploadImage(
     selectedImage,
     "marketplace-category"
   );
-
   const creator = await User.findOne({ email: email });
 
-  const newProductCategory = new ProductCategory({
-    categoryName,
-    productNames: product,
-    user: creator._id,
-    image: {
-      public_id: categoryImage.public_id,
-      url: categoryImage.secure_url,
-    },
-  });
-
   try {
+    // Save product category with products array
+    const newProductCategory = new ProductCategory({
+      categoryName,
+      productNames: product,
+      user: creator._id,
+      image: {
+        public_id: categoryImage.public_id,
+        url: categoryImage.secure_url,
+      },
+    });
+
     await newProductCategory.save();
+
     return new NextResponse("Product category Created Successfully", {
       status: 201,
     });

@@ -22,6 +22,7 @@ const Products = () => {
   const { data: product_category, isLoading } = UseCategoryQuery();
   const [selectedOption, setSelectedOption] = useState("");
   const [productNames, setProductNames] = useState([]);
+  const [id, setId] = useState("");
 
   if (product_category) {
     const handleCategoryChange = (value) => {
@@ -30,8 +31,10 @@ const Products = () => {
       );
       if (selectedCategory) {
         setProductNames(selectedCategory.productNames);
+        setId(selectedCategory._id);
       }
     };
+    const columns = product_columns(id);
 
     return (
       <div>
@@ -57,9 +60,10 @@ const Products = () => {
         </Select>
 
         <DataTable
-          columns={product_columns}
+          columns={columns}
           data={productNames}
           myparams={"name"}
+          rendered="product"
         />
       </div>
     );

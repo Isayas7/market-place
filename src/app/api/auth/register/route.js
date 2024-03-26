@@ -1,3 +1,4 @@
+import Role from "@/models/Role";
 import User from "@/models/User";
 import { registerSchema } from "@/schema/user";
 import connect from "@/utils/db";
@@ -17,10 +18,12 @@ export const POST = async (request) => {
   await connect();
 
   const hashedPassword = await bcrypt.hash(password, 5);
+  const myrole = await Role.find({ name: "Buyer" });
+  console.log(myrole);
 
   const newUser = new User({
     password: hashedPassword,
-    role: "buyer",
+    role: [myrole[0]._id],
     ...other,
   });
 
