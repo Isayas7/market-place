@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-delete mongoose.connection.models["ProductCategory"];
+// delete mongoose.connection.models["ProductCategory"];
 
 const productCategorySchema = new Schema(
   {

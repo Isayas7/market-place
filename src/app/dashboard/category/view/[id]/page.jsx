@@ -149,7 +149,7 @@ const ViewCategory = ({ params }) => {
           <div>
             <div>Products</div>
             {product_category?.data.productNames.map((product) => (
-              <div>
+              <div key={product.name}>
                 <div> {product.name}</div>
               </div>
             ))}
