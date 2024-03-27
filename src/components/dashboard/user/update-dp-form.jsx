@@ -56,18 +56,8 @@ const UpdateDeliveryPersonnelForm = ({ userId }) => {
     },
   });
 
-  const setFileToBase = (file, callback) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const base64Data = reader.result;
-      callback(base64Data);
-    };
-  };
   const onSubmit = async (values) => {
-    // console.log(id);
     updateDP({ updateUser: values, id: id });
-    // router.push("/dashboard/user");
   };
 
   return (

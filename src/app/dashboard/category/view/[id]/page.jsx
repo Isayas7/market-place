@@ -14,105 +14,6 @@ import Image from "next/image";
 import { UseSingleCategoryQuery } from "@/hooks/use-product-category-query";
 import { Card } from "@/components/ui/card";
 
-export const listenNowAlbums = [
-  {
-    category: "electronics",
-    type: "tablet",
-    productName: "tablet-1",
-    price: "3000",
-    cover:
-      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    category: "electronics",
-    type: "tablet",
-    productName: "tablet-2",
-    price: "36000",
-    cover:
-      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    category: "clothing",
-    type: "t-shirt",
-    productName: "t-shirt-1",
-    price: "3600",
-    cover:
-      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    category: "clothing",
-    type: "t-shirt",
-    productName: "t-shirt-2",
-    price: "2600",
-    cover:
-      "https://images.unsplash.com/photo-1592343516109-362f7bd871aa?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    category: "clothing",
-    type: "coat",
-    productName: "coat-1",
-    price: "36000",
-    cover:
-      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    category: "clothing",
-    type: "coat",
-    productName: "coat-2",
-    price: "3000",
-    cover:
-      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    category: "electronics",
-    type: "mobile phone",
-    productName: "apple-1",
-    price: "3600",
-    cover:
-      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    category: "electronics",
-    type: "mobile phone",
-    productName: "apple-2",
-    price: "2600",
-    cover:
-      "https://images.unsplash.com/photo-1592343516109-362f7bd871aa?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    category: "electronics",
-    type: "mobile phone",
-    productName: "android-1",
-    price: "36000",
-    cover:
-      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    category: "electronics",
-    type: "mobile phone",
-    productName: "android-2",
-    price: "3000",
-    cover:
-      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    category: "electronics",
-    type: "mobile phone",
-    productName: "android-3",
-    price: "3600",
-    cover:
-      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    category: "electronics",
-    type: "mobile phone",
-    productName: "android-4",
-    price: "2600",
-    cover:
-      "https://images.unsplash.com/photo-1592343516109-362f7bd871aa?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-];
-
 const ViewCategory = ({ params }) => {
   const { data: product_category, isLoading } = UseSingleCategoryQuery(
     params.id
@@ -123,7 +24,7 @@ const ViewCategory = ({ params }) => {
   return (
     <div>
       <div>
-        <div className="text-xl m-2 font-bold "> Detail</div>
+        <div className="text-xl my-2 font-bold "> Detail</div>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -140,20 +41,11 @@ const ViewCategory = ({ params }) => {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <div className="mt-2">
-        <Card className="flex justify-between items-center p-10 my-2">
-          <div className="text-jade text-2xl">
+      <div className="mt-4 grid  grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-8">
+        <div className="flex flex-col gap-4">
+          <Card className=" text-jade text-2xl font-semibold p-4 bg-swansdown">
             {product_category?.data.categoryName}
-            511 ads
-          </div>
-          <div>
-            <div>Products</div>
-            {product_category?.data.productNames.map((product) => (
-              <div key={product.name}>
-                <div> {product.name}</div>
-              </div>
-            ))}
-          </div>
+          </Card>
 
           <div>
             <Image
@@ -164,13 +56,27 @@ const ViewCategory = ({ params }) => {
               alt="id"
             />
           </div>
-        </Card>
-        <div className=" grid  grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-5 ">
+          <Card className="p-4">
+            <div className="text-primary">Products</div>
+            {product_category?.data.productNames.map((product) => (
+              <div key={product.name} className="flex w-full justify-between">
+                <div> {product.name}</div>
+                <div>123</div>
+              </div>
+            ))}
+          </Card>
+        </div>
+        <div className=" grid  grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-5 ">
           {product_category?.data.productNames.map((product) => (
-            <Card key={product.name} className="cursor-pointer p-4">
+            <Card
+              key={product.name}
+              className="cursor-pointer rounded-sm overflow-hidden"
+            >
               <Image
                 src={product?.image.url || "/nullid.jpg"}
-                className="size-96 w-full object-cover"
+                className={
+                  "h-full w-full object-cover transition-all hover:scale-105 aspect-square rounded-sm "
+                }
                 width={500}
                 height={500}
                 alt="id"

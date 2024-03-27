@@ -9,6 +9,15 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { UseApproveQuery, UseDPQuery } from "@/hooks/use-users-query";
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import Link from "next/link";
+
 const ViewUser = ({ params }) => {
   const router = useRouter();
 
@@ -21,7 +30,24 @@ const ViewUser = ({ params }) => {
 
   return (
     <div>
-      <h1 className="text-xl">User Information</h1>
+      <div>
+        <div className="text-xl my-2 font-bold "> User information</div>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <Link href="/dashboard">Dashboard</Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <Link href="/dashboard/user">User</Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>User Detail</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
       <div className="flex flex-col w-full md:flex-row gap-5 mt-2">
         <Card className=" w-full p-7  items-center ">
           <div className="relative flex flex-col justify-center items-center">
@@ -29,16 +55,16 @@ const ViewUser = ({ params }) => {
               <AvatarImage src="https://github.com/shadcn.png" alt="man" />
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
-            <button>
+            <button className="bg-primary">
               <RiEdit2Line
                 onClick={handleUpdateClick}
-                className="absolute top-2 right-3  text-2xl"
+                className="absolute top-2 right-3  text-3xl bg-primary text-white rounded-full p-1 hover:bg-swansdown hover:text-jade"
               />
             </button>
             <div className="text-xl font-bold">
               {user?.data.firstName + " " + user?.data.middleName}
             </div>
-            <div>Seller</div>
+            <div className="bg-primary px-2 text-white rounded-sm">Seller</div>
           </div>
           <CardContent className=" w-full mt-8 ">
             <div className="mt-4">
@@ -103,7 +129,7 @@ const ViewUser = ({ params }) => {
               <div>Kebele Id</div>
               <Image
                 src={user?.data?.identificationCard?.url || "/nullid.jpg"}
-                className="w-full "
+                className="w-full rounded-sm "
                 width={400}
                 height={200}
                 alt="id"
@@ -113,9 +139,9 @@ const ViewUser = ({ params }) => {
               <div>National Id</div>
               <Image
                 src={user?.data?.nationalId?.url || "/nullid.jpg"}
-                className="w-full bg-swansdown "
-                width={400}
-                height={200}
+                className="w-full rounded-sm "
+                width={500}
+                height={500}
                 alt="id"
               />
             </div>
