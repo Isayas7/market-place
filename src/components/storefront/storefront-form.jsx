@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useStorefrontCreationQuery } from "@/hooks/use-users-query";
 import { useState } from "react";
-import { StoreFrontCrationForm } from "@/form/Form";
+import { StoreFrontCrationForm } from "@/form/form";
 
 const StorefrontForm = () => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);

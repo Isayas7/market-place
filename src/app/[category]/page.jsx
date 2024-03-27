@@ -1,5 +1,5 @@
 import CategoryList from "@/components/category/category-list";
-import { CustomCard } from "@/components/home/custom-card";
+import { CustomCard } from "@/components/custom-card";
 import React from "react";
 import { listenNowAlbums } from "../page";
 

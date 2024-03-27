@@ -17,7 +17,7 @@ import {
   ProductForm,
   SellectProductForm,
   multiValueProductForm,
-} from "@/form/Form";
+} from "@/form/form";
 import {
   Select,
   SelectContent,
@@ -26,8 +26,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useProductCreateQuery } from "@/hooks/use-product-query";
-import CustomImageIpload from "@/components/CustomImageIpload";
-import MultiText from "@/components/MultiText";
+import CustomImageIpload from "@/components/image-uploader";
+import MultiText from "@/components/multi-text";
 import { Textarea } from "@/components/ui/textarea";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useRouter } from "next/navigation";
