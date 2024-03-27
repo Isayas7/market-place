@@ -1,4 +1,4 @@
-import NewProductForm from "@/components/seller/product/NewProductForm";
+import NewProductForm from "@/components/seller/product/new-product-form";
 import React from "react";
 
 const NeeProduct = () => {

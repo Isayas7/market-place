@@ -12,8 +12,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Card } from "../ui/card";
+} from "./ui/dropdown-menu";
+import { Card } from "./ui/card";
 
 export function CustomCard({
   album,

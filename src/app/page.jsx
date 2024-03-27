@@ -1,5 +1,5 @@
 import List from "@/components/home/list";
-import { CustomCard } from "@/components/home/custom-card";
+import { CustomCard } from "@/components/custom-card";
 
 export const listenNowAlbums = [
   {

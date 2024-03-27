@@ -1,4 +1,4 @@
-import NavLink from "@/components/seller/NavLink";
+import NavLink from "@/components/seller/nav-link";
 import {
   MdOutlineDashboard,
   MdProductionQuantityLimits,

@@ -1,5 +1,5 @@
 import { listenNowAlbums } from "@/app/page";
-import { CustomCard } from "@/components/home/custom-card";
+import { CustomCard } from "@/components/custom-card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";

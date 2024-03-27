@@ -1,5 +1,5 @@
 import { listenNowAlbums } from "@/app/page";
-import { CustomCard } from "@/components/home/custom-card";
+import { CustomCard } from "@/components/custom-card";
 import { Price } from "@/components/productdetail/Price";
 import { ProductDesc } from "@/components/productdetail/ProductDesc";
 import { ProductImage } from "@/components/productdetail/ProductImage";
