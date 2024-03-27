@@ -76,9 +76,17 @@ export const columns = [
     cell: ({ row }) => {
       const status = row.original.isActive;
       if (status) {
-        return <Button>Active</Button>;
+        return (
+          <span className="py-1 px-4 rounded-sm bg-primary text-primary-foreground ">
+            Active
+          </span>
+        );
       } else {
-        return <Button className="bg-destructive">Banned</Button>;
+        return (
+          <span className="py-1 px-4 rounded-sm bg-destructive text-destructive-foreground">
+            Banned
+          </span>
+        );
       }
     },
   },
