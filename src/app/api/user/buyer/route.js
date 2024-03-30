@@ -12,6 +12,7 @@ export const GET = async (request) => {
     }
 
     const buyers = await User.find({ role: { $in: [buyerRole._id] } });
+    console.log("first", buyers);
 
     return new NextResponse(JSON.stringify(buyers), { status: 200 });
   } catch (error) {

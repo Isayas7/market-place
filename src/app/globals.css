@@ -37,6 +37,7 @@
     --hovered: hsl(210, 12.5%, 96.9%);
     --active: hsl(161.5, 48.1%, 94.7%);
     --active-hovered: hsl(160, 49.1%, 89.2%);
+    --scroll-bar: hsl(208, 11.1%, 73.5%);
   }
 
   .dark {
@@ -71,6 +72,7 @@
     --hovered: hsl(212, 19.5%, 15.1%);
     --active: hsl(188.2, 35.5%, 12.2%);
     --active-hovered: hsl(176.3, 47.1%, 13.3%);
+    --scroll-bar: hsl(208.7, 16.5%, 27.3%);
   }
 }
 
@@ -84,20 +86,10 @@
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
-  opacity: 0;
-  transition: opacity 0.3s;
+  width: 8px;
 }
 
-::-webkit-scrollbar-thumb-y {
-  opacity: 0;
-}
-
-::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb {
   border-radius: 4px;
-  background-color: #b6b6b6;
-}
-
-:hover::-webkit-scrollbar {
-  opacity: 0;
+  background-color: var(--scroll-bar);
 }

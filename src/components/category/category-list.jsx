@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { menuItems } from "../home/navbar/custom-sheet";
 import Link from "next/link";
 import {
   Card,
@@ -9,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { menuItems } from "../home/list";
 
 const CategoryList = ({ currentCategory, currentType }) => {
   return (

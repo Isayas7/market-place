@@ -47,22 +47,9 @@ const StorefrontForm = () => {
     isLoading,
   } = useStorefrontCreationQuery();
 
-<<<<<<< HEAD
-  const onSubmit = (formValues) => {
-    console.log(formValues);
-    const formData = new FormData();
-    for (const key in formValues) {
-      formData.append(key, formValues[key]);
-    }
-    formData.append("selectedIdCard", selectedIdCard);
-    formData.append("selectedId", selectedId);
-    formData.append("email", session.data.user.email);
-    createStorefront(formData);
-=======
   const onSubmit = (values) => {
     values.email = session.data.user.email;
     createStorefront(values);
->>>>>>> A
   };
 
   return (
@@ -105,147 +92,7 @@ const StorefrontForm = () => {
                     </FormItem>
                   )}
                 />
-<<<<<<< HEAD
-
-                <FormField
-                  control={form.control}
-                  name="address"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Your Address</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="address"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="location"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Store Location</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="store location"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="identificationCard"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Identification Card</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          className="p-3"
-                          id="fileInput"
-                          onBlur={field.onBlur}
-                          name={field.name}
-                          onChange={(e) => {
-                            field.onChange(e.target.files);
-                            setSelectedIdCardImage(e.target.files?.[0] || null);
-                          }}
-                          ref={field.ref}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div>
-                <FormField
-                  control={form.control}
-                  name="nationalId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>National Id</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          className="p-3"
-                          id="fileInput"
-                          onBlur={field.onBlur}
-                          name={field.name}
-                          onChange={(e) => {
-                            field.onChange(e.target.files);
-                            setSelectedIdImage(e.target.files?.[0] || null);
-                          }}
-                          ref={field.ref}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="phoneNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="phone number"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="bankInfo"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Bank</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="bank information"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="accountNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Account Number</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="account number"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-=======
               ))}
->>>>>>> A
             </Card>
 
             <Button className="w-full ml-auto text-xl" type="submit">

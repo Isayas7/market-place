@@ -6,8 +6,112 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { menuItems2 } from "@/components/home/navbar/custom-sheet";
 import Link from "next/link";
+
+export const menuItems = [
+  {
+    category: "electronics",
+    items: [
+      { title: "shoes" },
+      { title: "T-shirt" },
+      { title: "Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+  {
+    category: "clothing",
+    items: [
+      { title: "Dashboard" },
+      { title: "User" },
+      { title: "Product Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+];
+
+export const menuItems2 = [
+  {
+    category: "electronics",
+    items: [
+      { title: "shoes" },
+      { title: "T-shirt" },
+      { title: "Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+  {
+    category: "clothing",
+    items: [
+      { title: "Dashboard" },
+      { title: "User" },
+      { title: "Product Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+  {
+    category: "clothing",
+    items: [
+      { title: "Dashboard" },
+      { title: "User" },
+      { title: "Product Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+  {
+    category: "clothing",
+    items: [
+      { title: "Dashboard" },
+      { title: "User" },
+      { title: "Product Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+  {
+    category: "clothing",
+    items: [
+      { title: "Dashboard" },
+      { title: "User" },
+      { title: "Product Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+  {
+    category: "clothing",
+    items: [
+      { title: "Dashboard" },
+      { title: "User" },
+      { title: "Product Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+  {
+    category: "clothing",
+    items: [
+      { title: "Dashboard" },
+      { title: "User" },
+      { title: "Product Category" },
+      { title: "Store" },
+      { title: "Product" },
+      { title: "Order" },
+    ],
+  },
+];
 
 const List = () => {
   return (

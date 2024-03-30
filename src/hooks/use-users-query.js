@@ -1,10 +1,5 @@
 import axios from "axios";
-<<<<<<< HEAD
-import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-=======
-import { useMutation, useQuery } from "react-query";
->>>>>>> A
 
 // get all user
 export const UseBuyersQuery = () => {

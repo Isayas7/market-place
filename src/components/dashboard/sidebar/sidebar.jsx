@@ -50,6 +50,46 @@ export const menuUtems = [
     path: "/dashboard/role",
     icon: <BsFillPersonLinesFill />,
   },
+  {
+    title: "Order",
+    path: "/dashboard/order",
+    icon: <TbReorder />,
+  },
+  {
+    title: "Role",
+    path: "/dashboard/role",
+    icon: <BsFillPersonLinesFill />,
+  },
+  {
+    title: "Order",
+    path: "/dashboard/order",
+    icon: <TbReorder />,
+  },
+  {
+    title: "Role",
+    path: "/dashboard/role",
+    icon: <BsFillPersonLinesFill />,
+  },
+  {
+    title: "Order",
+    path: "/dashboard/order",
+    icon: <TbReorder />,
+  },
+  {
+    title: "Role",
+    path: "/dashboard/role",
+    icon: <BsFillPersonLinesFill />,
+  },
+  {
+    title: "Order",
+    path: "/dashboard/order",
+    icon: <TbReorder />,
+  },
+  {
+    title: "Role",
+    path: "/dashboard/role",
+    icon: <BsFillPersonLinesFill />,
+  },
 ];
 const Sidebar = ({ isCollapsed, open, setOpen }) => {
   const isDesktop = useMediaQuery("(min-width: 1280px)");

@@ -9,7 +9,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
-import { CustomCard } from "@/components/home/custom-card";
 import Image from "next/image";
 import { UseSingleCategoryQuery } from "@/hooks/use-product-category-query";
 import { Card } from "@/components/ui/card";
