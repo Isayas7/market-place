@@ -8,7 +8,6 @@ export const GET = async (request, { params }) => {
     await connect();
 
     const delivery = await Delivery.findById(id);
-    console.log(delivery);
     return new NextResponse(JSON.stringify(delivery), { status: 200 });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });
