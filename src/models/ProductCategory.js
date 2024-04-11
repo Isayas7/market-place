@@ -6,17 +6,22 @@ const { Schema } = mongoose;
 
 const productCategorySchema = new Schema(
   {
+    // user: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "User",
+    //   required: true,
+    // },
     categoryName: {
       type: String,
       required: true,
     },
-    image: {
-      public_id: {
-        type: String,
-      },
-      url: {
-        type: String,
-      },
+    categoryImage: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      default: "Active",
     },
     productNames: [
       {
@@ -25,12 +30,8 @@ const productCategorySchema = new Schema(
           required: true,
         },
         image: {
-          public_id: {
-            type: String,
-          },
-          url: {
-            type: String,
-          },
+          type: String,
+          required: true,
         },
         brands: [
           {
@@ -40,22 +41,13 @@ const productCategorySchema = new Schema(
             },
 
             image: {
-              public_id: {
-                type: String,
-              },
-              url: {
-                type: String,
-              },
+              type: String,
+              required: true,
             },
           },
         ],
       },
     ],
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
   },
   { timestamps: true }
 );

@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "react-query";
 // get all product
 export const useProductQuery = () => {
   return useQuery({
-    queryKey: ["product"],
+    queryKey: ["products"],
     queryFn: async () => {
       const res = await axios.get("http://localhost:3000/api/product");
       return res;

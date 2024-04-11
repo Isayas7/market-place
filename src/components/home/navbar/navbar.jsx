@@ -41,11 +41,19 @@ const Navbar = () => {
     }
   };
 
-  isDesktop && currentUrl === "/"
-    ? (document.body.style.overflow = "auto")
-    : open
-    ? (document.body.style.overflow = "hidden")
-    : (document.body.style.overflow = "auto");
+  useEffect(() => {
+    isDesktop && currentUrl === "/"
+      ? (document.body.style.overflow = "auto")
+      : open
+      ? (document.body.style.overflow = "hidden") &&
+        document.body.classList.add("lock")
+      : (document.body.style.overflow = "auto") &&
+        document.body.classList.remove("lock");
+    return () => {
+      document.body.style.overflow = "auto";
+      document.body.classList.remove("lock");
+    };
+  }, [isDesktop, currentUrl, open]);
 
   return (
     <div
@@ -59,10 +67,12 @@ const Navbar = () => {
           className={`container  mx-auto flex  justify-between items-center transition-all duration-300  `}
         >
           <div className="flex items-center gap-5">
+            {/* overlay */}
             <div
+              aria-disabled={open}
               className={`${
                 open
-                  ? "fixed  top-[57px] inset-x-0 bottom-0  bg-black/60 "
+                  ? "fixed  top-[57px] inset-x-0 bottom-0  z-50 bg-black/60 "
                   : "hidden"
               } ${currentUrl === "/" ? "xl:hidden " : ""} `}
             />

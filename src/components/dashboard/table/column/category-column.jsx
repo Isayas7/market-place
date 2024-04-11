@@ -39,13 +39,9 @@ export const category_columns = [
     enableHiding: false,
   },
   {
-    accessorKey: "image",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Image" />
-    ),
+    accessorKey: "Image",
     cell: ({ row }) => {
-      const image = row.original.image.url;
-
+      const image = row.original.categoryImage;
       return (
         <Image
           src={image || "/nullid.jpg"}
@@ -63,10 +59,13 @@ export const category_columns = [
     ),
   },
   {
-    accessorKey: "products",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Product Names" />
-    ),
+    accessorKey: "Product Names",
+
+    cell: ({ row }) => {
+      return row.original.productNames?.map((product) => {
+        return <span>{product.name + ", "}</span>;
+      });
+    },
   },
   {
     accessorKey: "numberOfProducts",

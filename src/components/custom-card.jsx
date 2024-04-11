@@ -16,7 +16,7 @@ import {
 import { Card } from "./ui/card";
 
 export function CustomCard({
-  album,
+  product,
   aspectRatio,
   width,
   height,
@@ -24,7 +24,9 @@ export function CustomCard({
   ...props
 }) {
   return (
-    <Link href={`/${album.category}/${album.type}/${album.productName}`}>
+    <Link
+      href={`/${product.productName}/${product.productName}/${product.productName}`}
+    >
       <Card
         className={cn(
           "space-y-3 relative rounded-sm overflow-hidden  border-none shadow",
@@ -34,8 +36,8 @@ export function CustomCard({
       >
         <div>
           <Image
-            src={album.cover}
-            alt={album.productName}
+            src={product.productImage[0]}
+            alt={product.productName}
             width={width}
             height={height}
             className={cn(
@@ -46,8 +48,8 @@ export function CustomCard({
         </div>
 
         <div className="space-y-1 text-sm px-2 py-1">
-          <h3 className="font-medium leading-none">{album.productName}</h3>
-          <p className="text-xs text-muted-foreground">{album.price}</p>
+          <h3 className="font-medium leading-none">{product.productName}</h3>
+          <p className="text-xs text-muted-foreground">{product.price}</p>
         </div>
         <div className="absolute top-0 right-0">
           <DropdownMenu>

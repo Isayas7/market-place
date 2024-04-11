@@ -3,7 +3,7 @@ import { CardContent } from "./ui/card";
 import Image from "next/image";
 import { XIcon } from "lucide-react";
 
-const CustomImageIpload = ({ value, onChange, onRemove }) => {
+const CustomMultiImageIpload = ({ value, onChange, onRemove }) => {
   const onUpload = (result) => {
     onChange(result.info.secure_url);
   };
@@ -47,4 +47,4 @@ const CustomImageIpload = ({ value, onChange, onRemove }) => {
   );
 };
 
-export default CustomImageIpload;
+export default CustomMultiImageIpload;

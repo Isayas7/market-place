@@ -26,11 +26,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useProductCreateQuery } from "@/hooks/use-product-query";
-import CustomImageIpload from "@/components/image-uploader";
 import MultiText from "@/components/multi-text";
 import { Textarea } from "@/components/ui/textarea";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useRouter } from "next/navigation";
+import CustomMultiImageIpload from "@/components/multi-image-uploader";
+import { UseCategoryQuery } from "@/hooks/use-product-category-query";
 
 const NewProductForm = () => {
   const router = useRouter();
@@ -67,6 +68,8 @@ const NewProductForm = () => {
     crateProduct(formvalues);
     router.push("/seller/product");
   };
+  const { data: product_category } = UseCategoryQuery();
+  const categoryOption = product_category?.data.map((category) => category);
 
   return (
     <Form {...form}>
@@ -79,7 +82,7 @@ const NewProductForm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <CustomImageIpload
+                    <CustomMultiImageIpload
                       value={field.value}
                       onChange={(url) => field.onChange([...field.value, url])}
                       onRemove={(url) =>
@@ -98,6 +101,7 @@ const NewProductForm = () => {
             <Card className=" grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 p-7    ">
               {SellectProductForm.map((item) => (
                 <FormField
+                  key={item.name}
                   control={form.control}
                   name={item.name}
                   render={({ field }) => (
@@ -110,9 +114,11 @@ const NewProductForm = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="light">Light</SelectItem>
-                          <SelectItem value="dark">Dark</SelectItem>
-                          <SelectItem value="system">System</SelectItem>
+                          {categoryOption?.map((option) => (
+                            <SelectItem key={option._id} value={option._id}>
+                              {option.categoryName}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
 
@@ -123,6 +129,7 @@ const NewProductForm = () => {
               ))}
               {ProductForm.map((item) => (
                 <FormField
+                  key={item.name}
                   control={form.control}
                   name={item.name}
                   render={({ field }) => (
@@ -145,6 +152,7 @@ const NewProductForm = () => {
 
               {multiValueProductForm.map((item) => (
                 <FormField
+                  key={item.name}
                   control={form.control}
                   name={item.name}
                   render={({ field }) => (

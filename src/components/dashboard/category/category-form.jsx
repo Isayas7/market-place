@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { categorySchema } from "@/schema/user";
 import { useCategoryRegisterQuery } from "@/hooks/use-product-category-query";
 import { useSession } from "next-auth/react";
+import CustomSingleImageIpload from "@/components/single-image-uploader";
 
 const CategoryForm = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -31,7 +32,13 @@ const CategoryForm = () => {
     // resolver: zodResolver(categorySchema),
     defaultValues: {
       categoryName: "",
-      categoryImage: undefined,
+      categoryImage: "",
+      productNames: [
+        {
+          name: "",
+          image: "",
+        },
+      ],
     },
   });
 
@@ -42,34 +49,8 @@ const CategoryForm = () => {
   } = useCategoryRegisterQuery();
 
   const onSubmit = async (formValues) => {
-    const formData = new FormData();
-
-    textFields.forEach((textField, index) => {
-      const productNameKey = `productNames_${textField.id}`;
-      const imageNameKey = `image_${textField.id}`;
-
-      const productName = formValues[productNameKey];
-      const imageFile = formValues[imageNameKey][0]; // Assuming there's only one image selected
-
-      // Append the image file with a unique key (e.g., using index)
-      formData.append(`image_${index}`, imageFile);
-
-      // Append the product name separately
-      formData.append(`productName_${index}`, productName);
-    });
-
-    // Append other form data
-    for (const key in formValues) {
-      if (!key.startsWith("productNames_") && !key.startsWith("image_")) {
-        formData.append(key, formValues[key]);
-      }
-    }
-    // Append additional data
-    formData.append("selectedImage", selectedImage);
-    formData.append("email", session.data.user.email);
-
-    // Submit the form data
-    registerCategory(formData);
+    console.log("formValues", formValues);
+    registerCategory(formValues);
   };
 
   if (isSuccess) {
@@ -77,23 +58,22 @@ const CategoryForm = () => {
   }
 
   const addTextField = () => {
+    const defaultValues = form.getValues();
     setTextFields((prevTextFields) => [
       ...prevTextFields,
-      { id: prevTextFields.length, isDefault: false },
+      { id: prevTextFields.length, isDefault: false, defaultValues },
     ]);
   };
 
   // Function to remove a set of text fields
   const removeTextFields = (index) => {
     const updatedFields = [...textFields];
-    updatedFields.splice(-1, 1);
+    updatedFields.splice(index, 1);
     setTextFields(updatedFields);
-  };
-
-  const handleImageChange = (index, imageFile) => {
-    const updatedImages = [...selectedImages];
-    updatedImages[index] = imageFile;
-    setSelectedImages(updatedImages);
+    // Remove the corresponding default value
+    const updatedDefaultValues = { ...form.getValues() };
+    updatedDefaultValues.productNames.splice(index, 1);
+    form.reset(updatedDefaultValues);
   };
 
   const addImageField = () => {
@@ -137,32 +117,12 @@ const CategoryForm = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <Button
-                            className="size-28 rounded-full  flex-col justify-center items-center "
-                            type="button"
-                          >
-                            <input
-                              type="file"
-                              className="hidden"
-                              id="fileInput"
-                              onBlur={field.onBlur}
-                              name={field.name}
-                              onChange={(e) => {
-                                field.onChange(e.target.files);
-                                setSelectedImage(e.target.files?.[0] || null);
-                              }}
-                              ref={field.ref}
-                            />
-                            <label
-                              htmlFor="fileInput"
-                              className=" flex flex-col justify-center items-center "
-                            >
-                              <FaCloudUploadAlt className="size-8" />
-                              <p className="text-xs">upload photo</p>
-                            </label>
-                          </Button>
+                          <CustomSingleImageIpload
+                            value={field.value}
+                            onChange={(url) => field.onChange(url)}
+                            onRemove={() => field.onChange("")}
+                          />
                         </FormControl>
-
                         <FormMessage />
                       </FormItem>
                     )}
@@ -184,11 +144,10 @@ const CategoryForm = () => {
                 </Button>
               </div>
               {textFields.map((textField, index) => (
-                <div className="flex gap-2 items-center">
+                <div key={index} className="flex gap-2 items-center">
                   <FormField
-                    key={textField.id}
                     control={form.control}
-                    name={`productNames_${textField.id}`}
+                    name={`productNames[${index}].name`}
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
@@ -203,23 +162,16 @@ const CategoryForm = () => {
                     )}
                   />
                   <FormField
-                    key={`${textField.id}image`}
                     control={form.control}
-                    name={`image_${textField.id}`}
+                    name={`productNames[${index}].image`}
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <Input
-                            type="file"
-                            className="p-3"
-                            id="fileInput"
-                            onBlur={field.onBlur}
-                            name={field.name}
-                            onChange={(e) => {
-                              field.onChange(e.target.files);
-                              handleImageChange(e.target.files?.[0] || null); // Change here
-                            }}
-                            ref={field.ref}
+                          <CustomSingleImageIpload
+                            className="size-20"
+                            value={field.value}
+                            onChange={(url) => field.onChange(url)}
+                            onRemove={() => field.onChange("")}
                           />
                         </FormControl>
                         <FormMessage />
@@ -229,7 +181,7 @@ const CategoryForm = () => {
                   <Button
                     type="button"
                     onClick={() => {
-                      removeTextFields();
+                      removeTextFields(index);
                       removeImageField();
                     }}
                   >
