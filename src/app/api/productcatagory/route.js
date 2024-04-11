@@ -8,6 +8,7 @@ export const GET = async (request) => {
   try {
     await connect();
     const productCategories = await ProductCategory.find();
+
     const modifiedCategories = productCategories.map((category) => {
       const products = category.productNames.map((product) => product.name);
       return { ...category.toObject(), products: products };

@@ -31,54 +31,9 @@ export const menuUtems = [
     icon: <FaStore />,
   },
   {
-    title: "Store",
-    path: "/dashboard/store",
-    icon: <SiHomeassistantcommunitystore />,
-  },
-  {
     title: "Product",
     path: "/dashboard/product",
     icon: <MdProductionQuantityLimits />,
-  },
-  {
-    title: "Order",
-    path: "/dashboard/order",
-    icon: <TbReorder />,
-  },
-  {
-    title: "Role",
-    path: "/dashboard/role",
-    icon: <BsFillPersonLinesFill />,
-  },
-  {
-    title: "Order",
-    path: "/dashboard/order",
-    icon: <TbReorder />,
-  },
-  {
-    title: "Role",
-    path: "/dashboard/role",
-    icon: <BsFillPersonLinesFill />,
-  },
-  {
-    title: "Order",
-    path: "/dashboard/order",
-    icon: <TbReorder />,
-  },
-  {
-    title: "Role",
-    path: "/dashboard/role",
-    icon: <BsFillPersonLinesFill />,
-  },
-  {
-    title: "Order",
-    path: "/dashboard/order",
-    icon: <TbReorder />,
-  },
-  {
-    title: "Role",
-    path: "/dashboard/role",
-    icon: <BsFillPersonLinesFill />,
   },
   {
     title: "Order",

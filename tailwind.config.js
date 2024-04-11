@@ -131,6 +131,10 @@ module.exports = {
         aquasqueeze: {
           DEFAULT: "#e9f7f2",
         },
+        message: {
+          DEFAULT: "#f4f6f8",
+          200: "#2f3944",
+        },
         swansdown: {
           DEFAULT: "#D4F4E7",
         },
