@@ -56,10 +56,17 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async session({ session }) {
+    async session({ session, token, account }) {
+      session.user.id = token.id;
       return session;
     },
-    async signIn({ profile, account }) {
+    jwt: async ({ token }) => {
+      const user = await User.findOne({ email: token?.email });
+      token.id = user._id;
+      token.name = user.firstName + " " + user.middleName;
+      return token;
+    },
+    async signIn({ account, profile }) {
       if (account.provider === "credentials") {
         return true;
       }

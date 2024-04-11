@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import { AlignJustify } from "lucide-react";
 import List from "../list";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { PiWechatLogoDuotone } from "react-icons/pi";
 
 const links = [
   {
@@ -110,6 +111,11 @@ const Navbar = () => {
 
             {session.status === "unauthenticated" && (
               <Link href={"/login"}>Login</Link>
+            )}
+            {session.status === "authenticated" && (
+              <Link href={"/chat"}>
+                <PiWechatLogoDuotone className="text-xl" />
+              </Link>
             )}
             {session.status === "authenticated" && (
               <Link href={"/dashboard"}>Dashboard</Link>
