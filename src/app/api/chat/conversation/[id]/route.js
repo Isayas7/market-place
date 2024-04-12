@@ -15,6 +15,7 @@ export const GET = async (request, { params }) => {
       path: "members",
       model: "User",
       select: "email firstName middleName",
+      match: { _id: { $ne: id } }, // Exclude the current user ID
     });
     const conversationsWithMessages = await Promise.all(
       conversations.map(async (conversation) => {
@@ -26,7 +27,7 @@ export const GET = async (request, { params }) => {
 
         return {
           _id: conversation._id,
-          member: conversation.members[1],
+          member: conversation.members[0],
           createdAt: conversation.createdAt,
           updatedAt: conversation.updatedAt,
           __v: conversation.__v,

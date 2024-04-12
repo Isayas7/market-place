@@ -9,12 +9,14 @@ const Main = ({ children }) => {
     <main
       className={`${
         currentUrl === "/"
-          ? "container"
+          ? "container h-full"
           : currentUrl.includes("dashboard")
           ? ""
-          : "container "
+          : "container h-full"
       }${
-        currentUrl !== "/" && !currentUrl.includes("dashboard")
+        currentUrl !== "/" &&
+        currentUrl !== "/chat" &&
+        !currentUrl.includes("dashboard")
           ? "pt-10 pb-5"
           : ""
       }`}
