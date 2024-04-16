@@ -14,6 +14,7 @@ const productCategorySchema = new Schema(
     categoryName: {
       type: String,
       required: true,
+      unique: true,
     },
     categoryImage: {
       type: String,
@@ -23,11 +24,12 @@ const productCategorySchema = new Schema(
       type: String,
       default: "Active",
     },
-    productNames: [
+    productType: [
       {
         name: {
           type: String,
           required: true,
+          unique: true,
         },
         image: {
           type: String,
@@ -38,6 +40,7 @@ const productCategorySchema = new Schema(
             name: {
               type: String,
               required: true,
+              // unique: true,
             },
 
             image: {

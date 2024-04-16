@@ -10,14 +10,19 @@ import {
 } from "../ui/card";
 import { menuItems } from "../home/list";
 
-const CategoryList = ({ currentCategory, currentType }) => {
+const CategoryList = ({ category, currentCategory, currentType }) => {
   return (
     <Card>
       <div className="  bg-primary text-card-foreground text-xl font-semibold text-white rounded-t-md  p-4 mb-2">
         <CardTitle className="text-card-foreground"> Categories</CardTitle>
       </div>
       <Link
-        href={`/${currentCategory}`}
+        href={{
+          pathname: "/products",
+          query: {
+            categoryName: currentCategory,
+          },
+        }}
         className={`capitalize px-4 ${
           currentType === undefined ? " font-bold" : ""
         }`}
@@ -25,19 +30,27 @@ const CategoryList = ({ currentCategory, currentType }) => {
         {currentCategory}
       </Link>
 
-      {menuItems.map((category) => {
-        if (currentCategory === category.category) {
-          return category.items.map((cat, index) => (
+      {category?.map((cat) => {
+        if (currentCategory === cat.categoryName) {
+          return cat.productType?.map((product, index) => (
             <div key={index} className=" pl-8 mt-1">
-              <Link href={`/${category.category}/${cat.title}`}>
+              <Link
+                href={{
+                  pathname: "/products",
+                  query: {
+                    categoryName: currentCategory,
+                    productType: product.name,
+                  },
+                }}
+              >
                 <span
                   className={` ${
-                    decodeURIComponent(currentType) === cat.title
+                    decodeURIComponent(currentType) === product.name
                       ? " font-bold"
                       : ""
                   }`}
                 >
-                  {cat.title} | 132
+                  {product.name} | 132
                 </span>
               </Link>
             </div>

@@ -20,50 +20,21 @@ import { product_columns } from "@/components/dashboard/table/column/product-col
 
 const Products = () => {
   const { data: product_category, isLoading } = UseCategoryQuery();
-  const [selectedOption, setSelectedOption] = useState("");
-  const [productNames, setProductNames] = useState([]);
-  const [id, setId] = useState("");
 
-  if (product_category) {
-    const handleCategoryChange = (value) => {
-      const selectedCategory = product_category.data.find(
-        (category) => category.categoryName === value
-      );
-      if (selectedCategory) {
-        setProductNames(selectedCategory.productNames);
-        setId(selectedCategory._id);
-      }
-    };
-    const columns = product_columns(id);
+  const allproductType = product_category?.data.flatMap((item) =>
+    item.productType.map((product) => ({
+      ...product,
+      categoryName: item.categoryName,
+    }))
+  );
 
+  if (allproductType) {
     return (
       <div>
-        <Select
-          onValueChange={(value) => {
-            setSelectedOption(value);
-            handleCategoryChange(value);
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select an operation" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Category</SelectLabel>
-              {product_category.data.map((category) => (
-                <SelectItem key={category._id} value={category.categoryName}>
-                  {category.categoryName}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-
         <DataTable
-          columns={columns}
-          data={productNames}
-          myparams={"name"}
-          rendered="product"
+          columns={product_columns}
+          data={allproductType}
+          searchBy={"name"}
         />
       </div>
     );

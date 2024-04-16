@@ -8,7 +8,7 @@ export const GET = async (request, { params }) => {
     await connect();
 
     const product = await Product.findById(id);
-    console.log(product);
+
     return new NextResponse(JSON.stringify(product), { status: 200 });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });

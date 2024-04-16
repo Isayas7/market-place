@@ -33,7 +33,7 @@ import Link from "next/link";
 import usePermissionStore from "@/store/role-store";
 import { useRoleUpdateQuery } from "@/hooks/use-role-query";
 
-export function DataTable({ columns, data, rendered, myparams }) {
+export function DataTable({ columns, data, rendered, searchBy }) {
   const [sorting, setSorting] = useState();
   const [columnFilters, setColumnFilters] = useState();
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -74,9 +74,9 @@ export function DataTable({ columns, data, rendered, myparams }) {
       <div className="flex items-center py-4">
         <Input
           placeholder={"Filter table..."}
-          value={table.getColumn(myparams)?.getFilterValue()}
+          value={table.getColumn(searchBy)?.getFilterValue()}
           onChange={(event) =>
-            table.getColumn(myparams)?.setFilterValue(event.target.value)
+            table.getColumn(searchBy)?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

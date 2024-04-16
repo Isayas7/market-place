@@ -1,13 +1,12 @@
 import ProductCategory from "@/models/ProductCategory";
 import connect from "@/utils/db";
 import { NextResponse } from "next/server";
-import { uploadImage } from "@/utils/cloudinary";
-import User from "@/models/User";
 
 export const GET = async (request) => {
   try {
     await connect();
     const productCategories = await ProductCategory.find();
+
     return new NextResponse(JSON.stringify(productCategories), { status: 200 });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });

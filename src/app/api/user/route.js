@@ -1,5 +1,5 @@
 import User from "@/models/User";
-import { deliveryPersonnelSchema } from "@/schema/user";
+import { deliveryPersonnelSchema } from "@/validationschema/user";
 import connect from "@/utils/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";

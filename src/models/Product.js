@@ -5,13 +5,13 @@ const { Schema } = mongoose;
 
 const productSchema = new Schema(
   {
-    productImage: {
-      type: [String],
-      required: true,
-    },
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ProductCategory",
+    },
+    productImage: {
+      type: [String],
+      required: true,
     },
     productType: {
       type: String,

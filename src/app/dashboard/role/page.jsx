@@ -49,7 +49,7 @@ const Category = () => {
           columns={columns}
           rendered="role"
           data={roles?.data}
-          myparams="name"
+          searchBy="name"
         />
         <RoleForm />
       </div>

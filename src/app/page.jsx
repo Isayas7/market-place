@@ -116,13 +116,11 @@ export default function Home() {
       <div className=" w-full py-2">
         <h1 className="mb-2 text-xl">Trending</h1>
         <div className=" grid  grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-5 ">
-          {products?.data.map((product) => (
+          {products?.data?.map((product, index) => (
             <CustomCard
-              key={product.productName}
+              key={index}
               product={product}
               className="cursor-pointer"
-              width={250}
-              height={330}
             />
           ))}
         </div>
