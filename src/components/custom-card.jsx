@@ -15,18 +15,9 @@ import {
 } from "./ui/dropdown-menu";
 import { Card } from "./ui/card";
 
-export function CustomCard({
-  product,
-  aspectRatio,
-  width,
-  height,
-  className,
-  ...props
-}) {
+export function CustomCard({ product, aspectRatio, className, ...props }) {
   return (
-    <Link
-      href={`/${product.productName}/${product.productName}/${product.productName}`}
-    >
+    <Link href={`products/${product._id}`}>
       <Card
         className={cn(
           "space-y-3 relative rounded-sm overflow-hidden  border-none shadow",
@@ -38,8 +29,8 @@ export function CustomCard({
           <Image
             src={product.productImage[0]}
             alt={product.productName}
-            width={width}
-            height={height}
+            width={700}
+            height={800}
             className={cn(
               "w-full object-cover transition-all hover:scale-105",
               aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"

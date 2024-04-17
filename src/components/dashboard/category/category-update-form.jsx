@@ -15,7 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import { categorySchema } from "@/schema/user";
+import { categorySchema } from "@/validationschema/user";
 import { useCategoryRegisterQuery } from "@/hooks/use-product-category-query";
 import { useSession } from "next-auth/react";
 import axios from "axios";

@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { productSchema } from "@/schema/user";
+import { productSchema } from "@/validationschema/user";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,9 +32,12 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import CustomMultiImageIpload from "@/components/multi-image-uploader";
 import { UseCategoryQuery } from "@/hooks/use-product-category-query";
+import { useState } from "react";
 
 const NewProductForm = () => {
   const router = useRouter();
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedProductName, setSelectedProductName] = useState("");
 
   const form = useForm({
     resolver: zodResolver(productSchema),
@@ -65,11 +68,11 @@ const NewProductForm = () => {
   };
 
   const onSubmit = (formvalues) => {
+    // console.log("formvalues", formvalues);
     crateProduct(formvalues);
     router.push("/seller/product");
   };
   const { data: product_category } = UseCategoryQuery();
-  const categoryOption = product_category?.data.map((category) => category);
 
   return (
     <Form {...form}>
@@ -99,34 +102,113 @@ const NewProductForm = () => {
           </Card>
           <div className=" w-full md:w-3/5 space-y-8 ">
             <Card className=" grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 p-7    ">
-              {SellectProductForm.map((item) => (
-                <FormField
-                  key={item.name}
-                  control={form.control}
-                  name={item.name}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{item.label}</FormLabel>
-                      <Select onValueChange={field.onChange}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={item.placeholder} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {categoryOption?.map((option) => (
-                            <SelectItem key={option._id} value={option._id}>
-                              {option.categoryName}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+              <FormField
+                control={form.control}
+                name="categoryId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        setSelectedCategory(value);
+                      }}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sellect Category" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {product_category?.data.map((option) => (
+                          <SelectItem key={option._id} value={option._id}>
+                            {option.categoryName}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
 
-                      <FormMessage className="text-red-500" />
-                    </FormItem>
-                  )}
-                />
-              ))}
+                    <FormMessage className="text-red-500" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="productType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Product Type</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        setSelectedProductName(value);
+                      }}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sellect Prodct type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {product_category?.data.map(
+                          (option) =>
+                            option._id === selectedCategory &&
+                            option.productType.map((product) => (
+                              <SelectItem
+                                key={product._id}
+                                value={product.name}
+                              >
+                                {product.name}
+                              </SelectItem>
+                            ))
+                        )}
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage className="text-red-500" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="brand"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Brand</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sellect Brand" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {product_category?.data.map(
+                          (option) =>
+                            option._id === selectedCategory &&
+                            option.productType.map(
+                              (product) =>
+                                product.name === selectedProductName &&
+                                product.brands.map((brand) => (
+                                  <SelectItem
+                                    key={brand._id}
+                                    value={brand.name}
+                                  >
+                                    {brand.name}
+                                  </SelectItem>
+                                ))
+                            )
+                        )}
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               {ProductForm.map((item) => (
                 <FormField
                   key={item.name}

@@ -13,52 +13,24 @@ export const GET = async (request, { params }) => {
     return new NextResponse("Database Error", { status: 500 });
   }
 };
+
 export const POST = async (request, { params }) => {
-  const formData = await request.formData();
-
-  // Extract form values
-  const values = {};
-  for (const [key, value] of formData.entries()) {
-    values[key] = value;
-  }
-
-  const { productId, categoryId } = values;
-
-  let brand = [];
-
-  // Iterate over form data keys with for...of loop
-  for (const key of Object.keys(values)) {
-    if (key.startsWith("image_")) {
-      const index = key.split("_")[1];
-      const brandNameKey = `brandName_${index}`;
-      if (values[brandNameKey]) {
-        const brandName = values[brandNameKey];
-        const imageFile = values[key];
-
-        // Wait for the uploadImage function call to complete
-        const myImage = await uploadImage(imageFile, "marketplace-brand");
-        // console.log(brandName, myImage);
-        brand.push({
-          name: brandName,
-          image: {
-            public_id: myImage.public_id,
-            url: myImage.secure_url,
-          },
-        });
-      }
-    }
-  }
+  const values = await request.json();
+  const { productType, brands } = values;
+  console.log(values);
 
   try {
-    const productCategory = await ProductCategory.findById(categoryId);
+    const productCategory = await ProductCategory.findOne({
+      categoryName: params.id,
+    });
 
-    const product = productCategory.productNames.find(
-      (prod) => prod._id.toString() === productId
+    const product = productCategory.productType.find(
+      (prod) => prod.name === productType
     );
 
-    product.brands = brand;
+    const updatedBrands = [...product.brands, ...brands];
 
-    // console.log(product);
+    product.brands = updatedBrands;
 
     await productCategory.save();
 

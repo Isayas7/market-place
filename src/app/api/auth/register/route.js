@@ -1,6 +1,6 @@
 import Role from "@/models/Role";
 import User from "@/models/User";
-import { registerSchema } from "@/schema/user";
+import { registerSchema } from "@/validationschema/user";
 import connect from "@/utils/db";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";

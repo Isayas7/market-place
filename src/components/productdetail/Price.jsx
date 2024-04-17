@@ -9,13 +9,13 @@ import {
   CardTitle,
 } from "../ui/card";
 
-export const Price = () => {
+export const Price = ({ price }) => {
   return (
     <div className="flex  flex-col sm:flex-row md:flex-col  gap-6">
       <div className="flex flex-col gap-6 w-full sm:w-1/2 md:w-full">
         <Card>
           <CardHeader>
-            <CardTitle>ETB 400</CardTitle>
+            <CardTitle>ETB {price}</CardTitle>
           </CardHeader>
           <CardContent>
             <Button className="  w-full  text-base  ">Request call back</Button>

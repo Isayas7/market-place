@@ -5,7 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import User from "@/models/User";
 import connect from "@/utils/db";
-import { loginSchema } from "@/schema/user";
+import { loginSchema } from "@/validationschema/user";
 import Role from "@/models/Role";
 
 const handler = NextAuth({

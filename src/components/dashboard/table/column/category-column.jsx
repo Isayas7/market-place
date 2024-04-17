@@ -59,20 +59,15 @@ export const category_columns = [
     ),
   },
   {
-    accessorKey: "Product Names",
+    accessorKey: "Product Type",
 
     cell: ({ row }) => {
-      return row.original.productNames?.map((product) => {
+      return row.original.productType?.map((product) => {
         return <span>{product.name + ", "}</span>;
       });
     },
   },
-  {
-    accessorKey: "numberOfProducts",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Number of Products" />
-    ),
-  },
+
   {
     accessorKey: "status",
     header: ({ column }) => (

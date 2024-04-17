@@ -29,7 +29,6 @@ export const UseSingleCategoryQuery = (id) => {
   return useQuery({
     queryKey: ["single_category"],
     queryFn: async () => {
-      console.log(id);
       const res = await axios.get(
         `http://localhost:3000/api/productcatagory/${id}`
       );
@@ -38,11 +37,11 @@ export const UseSingleCategoryQuery = (id) => {
   });
 };
 
-// category registration
+// Add Brands to productNames of the Category
 export const useBrandRegisterQuery = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (newBrand, id) => {
+    mutationFn: ({ newBrand, id }) => {
       return axios.post(
         `http://localhost:3000/api/productcatagory/${id}`,
         newBrand

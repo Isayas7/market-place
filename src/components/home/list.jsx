@@ -114,7 +114,7 @@ export const menuItems2 = [
   },
 ];
 
-const List = () => {
+const List = ({ handleClick }) => {
   const { data: product_category, isLoading } = UseCategoryQuery();
 
   return (
@@ -128,14 +128,21 @@ const List = () => {
               </AccordionTrigger>
             </div>
 
-            {category.productNames?.map((cat, index) => (
+            {category.productType?.map((cat, index) => (
               <AccordionContent
                 key={index}
                 className="hover:bg-hovered px-2 w-full rounded-md flex items-center  text-palesky"
               >
                 <Link
                   className="w-full"
-                  href={`/${category.category}/${cat.name}`}
+                  href={{
+                    pathname: "/products",
+                    query: {
+                      categoryName: category.categoryName,
+                      productType: cat.name,
+                    },
+                  }}
+                  onClick={handleClick}
                 >
                   {cat.name}
                 </Link>

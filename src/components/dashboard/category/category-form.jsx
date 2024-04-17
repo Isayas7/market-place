@@ -15,7 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import { categorySchema } from "@/schema/user";
+import { categorySchema } from "@/validationschema/user";
 import { useCategoryRegisterQuery } from "@/hooks/use-product-category-query";
 import { useSession } from "next-auth/react";
 import CustomSingleImageIpload from "@/components/single-image-uploader";
@@ -33,7 +33,7 @@ const CategoryForm = () => {
     defaultValues: {
       categoryName: "",
       categoryImage: "",
-      productNames: [
+      productType: [
         {
           name: "",
           image: "",
@@ -49,8 +49,8 @@ const CategoryForm = () => {
   } = useCategoryRegisterQuery();
 
   const onSubmit = async (formValues) => {
-    console.log("formValues", formValues);
     registerCategory(formValues);
+    console.log(formValues);
   };
 
   if (isSuccess) {
@@ -72,7 +72,7 @@ const CategoryForm = () => {
     setTextFields(updatedFields);
     // Remove the corresponding default value
     const updatedDefaultValues = { ...form.getValues() };
-    updatedDefaultValues.productNames.splice(index, 1);
+    updatedDefaultValues.productType.splice(index, 1);
     form.reset(updatedDefaultValues);
   };
 
@@ -147,7 +147,7 @@ const CategoryForm = () => {
                 <div key={index} className="flex gap-2 items-center">
                   <FormField
                     control={form.control}
-                    name={`productNames[${index}].name`}
+                    name={`productType[${index}].name`}
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
@@ -163,7 +163,7 @@ const CategoryForm = () => {
                   />
                   <FormField
                     control={form.control}
-                    name={`productNames[${index}].image`}
+                    name={`productType[${index}].image`}
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>

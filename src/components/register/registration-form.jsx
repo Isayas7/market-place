@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { registerSchema } from "@/schema/user";
+import { registerSchema } from "@/validationschema/user";
 import { useMutation } from "react-query";
 import { useRouter } from "next/navigation";
 import axios from "axios";

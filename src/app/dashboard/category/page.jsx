@@ -15,7 +15,7 @@ const Category = () => {
           columns={category_columns}
           rendered="category"
           data={product_category?.data}
-          myparams="categoryName"
+          searchBy="categoryName"
         />
       </div>
     );

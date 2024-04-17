@@ -28,7 +28,7 @@ const Users = () => {
         </TabsList>
         <TabsContent value="account">
           {buyers ? (
-            <DataTable columns={columns} data={buyers?.data} myparams="email" />
+            <DataTable columns={columns} data={buyers?.data} searchBy="email" />
           ) : (
             <div className="flex items-center justify-center h-1/2">
               <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
@@ -40,7 +40,7 @@ const Users = () => {
             <DataTable
               columns={seller_column}
               data={sellers?.data}
-              myparams="email"
+              searchBy="email"
             />
           ) : (
             <div className="flex items-center justify-center h-1/2">
@@ -54,7 +54,7 @@ const Users = () => {
               columns={delivery_columns}
               rendered="delivery_personnel"
               data={delivery_personnels?.data}
-              myparams="email"
+              searchBy="email"
             />
           ) : (
             <div className="flex items-center justify-center h-1/2">

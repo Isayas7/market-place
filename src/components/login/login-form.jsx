@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signIn, useSession } from "next-auth/react";
-import { loginSchema } from "@/schema/user";
+import { loginSchema } from "@/validationschema/user";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {

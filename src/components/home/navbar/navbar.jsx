@@ -70,7 +70,6 @@ const Navbar = () => {
           <div className="flex items-center gap-5">
             {/* overlay */}
             <div
-              aria-disabled={open}
               className={`${
                 open
                   ? "fixed  top-[57px] inset-x-0 bottom-0  z-50 bg-black/60 "
@@ -88,11 +87,11 @@ const Navbar = () => {
 
               <div
                 className={`${
-                  open ? "block" : "hidden"
+                  open ? "flex" : "hidden"
                 } fixed z-50 flex bg-background pt-2 px-4  group  hover:overflow-y-scroll overflow-y-hidden   top-[57px] left-0 bottom-0 h-[calc(100vh-57px)] w-72 border-r border-slate-900/10 dark:border-slate-300/10`}
               >
                 <div className="w-full">
-                  <List />
+                  <List handleClick={() => setOpen(false)} />
                 </div>
                 <div className=" w-[8px]  group-hover:hidden  " />
               </div>
