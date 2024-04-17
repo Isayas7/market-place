@@ -6,7 +6,7 @@ import {
 import { TbReorder } from "react-icons/tb";
 import SidebarLink from "./sidebar-link";
 import { FaStore } from "react-icons/fa6";
-import { Drawer, DrawerContent } from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerOverlay } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -79,7 +79,13 @@ const Sidebar = ({ isCollapsed, open, setOpen }) => {
       </ul>
 
       <div className="xl:hidden">
-        <Drawer direction="left" open={open} onOpenChange={setOpen}>
+        <Drawer
+          direction="left"
+          open={open}
+          onOpenChange={setOpen}
+          className="left-0"
+        >
+          <DrawerOverlay className="fixed inset-0 z-50  bg-black/80" />
           <DrawerContent className="border-none overflow-y-scroll">
             <ul>
               <div className={`ml-3 py-4`}>

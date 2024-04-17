@@ -138,3 +138,16 @@ export const UseBanksQuery = () => {
     },
   });
 };
+
+// user or delivery personnel update
+export const UseChangePasswordQuery = () => {
+  return useMutation({
+    mutationFn: ({ values, id }) => {
+      console.log(values, id);
+      return axios.put(
+        `http://localhost:3000/api/changepassword/${id}`,
+        values
+      );
+    },
+  });
+};

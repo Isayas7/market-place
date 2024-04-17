@@ -19,7 +19,6 @@ export const POST = async (request) => {
 
   const hashedPassword = await bcrypt.hash(password, 5);
   const myrole = await Role.find({ name: "Buyer" });
-  console.log(myrole);
 
   const newUser = new User({
     password: hashedPassword,

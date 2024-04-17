@@ -150,3 +150,21 @@ export const roleSchema = z.object({
     message: "please enter role Name",
   }),
 });
+
+// registration validator
+export const passwordChange = z
+  .object({
+    current_password: z.string().min(2, {
+      message: "current password required",
+    }),
+    new_password: z.string().min(2, {
+      message: "new password required",
+    }),
+    confirm_password: z.string().min(2, {
+      message: "password required",
+    }),
+  })
+  .refine((data) => data.new_password === data.confirm_password, {
+    message: "Password don't match",
+    path: ["confirm_password"],
+  });
