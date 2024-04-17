@@ -12,7 +12,7 @@ const Main = ({ children }) => {
           ? "container h-full"
           : currentUrl.includes("dashboard")
           ? ""
-          : "container h-full"
+          : "container h-full pt-10 pb-5"
       }${
         currentUrl !== "/" &&
         currentUrl !== "/chat" &&

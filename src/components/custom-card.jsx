@@ -17,7 +17,7 @@ import { Card } from "./ui/card";
 
 export function CustomCard({ product, aspectRatio, className, ...props }) {
   return (
-    <Link href={`products/${product._id}`}>
+    <Link href={`/products/${product._id}`}>
       <Card
         className={cn(
           "space-y-3 relative rounded-sm overflow-hidden  border-none shadow",

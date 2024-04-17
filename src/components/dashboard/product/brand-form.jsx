@@ -60,7 +60,7 @@ const BrandForm = ({ searchParams }) => {
   };
 
   if (isSuccess) {
-    router.push("/dashboard/category");
+    router.push("/dashboard/product");
   }
 
   const addTextField = () => {

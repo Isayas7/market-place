@@ -43,8 +43,10 @@ export const permissions = {
 
 const admin = {
   firstName: "Isayas",
-  lastName: "Melkamu",
+  middleName: "Melkamu",
   email: "isaias@gmail.com",
+  password: "1234",
+  _id: "123456789",
   permissions: Object.values(permissions).reduce(
     (acc, val) => acc.concat(val),
     []

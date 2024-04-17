@@ -7,6 +7,7 @@ import User from "@/models/User";
 import connect from "@/utils/db";
 import { loginSchema } from "@/validationschema/user";
 import Role from "@/models/Role";
+import admin from "@/utils/permission";
 
 const handler = NextAuth({
   providers: [
@@ -29,13 +30,20 @@ const handler = NextAuth({
           throw new Error("Invalid Credentials!");
         }
 
+        if (
+          credentials.email === admin.email &&
+          credentials.password === admin.password
+        ) {
+          const user = admin;
+          return user;
+        }
+
         await connect();
 
         try {
           const user = await User.findOne({
             email: credentials.email,
           });
-
           if (user) {
             const isPasswordCorrect = await bcrypt.compare(
               credentials.password,
@@ -62,9 +70,15 @@ const handler = NextAuth({
     },
     jwt: async ({ token }) => {
       const user = await User.findOne({ email: token?.email });
-      token.id = user._id;
-      token.name = user.firstName + " " + user.middleName;
-      return token;
+      if (user) {
+        token.id = user._id;
+        token.name = user.firstName + " " + user.middleName;
+        return token;
+      } else if (token?.email === admin.email) {
+        token.id = admin._id;
+        token.name = admin.firstName + " " + admin.middleName;
+        return token;
+      }
     },
     async signIn({ account, profile }) {
       if (account.provider === "credentials") {

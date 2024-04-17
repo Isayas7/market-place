@@ -5,6 +5,11 @@ const { Schema } = mongoose;
 
 const productSchema = new Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ProductCategory",
