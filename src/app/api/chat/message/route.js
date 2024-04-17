@@ -5,8 +5,6 @@ import { NextResponse } from "next/server";
 export const POST = async (request) => {
   const values = await request.json();
 
-  console.log(values);
-
   await connect();
 
   const message = new Message(values);

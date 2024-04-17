@@ -3,7 +3,7 @@ import Image from "next/image";
 const ProfileHeader = ({ name, bio, profilePicture, backgroundImage }) => {
   return (
     <div className="relative p-1">
-      <div className="absolute bottom-[-40px] right-40">
+      <div className="absolute bottom-[0px] right-20 bg-white dark:bg-mirage p-4 rounded-sm">
         <Image
           src={profilePicture}
           alt={`${name}'s profile picture`}

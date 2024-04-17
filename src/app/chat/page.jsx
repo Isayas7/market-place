@@ -19,18 +19,21 @@ const Chat = () => {
   const [currentConversation, setCurrentConversation] = useState("");
   const [receiverId, setReceiverId] = useState("");
   const [text, setText] = useState("");
-  const [isSent, setIsSent] = useState(false);
   const [onlineUser, setOnlneUser] = useState([]);
   const [isHidden, setIsHidden] = useState(true);
+  const [arrivalMessage, setArrivalMessage] = useState(null);
   const socket = useRef();
   const session = useSession();
   const route = useRouter();
 
   useEffect(() => {
     socket.current = io("ws://localhost:8900");
-    socket.current.on("getMessage", () => {
-      console.log("sent");
-      setIsSent(currentConversation);
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        createdAt: Date.now(),
+      });
     });
   }, []);
 
@@ -63,7 +66,11 @@ const Chat = () => {
     };
 
     sendMessage(message);
-    socket?.current.emit("sendMessage", { receiverId });
+    socket?.current.emit("sendMessage", {
+      senderId: session?.data.user.id,
+      receiverId,
+      text,
+    });
     setText("");
   };
 
@@ -78,7 +85,7 @@ const Chat = () => {
   };
 
   return (
-    <Card className="flex  my-3 relative    h-[calc(100vh-81px)] overflow-hidden ">
+    <Card className="flex  my-3 relative h-[calc(100vh-81px)] overflow-hidden ">
       <div
         className={`w-64 xl:w-1/4 border-r-2 p-3  ${
           isHidden
@@ -138,7 +145,7 @@ const Chat = () => {
                       ? user.user.name.split(" ")[0]
                       : user.user.name
                   }
-                  onClick={() => setCurrentConversation(user.user.id)}
+                  onClick={() => setCurrentConversation(currentConversation)}
                 />
               )
           )}
@@ -151,7 +158,7 @@ const Chat = () => {
           {currentConversation ? (
             <Message
               currentConversation={currentConversation}
-              message={isSent}
+              arrivalMessage={arrivalMessage}
             />
           ) : (
             <div className="text-4xl mt-[20%] text-center text-gray-300 dark:text-gray-500">
@@ -160,7 +167,7 @@ const Chat = () => {
           )}
         </div>
         <div className="flex gap-2 border-t-2 h-[10%]  items-center ">
-          <textarea
+          <input
             onChange={(e) => setText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={"Type message"}

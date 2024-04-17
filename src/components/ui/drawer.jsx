@@ -31,11 +31,11 @@ DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 const DrawerContent = React.forwardRef(
   ({ className, children, ...props }, ref) => (
     <DrawerPortal>
-      <DrawerOverlay />
+      {/* <DrawerOverlay /> */}
       <DrawerPrimitive.Content
         ref={ref}
         className={cn(
-          "fixed inset-y-0 left-0 z-50  flex h-auto flex-col w-[17.5rem]  border bg-background",
+          "fixed inset-y-0  z-50  flex h-auto flex-col w-[17.5rem]  border bg-background",
           className
         )}
         {...props}

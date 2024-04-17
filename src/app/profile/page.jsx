@@ -24,14 +24,14 @@ export default function Profile() {
         <Tabs defaultValue="personal-info" className="w-full">
           <TabsList>
             <TabsTrigger value="personal-info">
-              <ImProfile />
+              <ImProfile className="mr-2" />
               Personal Info
             </TabsTrigger>
             <TabsTrigger value="setting">
-              <IoSettingsOutline /> Setting
+              <IoSettingsOutline className="mr-2" /> Setting
             </TabsTrigger>
             <TabsTrigger value="security">
-              <MdOutlineSecurity /> Security
+              <MdOutlineSecurity className="mr-2" /> Security
             </TabsTrigger>
           </TabsList>
           <TabsContent value="personal-info">

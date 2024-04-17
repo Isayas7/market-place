@@ -13,83 +13,102 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
+import { passwordChange } from "@/schema/user";
+import { UseChangePasswordQuery } from "@/hooks/use-users-query";
+import { useSession } from "next-auth/react";
 
 function Security() {
-  const form = useForm();
+  const session = useSession();
 
-  const onSubmit = () => {};
+  const form = useForm({
+    resolver: zodResolver(passwordChange),
+    defaultValues: {
+      current_password: "",
+      new_password: "",
+      confirm_password: "",
+    },
+  });
+
+  const { mutate: changePassword, isSuccess } = UseChangePasswordQuery();
+
+  const onSubmit = async (passwordInformation) => {
+    const id = session.data.user.id;
+    console.log(passwordInformation, id);
+    changePassword({ passwordInformation, id });
+  };
 
   return (
-    <div className="flex justify-center">
-      <Card className="w-full max-w-md">
+    <div className="w-full flex justify-center items-center p-2">
+      <Card className="w-full  pt-4 align-middle ">
         <CardContent>
-          <Form {...form} className="flex flex-col items-center">
-            <FormField
-              control={form.control}
-              name="currentPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Current Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Current password"
-                      {...field}
-                      className="w-full px-3 py-2 rounded-md border border-green-300 focus:ring-opacity-50"
-                      style={{ minWidth: "300px" }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="newPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>New Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="New password"
-                      {...field}
-                      className="w-full px-3 py-2 rounded-md border border-green-300 focus:ring-opacity-50"
-                      style={{ minWidth: "300px" }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Confirm password"
-                      {...field}
-                      className="w-full px-3 py-2 rounded-md border border-green-300 focus:ring-opacity-50"
-                      style={{ minWidth: "300px" }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="align-middle">
-              Submit
-            </Button>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col space-y-2 "
+            >
+              <FormField
+                control={form.control}
+                name="current_password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Current Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Current password"
+                        {...field}
+                        className="w-full px-3 py-2 rounded-md border border-green-300 focus:ring-opacity-50"
+                        style={{ minWidth: "300px" }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="new_password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>New Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="New password"
+                        {...field}
+                        className="w-full px-3 py-2 rounded-md border border-green-300 focus:ring-opacity-50"
+                        style={{ minWidth: "300px" }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="confirm_password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Confirm password"
+                        {...field}
+                        className="w-full px-3 py-2 rounded-md border border-green-300 focus:ring-opacity-50"
+                        style={{ minWidth: "300px" }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="w-full flex items-end justify-end">
+                <Button type="submit" className="max-w-fit">
+                  Save
+                </Button>
+              </div>
+            </form>
           </Form>
         </CardContent>
       </Card>

@@ -5,7 +5,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useSession } from "next-auth/react";
 import { format } from "timeago.js";
 
-const Message = ({ currentConversation, message }) => {
+const Message = ({ currentConversation, arrivalMessage }) => {
   const session = useSession();
   const messagesEndRef = useRef(null);
 
@@ -19,7 +19,7 @@ const Message = ({ currentConversation, message }) => {
     if (currentConversation) {
       refetchChat();
     }
-  }, [currentConversation, message]);
+  }, [currentConversation, arrivalMessage]);
 
   // Scroll to the end of messages when chat or currentConversation changes
   useEffect(() => {
