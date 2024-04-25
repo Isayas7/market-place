@@ -168,3 +168,21 @@ export const passwordChange = z
     message: "Password don't match",
     path: ["confirm_password"],
   });
+
+export const wathdrawalform = z.object({
+  name: z.string().min(2, {
+    message: "account holder name required",
+  }),
+  bankinfo: z.string().min(2, {
+    message: "bank infromation required",
+  }),
+  accountNumber: z.string().min(2, {
+    message: "account number required",
+  }),
+  amount: z.string().min(2, {
+    message: "amount required in ETB",
+  }),
+  remark: z.string().min(2, {
+    message: "Remark required",
+  }),
+});

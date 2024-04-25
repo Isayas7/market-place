@@ -16,7 +16,6 @@ const Users = () => {
   const { data: buyers } = UseBuyersQuery();
   const { data: sellers } = UseSellersQuery();
   const { data: delivery_personnels } = UseDPsQuery();
-  console.log(buyers?.data);
 
   return (
     <div>

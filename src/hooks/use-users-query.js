@@ -107,34 +107,22 @@ export const useStorefrontCreationQuery = () => {
   });
 };
 
-// get all user
-export const UseBanksQuery = () => {
-  const config = {
-    headers: {
-      Authorization: "Bearer CHASECK_TEST-1x94uO95pov8QpnzHXI1bNgUl6FwLMyH",
-      "Content-Type": "application/json",
-    },
-  };
-
+// get all banks
+export const UseBankQuery = () => {
   return useQuery({
-    queryKey: ["banks"],
+    queryKey: ["bank"],
     queryFn: async () => {
-      var myHeaders = new Headers();
-      myHeaders.append(
-        "Authorization",
-        "Bearer CHASECK_TEST-1x94uO95pov8QpnzHXI1bNgUl6FwLMyH"
-      );
+      const res = await axios.get("http://localhost:3000/api/bank");
+      return res;
+    },
+  });
+};
 
-      var requestOptions = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow",
-      };
-
-      await fetch("https://api.chapa.co/v1/banks", requestOptions)
-        .then((response) => response.text())
-        .then((result) => console.log(result))
-        .catch((error) => console.log("error", error));
+// withdrawal post
+export const useWithdrawalQuery = () => {
+  return useMutation({
+    mutationFn: (transfer) => {
+      return axios.post("http://localhost:3000/api/bank", transfer);
     },
   });
 };

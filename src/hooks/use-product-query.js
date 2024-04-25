@@ -42,3 +42,12 @@ export const useProductCreateQuery = () => {
     },
   });
 };
+
+export const usePayQuery = () => {
+  return useMutation({
+    mutationFn: async (payment) => {
+      const res = await axios.post("http://localhost:3000/api/pay", payment);
+      return res;
+    },
+  });
+};

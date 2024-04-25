@@ -15,11 +15,17 @@ import { deliveryPersonnelSchema } from "@/validationschema/user";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { UseBanksQuery, useDPRegisterQuery } from "@/hooks/use-users-query";
+import { UseBankQuery, useDPRegisterQuery } from "@/hooks/use-users-query";
 import { useRouter } from "next/navigation";
-import { BsPaperclip } from "react-icons/bs";
 
 import { useSession } from "next-auth/react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const NewDeliveryPersonnelForm = () => {
   const [selectedIdCard, setSelectedIdCardImage] = useState(null);
@@ -45,7 +51,7 @@ const NewDeliveryPersonnelForm = () => {
   });
 
   const { mutate: registerDP, isSuccess, isLoading } = useDPRegisterQuery();
-  const { data: banks } = UseBanksQuery();
+  const { data: banks } = UseBankQuery();
 
   const onSubmit = async (formValues) => {
     const formData = new FormData();
@@ -59,8 +65,6 @@ const NewDeliveryPersonnelForm = () => {
   if (isSuccess) {
     router.push("/dashboard/user");
   }
-
-  console.log(banks);
 
   return (
     <div className="flex flex-col md:flex-row gap-5">
@@ -236,23 +240,36 @@ const NewDeliveryPersonnelForm = () => {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="bankInfo"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Bank</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="bank information"
-                          {...field}
-                        />
-                      </FormControl>
+                      <FormLabel>Choose Bank</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Bank" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {banks?.data?.data?.map((bank) => (
+                            <SelectItem key={bank.id} value={bank.id}>
+                              {bank.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="accountNumber"

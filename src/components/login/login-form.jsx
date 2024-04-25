@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { signIn, useSession } from "next-auth/react";
 import { loginSchema } from "@/validationschema/user";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginForm() {
   const session = useSession();
@@ -75,6 +76,12 @@ export default function LoginForm() {
               </FormItem>
             )}
           />
+          <Link
+            href="login/forgotpassword"
+            className="text-jade underline text-sm"
+          >
+            Forgot password?
+          </Link>
         </div>
 
         <Button
