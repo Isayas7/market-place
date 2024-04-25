@@ -16,12 +16,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { statusData } from "@/utils/permission";
 import { useCallback, useEffect, useState } from "react";
 
-export const Filter = ({ dataInfo, filter, rendered, clear, setClear }) => {
+const SellectForFilter = ({ dataInfo, filter, rendered, clear, setClear }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const router = useRouter();
@@ -154,3 +153,5 @@ export const Filter = ({ dataInfo, filter, rendered, clear, setClear }) => {
     </Popover>
   );
 };
+
+export default SellectForFilter;

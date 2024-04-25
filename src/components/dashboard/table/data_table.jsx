@@ -32,7 +32,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import usePermissionStore from "@/store/role-store";
 import { useRoleUpdateQuery } from "@/hooks/use-role-query";
-import { Filter } from "@/components/filter";
+import SellectForFilter from "@/components/select-for-filter";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -104,7 +104,7 @@ export function DataTable({
           <span>Filter By: </span>
           {(rendered === "category" || rendered === "product") && (
             <>
-              <Filter
+              <SellectForFilter
                 clear={clear}
                 setClear={setClear}
                 rendered="category"
@@ -114,7 +114,7 @@ export function DataTable({
             </>
           )}
 
-          <Filter
+          <SellectForFilter
             clear={clear}
             setClear={setClear}
             rendered="all"
