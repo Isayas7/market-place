@@ -15,12 +15,12 @@ import {
 } from "./ui/dropdown-menu";
 import { Card } from "./ui/card";
 
-export function CustomCard({ product, aspectRatio, className, ...props }) {
+export const CustomCard = ({ product, aspectRatio, className, ...props }) => {
   return (
     <Link href={`/products/${product._id}`}>
       <Card
         className={cn(
-          "space-y-3 relative rounded-sm overflow-hidden  border-none shadow",
+          "space-y-3 relative rounded-sm overflow-hidden h-full  border-none shadow",
           className
         )}
         {...props}
@@ -28,21 +28,21 @@ export function CustomCard({ product, aspectRatio, className, ...props }) {
         <div>
           <Image
             src={product.productImage[0]}
-            alt={product.productName}
+            alt={product.title}
             width={700}
             height={800}
             className={cn(
-              "w-full object-cover transition-all hover:scale-105",
+              "w-full h-full object-cover transition-all hover:scale-105",
               aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
             )}
           />
         </div>
 
         <div className="space-y-1 text-sm px-2 py-1">
-          <h3 className="font-medium leading-none">{product.productName}</h3>
+          <h3 className="font-medium leading-none">{product.title}</h3>
           <p className="text-xs text-muted-foreground">{product.price}</p>
         </div>
-        <div className="absolute top-0 right-0">
+        {/* <div className="absolute top-0 right-0">
           <DropdownMenu>
             <DropdownMenuTrigger className="p-2">
               <CiMenuKebab className=" text-2xl text-white  bg-transparent/40 hover:bg-transparent/80 rounded-full " />
@@ -56,8 +56,8 @@ export function CustomCard({ product, aspectRatio, className, ...props }) {
               <DropdownMenuItem>Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+        </div> */}
       </Card>
     </Link>
   );
-}
+};

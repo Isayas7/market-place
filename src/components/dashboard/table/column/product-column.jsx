@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { statusData } from "@/utils/permission";
 
 export const product_columns = [
   {
@@ -68,22 +69,36 @@ export const product_columns = [
     },
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="product Name" />
+      <DataTableColumnHeader column={column} title="variants" />
     ),
   },
   {
     accessorKey: "brands",
-    cell: ({ row }) => {
-      return row.original.brands?.map((b) => {
-        return <span>{b.name + ", "}</span>;
-      });
-    },
+
+    cell: ({ row }) => (
+      <div className="flex gap-2 items-center">
+        {row.original.brands?.map((brand, index) => (
+          <>
+            <span key={index}>{brand?.name}</span>
+            <span className="border-r-[0.5px] h-4" />
+          </>
+        ))}
+      </div>
+    ),
   },
   {
     accessorKey: "status",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
+    cell: ({ row }) => {
+      const status = row.original.status;
+      if (status === statusData.Active) {
+        return <Badge>Active</Badge>;
+      } else {
+        return <Badge variant="destructive">Banned</Badge>;
+      }
+    },
   },
   {
     accessorKey: "creator",
@@ -100,7 +115,7 @@ export const product_columns = [
             pathname: "product/new",
             query: {
               categoryName: row.original.categoryName,
-              productType: row.original.name,
+              variants: row.original.name,
             },
           }}
         >
@@ -113,14 +128,6 @@ export const product_columns = [
     id: "actions",
     cell: ({ row }) => {
       const category = row.original;
-      const router = useRouter();
-
-      const handleUpdateClick = () => {
-        router.push(`category/update/${category._id}`);
-      };
-      const handleViewClick = () => {
-        router.push(`category/view/${category._id}`);
-      };
 
       return (
         <DropdownMenu>
@@ -133,11 +140,14 @@ export const product_columns = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-            <DropdownMenuItem onClick={handleViewClick}>View </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleUpdateClick}>
-              Update
-            </DropdownMenuItem>
-            {/* <DropdownMenuSeparator /> */}
+            <Link href={`category/view/${category._id}`}>
+              <DropdownMenuItem>View</DropdownMenuItem>
+            </Link>
+
+            <Link href={`category/update/${category._id}`}>
+              <DropdownMenuItem>Update</DropdownMenuItem>
+            </Link>
+
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(user.id)}
             >

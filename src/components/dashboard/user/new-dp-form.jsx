@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+"use client";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -12,278 +11,192 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { deliveryPersonnelSchema } from "@/validationschema/user";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FaCloudUploadAlt } from "react-icons/fa";
-import { UseBanksQuery, useDPRegisterQuery } from "@/hooks/use-users-query";
-import { useRouter } from "next/navigation";
-import { BsPaperclip } from "react-icons/bs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-import { useSession } from "next-auth/react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useRouter } from "next/navigation";
+import { deliveryPersonnelsForm } from "@/form/form-data";
+import {
+  UseBankQuery,
+  UseBanksQuery,
+  useUserRegisterQuery,
+} from "@/hooks/use-users-query";
+import CustomSingleImageIpload from "@/components/single-image-uploader";
+import { roleData } from "@/utils/permission";
 
 const NewDeliveryPersonnelForm = () => {
-  const [selectedIdCard, setSelectedIdCardImage] = useState(null);
-  const [selectedId, setSelectedIdImage] = useState(null);
-
   const router = useRouter();
-  const session = useSession();
+
+  const { mutate: registerDP, isSuccess, isLoading } = useUserRegisterQuery();
+  const { data: banks } = UseBankQuery();
 
   const form = useForm({
     resolver: zodResolver(deliveryPersonnelSchema),
     defaultValues: {
+      profileImage: "",
       firstName: "",
       middleName: "",
       lastName: "",
       email: "",
       address: "",
-      identificationCard: null,
-      nationalId: null,
+      identificationCard: "",
+      nationalId: "",
       phoneNumber: "",
       bankInfo: "",
       accountNumber: "",
     },
   });
 
-  const { mutate: registerDP, isSuccess, isLoading } = useDPRegisterQuery();
-  const { data: banks } = UseBanksQuery();
-
-  const onSubmit = async (formValues) => {
-    const formData = new FormData();
-    for (const key in formValues) {
-      formData.append(key, formValues[key]);
-    }
-    formData.append("selectedIdCard", selectedIdCard);
-    formData.append("selectedId", selectedId);
-    registerDP(formData);
+  const onSubmit = (formValues) => {
+    formValues.password = "1234";
+    formValues.role = roleData.Personnel_Delivery;
+    registerDP(formValues);
   };
-  if (isSuccess) {
-    router.push("/dashboard/user");
+
+  let tab;
+  if (typeof localStorage !== "undefined") {
+    tab = localStorage.getItem("tab");
   }
 
-  console.log(banks);
-
+  if (isSuccess) {
+    router.replace(`/dashboard/user?role=${tab}`);
+  }
   return (
-    <div className="flex flex-col md:flex-row gap-5">
-      <Card className=" w-full md:w-2/5 ">
-        <CardContent className="flex justify-center items-center mt-24  ">
-          <div className=" size-36 flex justify-center items-center p-3 rounded-full   border  dark:border-gray-600 border-dashed">
-            <Button className="size-28 rounded-full  flex-col justify-center items-center ">
-              <div>
-                <FaCloudUploadAlt className="size-8" />
-              </div>
-              <p className="text-xs">upload photo</p>
-            </Button>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="flex flex-col md:flex-row gap-5">
+          <div className=" w-full  md:w-2/5 flex flex-col  gap-5">
+            <Card className=" py-4 w-full   h-fit flex  flex-col items-center ">
+              <FormField
+                control={form.control}
+                name="profileImage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <CustomSingleImageIpload
+                        name="Uplaod profile Image"
+                        value={field.value}
+                        onChange={(url) => field.onChange(url)}
+                        onRemove={() => field.onChange("")}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-500" />
+                  </FormItem>
+                )}
+              />
+            </Card>
+            <Card className=" py-4 w-full  h-fit flex  flex-col items-center ">
+              <FormField
+                control={form.control}
+                name="identificationCard"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <CustomSingleImageIpload
+                        name="Upload Identification Card"
+                        value={field.value}
+                        onChange={(url) => field.onChange(url)}
+                        onRemove={() => field.onChange("")}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-500" />
+                  </FormItem>
+                )}
+              />
+            </Card>
+            <Card className="py-4 w-full   h-fit flex  flex-col items-center ">
+              <FormField
+                control={form.control}
+                name="nationalId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <CustomSingleImageIpload
+                        name="Upload National Id"
+                        value={field.value}
+                        onChange={(url) => field.onChange(url)}
+                        onRemove={() => field.onChange("")}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-500" />
+                  </FormItem>
+                )}
+              />
+            </Card>
           </div>
-        </CardContent>
-        <CardContent className="flex justify-center items-center">
-          <p className="text-xs">upload photo</p>
-        </CardContent>
-      </Card>
-      <div className=" w-full md:w-3/5 ">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <Card className=" grid grid-cols-1 sm:grid-cols-2 sm:gap-5 p-7">
-              <div>
+
+          <div className=" w-full md:w-3/5 space-y-8 ">
+            <Card className=" grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 p-7    ">
+              {deliveryPersonnelsForm.map((item, index) => (
                 <FormField
+                  key={index}
                   control={form.control}
-                  name="firstName"
+                  name={item.name}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>First Name</FormLabel>
+                      <FormLabel>{item.label}</FormLabel>
                       <FormControl>
                         <Input
                           className="p-3"
-                          placeholder="first name"
+                          type={item.type}
+                          placeholder={item.placeholder}
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-500" />
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="middleName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Middle Name</FormLabel>
+              ))}
+              <FormField
+                control={form.control}
+                name="bankInfo"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Choose Bank</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="middle name"
-                          {...field}
-                        />
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Bank" />
+                        </SelectTrigger>
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="lastName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Last Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="lastName"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="examle@gmail.com"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="address"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Address</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="address"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div>
-                <FormField
-                  control={form.control}
-                  name="identificationCard"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Identification Card</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          className="p-3"
-                          id="fileInput"
-                          onBlur={field.onBlur}
-                          name={field.name}
-                          onChange={(e) => {
-                            field.onChange(e.target.files);
-                            setSelectedIdCardImage(e.target.files?.[0] || null);
-                          }}
-                          ref={field.ref}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="nationalId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>National Id</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          className="p-3"
-                          id="fileInput"
-                          onBlur={field.onBlur}
-                          name={field.name}
-                          onChange={(e) => {
-                            field.onChange(e.target.files);
-                            setSelectedIdImage(e.target.files?.[0] || null);
-                          }}
-                          ref={field.ref}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="phoneNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="phone number"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="bankInfo"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Bank</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="bank information"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="accountNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Account Number</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="account number"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                      <SelectContent>
+                        {banks?.data?.data?.map((bank) => (
+                          <SelectItem key={bank.id} value={bank.id}>
+                            {bank.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </Card>
 
-            <Button
-              disabled={isLoading}
-              className="w-full ml-auto text-xl"
-              type="submit"
-            >
-              Submit
+            <Button className="w-full ml-auto text-xl" type="submit">
+              {isLoading ? (
+                <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
+              ) : (
+                "Submit"
+              )}
             </Button>
-          </form>
-        </Form>
-      </div>
-    </div>
+          </div>
+        </div>
+      </form>
+    </Form>
   );
 };
 

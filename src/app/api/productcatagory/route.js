@@ -3,9 +3,15 @@ import connect from "@/utils/db";
 import { NextResponse } from "next/server";
 
 export const GET = async (request) => {
+  const { searchParams } = new URL(request.url);
+  let query = {};
+
+  searchParams.forEach((value, key) => {
+    query[key] = value;
+  });
   try {
     await connect();
-    const productCategories = await ProductCategory.find();
+    const productCategories = await ProductCategory.find(query);
 
     return new NextResponse(JSON.stringify(productCategories), { status: 200 });
   } catch (error) {

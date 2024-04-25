@@ -3,26 +3,6 @@ import { create } from "zustand";
 const usePermissionStore = create((set) => {
   return {
     permission: [],
-    // updateMyPermission: (name, mypermission) => {
-    //   set((state) => {
-    //     const permissions = [...state.permission];
-    //     const index = permissions.findIndex((role) => role.name === name);
-
-    //     if (index !== -1) {
-    //       permissions[index] = {
-    //         ...permissions[index],
-    //         permission: [
-    //           ...(permissions[index].permission || []),
-    //           mypermission,
-    //         ],
-    //       };
-    //     } else {
-    //       const newRole = { name, permission: [mypermission] };
-    //       permissions.push(newRole);
-    //     }
-    //     return { permission: permissions };
-    //   });
-    // },
     updatePermission: (role, permission, isChecked) => {
       set((state) => {
         const updatedPermission = { ...state.updatedPermission };
@@ -43,8 +23,6 @@ const usePermissionStore = create((set) => {
             ];
           }
         }
-
-        console.log(updatedPermission, isChecked);
 
         return { updatedPermission };
       });

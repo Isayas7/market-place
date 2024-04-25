@@ -8,7 +8,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Message from "@/components/chat/message-card";
 import { GrAttachment } from "react-icons/gr";
 import { useSession } from "next-auth/react";
-import { UseConversationQuery, UseSendMessage } from "@/hooks/use-chat-query";
+import { UseConversationQuery, useSendMessage } from "@/hooks/use-chat-query";
 import { useRouter } from "next/navigation";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import OnlineCustomer from "@/components/chat/online-customer";
@@ -26,6 +26,9 @@ const Chat = () => {
   const session = useSession();
   const route = useRouter();
 
+  const { mutate: sendMessage, isSuccess, isLoading } = useSendMessage();
+  const { data: conversation } = UseConversationQuery();
+
   useEffect(() => {
     socket.current = io("ws://localhost:8900");
     socket.current.on("getMessage", (data) => {
@@ -38,13 +41,11 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    socket?.current.emit("addUser", session?.data.user);
+    socket?.current.emit("addUser", session?.data?.user);
     socket?.current.on("getUsers", (users) => {
       setOnlneUser(users);
     });
   }, [session]);
-
-  const { data: conversation } = UseConversationQuery();
 
   if (session.status === "unauthenticated") {
     route.replace("/");
@@ -56,18 +57,17 @@ const Chat = () => {
       </div>
     );
   }
-  const { mutate: sendMessage, isSuccess, isLoading } = UseSendMessage();
 
   const handleSubmit = () => {
     const message = {
-      sender: session?.data.user.id,
+      sender: session?.data?.user.id,
       text: text,
       conversationId: currentConversation,
     };
 
     sendMessage(message);
     socket?.current.emit("sendMessage", {
-      senderId: session?.data.user.id,
+      senderId: session?.data?.user.id,
       receiverId,
       text,
     });
@@ -136,14 +136,14 @@ const Chat = () => {
           />
           {onlineUser.map(
             (user) =>
-              user.user.id !== session.data.user.id && (
+              user?.user?.id !== session?.data?.user?.id && (
                 <OnlineCustomer
                   src="https://github.com/shadcn.png"
                   alt="@shadcn"
                   name={
-                    user.user.name.includes(" ")
-                      ? user.user.name.split(" ")[0]
-                      : user.user.name
+                    user?.user?.name?.includes(" ")
+                      ? user?.user?.name.split(" ")[0]
+                      : user?.user?.name
                   }
                   onClick={() => setCurrentConversation(currentConversation)}
                 />

@@ -18,14 +18,14 @@ const productSchema = new Schema(
       type: [String],
       required: true,
     },
-    productType: {
+    variants: {
       type: String,
       required: true,
     },
     brand: {
       type: String,
     },
-    productName: {
+    title: {
       type: String,
       required: true,
     },

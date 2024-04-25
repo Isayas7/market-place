@@ -1,13 +1,18 @@
 "use client";
-import { listenNowAlbums } from "@/app/page";
 import { CustomCard } from "@/components/custom-card";
-import { Price } from "@/components/productdetail/Price";
-import { ProductDesc } from "@/components/productdetail/ProductDesc";
-import { ProductImage } from "@/components/productdetail/ProductImage";
-import { UseSingleProductQuery } from "@/hooks/use-product-query";
+import { Price } from "@/components/products/productdetail/Price";
+import { ProductDesc } from "@/components/products/productdetail/ProductDesc";
+import { ProductImage } from "@/components/products/productdetail/ProductImage";
+import {
+  UseSingleProductQuery,
+  useSimilarProducQuery,
+} from "@/hooks/use-product-query";
 
 export default function SingleProduct({ params }) {
-  const { data: product, isLoading } = UseSingleProductQuery(params.productId);
+  const { data: product, isLoading } = UseSingleProductQuery(params.id);
+  const { data: similarProduct, isLoading: isFetching } = useSimilarProducQuery(
+    product?.data?.variants
+  );
 
   return (
     <>
@@ -28,15 +33,13 @@ export default function SingleProduct({ params }) {
       <div className=" mt-6">
         <h3 className="text-2xl">Similar products</h3>
         <div className="grid  grid-cols-2  md:grid-cols-3 lg:grid-cols-4  gap-5">
-          {/* {listenNowAlbums.map((album) => (
+          {similarProduct?.data?.map((product, index) => (
             <CustomCard
-              key={album.name}
-              album={album}
+              key={index}
+              product={product}
               className="cursor-pointer"
-              width={250}
-              height={330}
             />
-          ))} */}
+          ))}
         </div>
       </div>
     </>

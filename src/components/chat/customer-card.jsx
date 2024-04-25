@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card } from "../ui/card";
 
 export function CustomerCard({ name, time, message, onClick, isActive }) {
   return (

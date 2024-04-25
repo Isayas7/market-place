@@ -4,7 +4,13 @@ import Image from "next/image";
 import { XIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const CustomSingleImageIpload = ({ className, value, onChange, onRemove }) => {
+const CustomSingleImageIpload = ({
+  className,
+  value,
+  onChange,
+  name,
+  onRemove,
+}) => {
   const onUpload = (result) => {
     onChange(result.info.secure_url);
   };
@@ -38,7 +44,7 @@ const CustomSingleImageIpload = ({ className, value, onChange, onRemove }) => {
             <CldUploadWidget uploadPreset="tzsilibg" onUpload={onUpload}>
               {({ open }) => (
                 <button type="button" onClick={open}>
-                  Upload Image
+                  {name}
                 </button>
               )}
             </CldUploadWidget>

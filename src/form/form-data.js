@@ -11,35 +11,58 @@ export const StoreFrontCrationForm = [
     placeholder: "address",
     type: "text",
   },
-  {
-    name: "location",
-    label: "your Location",
-    placeholder: "Mexico",
-    type: "text",
-  },
-  {
-    name: "identificationCard",
-    label: "Identification Card",
-    placeholder: "Id card",
-    type: "file",
-  },
-  {
-    name: "nationalId",
-    label: "National ID",
-    placeholder: "national Id",
-    type: "file",
-  },
+
   {
     name: "phoneNumber",
     label: "Phone Number",
     placeholder: "0987654321",
     type: "tel",
   },
+
   {
-    name: "bankInfo",
-    label: "Bank",
-    placeholder: "bank",
+    name: "accountNumber",
+    label: "Account Number",
+    placeholder: "account number",
     type: "text",
+  },
+];
+
+export const deliveryPersonnelsForm = [
+  {
+    name: "firstName",
+    label: "First Name",
+    placeholder: "firstName",
+    type: "text",
+  },
+  {
+    name: "middleName",
+    label: "Middle Name",
+    placeholder: "middleName",
+    type: "text",
+  },
+  {
+    name: "lastName",
+    label: "Last Name",
+    placeholder: "lastName",
+    type: "text",
+  },
+  {
+    name: "email",
+    label: "Your Email",
+    placeholder: "example@gmail.com",
+    type: "email",
+  },
+  {
+    name: "address",
+    label: "Your Address",
+    placeholder: "address",
+    type: "text",
+  },
+  {
+    name: "phoneNumber",
+    label: "Phone Number",
+    placeholder: "0987654321",
+    type: "tel",
   },
   {
     name: "accountNumber",
@@ -51,9 +74,9 @@ export const StoreFrontCrationForm = [
 
 export const ProductForm = [
   {
-    name: "productName",
-    label: "Product Name",
-    placeholder: "product name",
+    name: "title",
+    label: "Title",
+    placeholder: "title",
     type: "text",
   },
   {
@@ -66,29 +89,7 @@ export const ProductForm = [
   {
     name: "model",
     label: "Model",
-    placeholder: "Model",
-    type: "text",
-  },
-];
-
-export const SellectProductForm = [
-  {
-    name: "categoryId",
-    label: "Category",
-    placeholder: "Sellect Category",
-    type: "text",
-  },
-
-  {
-    name: "productType",
-    label: "Product Type",
-    placeholder: "Sellect Prodct type",
-    type: "text",
-  },
-  {
-    name: "brand",
-    label: "Brand",
-    placeholder: "Sellect Brand",
+    placeholder: "model",
     type: "text",
   },
 ];

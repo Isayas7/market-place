@@ -2,30 +2,26 @@
 
 import { DataTable } from "@/components/dashboard/table/data_table";
 import { category_columns } from "@/components/dashboard/table/column/category-column";
-import { UseCategoryQuery } from "@/hooks/use-product-category-query";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import {
+  UseCategoryQuery,
+  useCategoryDataQuery,
+} from "@/hooks/use-product-category-query";
 
 const Category = () => {
   const { data: product_category, isLoading } = UseCategoryQuery();
+  const { data: category_data, isFetching } = useCategoryDataQuery();
 
-  if (product_category) {
-    return (
-      <div>
-        <DataTable
-          columns={category_columns}
-          rendered="category"
-          data={product_category?.data}
-          searchBy="categoryName"
-        />
-      </div>
-    );
-  } else {
-    return (
-      <div className="flex items-center justify-center h-1/2">
-        <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <DataTable
+        columns={category_columns}
+        rendered="category"
+        data={product_category?.data}
+        dataInfo={category_data?.data}
+        searchBy="categoryName"
+      />
+    </div>
+  );
 };
 
 export default Category;

@@ -1,16 +1,9 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
-import { menuItems } from "../home/list";
+import { Card, CardTitle } from "../ui/card";
 
-const CategoryList = ({ category, currentCategory, currentType }) => {
+const CategoryList = ({ category, currentCategory, currentVariants }) => {
   return (
     <Card>
       <div className="  bg-primary text-card-foreground text-xl font-semibold text-white rounded-t-md  p-4 mb-2">
@@ -24,7 +17,7 @@ const CategoryList = ({ category, currentCategory, currentType }) => {
           },
         }}
         className={`capitalize px-4 ${
-          currentType === undefined ? " font-bold" : ""
+          currentVariants === undefined ? " font-bold" : ""
         }`}
       >
         {currentCategory}
@@ -32,20 +25,20 @@ const CategoryList = ({ category, currentCategory, currentType }) => {
 
       {category?.map((cat) => {
         if (currentCategory === cat.categoryName) {
-          return cat.productType?.map((product, index) => (
+          return cat.variants?.map((product, index) => (
             <div key={index} className=" pl-8 mt-1">
               <Link
                 href={{
                   pathname: "/products",
                   query: {
                     categoryName: currentCategory,
-                    productType: product.name,
+                    variants: product.name,
                   },
                 }}
               >
                 <span
                   className={` ${
-                    decodeURIComponent(currentType) === product.name
+                    decodeURIComponent(currentVariants) === product.name
                       ? " font-bold"
                       : ""
                   }`}

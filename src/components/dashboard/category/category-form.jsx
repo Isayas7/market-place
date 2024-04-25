@@ -21,19 +21,18 @@ import { useSession } from "next-auth/react";
 import CustomSingleImageIpload from "@/components/single-image-uploader";
 
 const CategoryForm = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImages, setSelectedImages] = useState([]);
   const [textFields, setTextFields] = useState([{ id: 0, isDefault: true }]);
 
   const router = useRouter();
-  const session = useSession();
+  const { data: user } = useSession();
 
   const form = useForm({
     // resolver: zodResolver(categorySchema),
     defaultValues: {
       categoryName: "",
       categoryImage: "",
-      productType: [
+      variants: [
         {
           name: "",
           image: "",
@@ -41,21 +40,6 @@ const CategoryForm = () => {
       ],
     },
   });
-
-  const {
-    mutate: registerCategory,
-    isSuccess,
-    isLoading,
-  } = useCategoryRegisterQuery();
-
-  const onSubmit = async (formValues) => {
-    registerCategory(formValues);
-    console.log(formValues);
-  };
-
-  if (isSuccess) {
-    router.push("/dashboard/category");
-  }
 
   const addTextField = () => {
     const defaultValues = form.getValues();
@@ -72,7 +56,7 @@ const CategoryForm = () => {
     setTextFields(updatedFields);
     // Remove the corresponding default value
     const updatedDefaultValues = { ...form.getValues() };
-    updatedDefaultValues.productType.splice(index, 1);
+    updatedDefaultValues.variants.splice(index, 1);
     form.reset(updatedDefaultValues);
   };
 
@@ -85,6 +69,21 @@ const CategoryForm = () => {
     updatedImages.splice(-1, 1);
     setSelectedImages(updatedImages);
   };
+
+  const {
+    mutate: registerCategory,
+    isSuccess,
+    isLoading,
+  } = useCategoryRegisterQuery();
+
+  const onSubmit = async (formValues) => {
+    formValues.user = user?.user?.id;
+    registerCategory(formValues);
+  };
+
+  if (isSuccess) {
+    router.push("/dashboard/category");
+  }
 
   return (
     <div className=" w-full md:w-3/4 mx-auto ">
@@ -118,6 +117,7 @@ const CategoryForm = () => {
                       <FormItem>
                         <FormControl>
                           <CustomSingleImageIpload
+                            name="upload category image"
                             value={field.value}
                             onChange={(url) => field.onChange(url)}
                             onRemove={() => field.onChange("")}
@@ -147,7 +147,7 @@ const CategoryForm = () => {
                 <div key={index} className="flex gap-2 items-center">
                   <FormField
                     control={form.control}
-                    name={`productType[${index}].name`}
+                    name={`variants[${index}].name`}
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
@@ -163,12 +163,13 @@ const CategoryForm = () => {
                   />
                   <FormField
                     control={form.control}
-                    name={`productType[${index}].image`}
+                    name={`variants[${index}].image`}
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <CustomSingleImageIpload
                             className="size-20"
+                            name="product image"
                             value={field.value}
                             onChange={(url) => field.onChange(url)}
                             onRemove={() => field.onChange("")}

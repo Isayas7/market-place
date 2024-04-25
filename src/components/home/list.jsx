@@ -7,115 +7,10 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Link from "next/link";
-import { UseCategoryQuery } from "@/hooks/use-product-category-query";
-
-export const menuItems = [
-  {
-    category: "electronics",
-    items: [
-      { title: "shoes" },
-      { title: "T-shirt" },
-      { title: "Category" },
-      { title: "Store" },
-      { title: "Product" },
-      { title: "Order" },
-    ],
-  },
-  {
-    category: "clothing",
-    items: [
-      { title: "Dashboard" },
-      { title: "User" },
-      { title: "Product Category" },
-      { title: "Store" },
-      { title: "Product" },
-      { title: "Order" },
-    ],
-  },
-];
-
-export const menuItems2 = [
-  {
-    category: "electronics",
-    items: [
-      { title: "shoes" },
-      { title: "T-shirt" },
-      { title: "Category" },
-      { title: "Store" },
-      { title: "Product" },
-      { title: "Order" },
-    ],
-  },
-  {
-    category: "clothing",
-    items: [
-      { title: "Dashboard" },
-      { title: "User" },
-      { title: "Product Category" },
-      { title: "Store" },
-      { title: "Product" },
-      { title: "Order" },
-    ],
-  },
-  {
-    category: "clothing",
-    items: [
-      { title: "Dashboard" },
-      { title: "User" },
-      { title: "Product Category" },
-      { title: "Store" },
-      { title: "Product" },
-      { title: "Order" },
-    ],
-  },
-  {
-    category: "clothing",
-    items: [
-      { title: "Dashboard" },
-      { title: "User" },
-      { title: "Product Category" },
-      { title: "Store" },
-      { title: "Product" },
-      { title: "Order" },
-    ],
-  },
-  {
-    category: "clothing",
-    items: [
-      { title: "Dashboard" },
-      { title: "User" },
-      { title: "Product Category" },
-      { title: "Store" },
-      { title: "Product" },
-      { title: "Order" },
-    ],
-  },
-  {
-    category: "clothing",
-    items: [
-      { title: "Dashboard" },
-      { title: "User" },
-      { title: "Product Category" },
-      { title: "Store" },
-      { title: "Product" },
-      { title: "Order" },
-    ],
-  },
-  {
-    category: "clothing",
-    items: [
-      { title: "Dashboard" },
-      { title: "User" },
-      { title: "Product Category" },
-      { title: "Store" },
-      { title: "Product" },
-      { title: "Order" },
-    ],
-  },
-];
+import { useCategoryDataQuery } from "@/hooks/use-product-category-query";
 
 const List = ({ handleClick }) => {
-  const { data: product_category, isLoading } = UseCategoryQuery();
+  const { data: product_category, isLoading } = useCategoryDataQuery();
 
   return (
     <>
@@ -128,7 +23,7 @@ const List = ({ handleClick }) => {
               </AccordionTrigger>
             </div>
 
-            {category.productType?.map((cat, index) => (
+            {category.variants?.map((cat, index) => (
               <AccordionContent
                 key={index}
                 className="hover:bg-hovered px-2 w-full rounded-md flex items-center  text-palesky"
@@ -139,7 +34,7 @@ const List = ({ handleClick }) => {
                     pathname: "/products",
                     query: {
                       categoryName: category.categoryName,
-                      productType: cat.name,
+                      variants: cat.name,
                     },
                   }}
                   onClick={handleClick}

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import User from "@/models/User";
+import { statusData } from "@/utils/permission";
 
 export const GET = async (request, { params }) => {
   const { id } = params;
@@ -17,7 +18,6 @@ export const GET = async (request, { params }) => {
 export const PUT = async (request, { params }) => {
   const { id } = params;
   const values = await request.json();
-
   try {
     await connect();
 
@@ -33,7 +33,7 @@ export const PUT = async (request, { params }) => {
 
     return new NextResponse(JSON.stringify(updatedUser), { status: 200 });
   } catch (error) {
-    return new NextResponse("Database Error", { status: 500 });
+    return new NextResponse(error, { status: 500 });
   }
 };
 
@@ -42,13 +42,16 @@ export const DELETE = async (request, { params }) => {
   try {
     await connect();
 
+    console.log("id", id);
+
     const user = await User.findById(id);
     if (!user) {
       return new NextResponse("User not found", { status: 404 });
     }
 
-    // Toggle isActive property
-    user.isActive = !user.isActive;
+    // change status property
+    user.status =
+      user.status === statusData.Active ? statusData.Banned : statusData.Active;
 
     await user.save();
     return new NextResponse(JSON.stringify(user), { status: 200 });

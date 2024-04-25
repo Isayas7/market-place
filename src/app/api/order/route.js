@@ -7,7 +7,7 @@ export const GET = async (request) => {
     await connect();
     const order = await Order.find();
 
-    return new NextResponse(JSON.stringify(order), { status: 200 });
+    return new NextResponse(JSON.stringify([]), { status: 200 });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });
   }

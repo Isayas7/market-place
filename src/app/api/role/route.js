@@ -1,5 +1,6 @@
 import Role from "@/models/Role";
 import connect from "@/utils/db";
+import { roleSchema } from "@/validationschema/user";
 import { NextResponse } from "next/server";
 
 export const GET = async (request) => {
@@ -11,14 +12,19 @@ export const GET = async (request) => {
     return new NextResponse("Database Error", { status: 500 });
   }
 };
+
 export const POST = async (request) => {
   const values = await request.json();
-  const { name } = values;
+  const validationResult = await roleSchema.safeParse(values);
+
+  if (!validationResult.success) {
+    return new NextResponse("Invalid", { status: 400 });
+  }
+
   await connect();
-  const newRole = new Role({ name });
+  const newRole = new Role(values);
 
   try {
-    // console.log(newRole);
     await newRole.save();
     return new NextResponse("Role Created Successfully", { status: 201 });
   } catch (error) {
@@ -57,7 +63,7 @@ export const PUT = async (request) => {
     for (const roleName in data) {
       if (Object.hasOwnProperty.call(data, roleName)) {
         const permissions = data[roleName];
-        let role = await Role.findOne({ name: roleName });
+        let role = await Role.findOne({ role: roleName });
 
         if (!role) {
           return new NextResponse("Roles does not found", { status: 400 });

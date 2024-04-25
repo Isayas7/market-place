@@ -24,7 +24,7 @@ const RoleForm = () => {
   const form = useForm({
     resolver: zodResolver(roleSchema),
     defaultValues: {
-      name: "",
+      role: "",
     },
   });
 
@@ -43,7 +43,7 @@ const RoleForm = () => {
               <div>
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="role"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Role Name</FormLabel>

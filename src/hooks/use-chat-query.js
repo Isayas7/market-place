@@ -31,7 +31,7 @@ export const UseChatQuery = (id) => {
 };
 
 // submit message
-export const UseSendMessage = (message) => {
+export const useSendMessage = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (message) => {

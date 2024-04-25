@@ -6,7 +6,6 @@ import User from "@/models/User";
 export const PUT = async (request, { params }) => {
   const { id } = params;
   const values = await request.json();
-  console.log(values);
 
   const { current_password, new_password, confirm_password } = values;
 
@@ -23,7 +22,6 @@ export const PUT = async (request, { params }) => {
 
     if (passwordMatch) {
       const hashedPassword = await bcrypt.hash(new_password, 5);
-      console.log("This");
       // await User.findByIdAndUpdate(id, { password: hashedPassword });
 
       return new NextResponse("Password updated successfully", { status: 200 });

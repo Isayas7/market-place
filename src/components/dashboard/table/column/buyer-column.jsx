@@ -5,8 +5,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -18,14 +16,15 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "../data-table-column-header";
-import { useRouter } from "next/navigation";
-import { UseDeactivateQuery } from "@/hooks/use-users-query";
+import { useUserDeactivateQuery } from "@/hooks/use-users-query";
 import { useState } from "react";
+import Link from "next/link";
+import { statusData } from "@/utils/permission";
+import { Badge } from "@/components/ui/badge";
 
 export const columns = [
   {
@@ -69,24 +68,16 @@ export const columns = [
     ),
   },
   {
-    accessorKey: "isActive",
+    accessorKey: "status",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
-      const status = row.original.isActive;
-      if (status) {
-        return (
-          <span className="py-1 px-4 rounded-sm bg-primary text-primary-foreground ">
-            Active
-          </span>
-        );
+      const status = row.original.status;
+      if (status === statusData.Active) {
+        return <Badge>Active</Badge>;
       } else {
-        return (
-          <span className="py-1 px-4 rounded-sm bg-destructive text-destructive-foreground">
-            Banned
-          </span>
-        );
+        return <Badge variant="destructive">Banned</Badge>;
       }
     },
   },
@@ -94,23 +85,14 @@ export const columns = [
     id: "actions",
     cell: ({ row }) => {
       const [open, setOpen] = useState(false);
+      const user = row.original;
+      const { status } = user;
+
       const {
         mutate: deactivate,
         isSuccess,
         isLoading,
-      } = UseDeactivateQuery("buyers");
-
-      const user = row.original;
-      const router = useRouter();
-
-      const handleViewClick = () => {
-        router.push(`user/view/${user._id}`);
-      };
-
-      const handleDeactivate = () => {
-        const deactivatedUser = deactivate(user._id);
-      };
-      const status = row.original.isActive;
+      } = useUserDeactivateQuery();
 
       return (
         <DropdownMenu>
@@ -121,27 +103,26 @@ export const columns = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={handleViewClick}>
-              View customer
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setOpen(true)}>
-              {status ? "Deactivate" : "Activate"}
-            </DropdownMenuItem>
+            <Link href={`user/view/${user._id}`}>
+              <DropdownMenuItem>View</DropdownMenuItem>
+            </Link>
 
-            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => setOpen(true)}>
+              {status === statusData.Active ? "Deactivate" : "Activate"}
+            </DropdownMenuItem>
           </DropdownMenuContent>
           <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  {status
+                  {status === statusData.Active
                     ? " Are you sure do you want to deactivate this user?"
                     : " Are you sure do you want to activate this user?"}
                 </AlertDialogTitle>
                 <AlertDialogDescription>
                   This action cannot be undone. This will permanently deactivate
                   this account and hide some data from our users.
-                  {status
+                  {status === statusData.Active
                     ? "  This action cannot be undone. This will  deactivate" +
                       "this account and hide some data from our users."
                     : "  This action cannot be undone. This will  activate" +
@@ -150,7 +131,7 @@ export const columns = [
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => handleDeactivate(user)}>
+                <AlertDialogAction onClick={() => deactivate(user._id)}>
                   Continue
                 </AlertDialogAction>
               </AlertDialogFooter>

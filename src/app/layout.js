@@ -6,6 +6,8 @@ import Footer from "@/components/home/footer/footer";
 import AuthProvider from "@/components/authprovider/auth-provider";
 import QueryProvider from "@/components/queryprovider/query-provider";
 import Main from "@/components/home/main";
+import { getServerSession } from "next-auth";
+import { options } from "./api/auth/[...nextauth]/options";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({ subsets: ["latin"], weight: "200" });
@@ -16,7 +18,9 @@ export const metadata = {
   description: "This is online marketplace platform",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await getServerSession(options);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={roboto.className}>
@@ -27,7 +31,7 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           <QueryProvider>
-            <AuthProvider>
+            <AuthProvider session={session}>
               <Navbar />
               <Main children={children} />
               <Footer />

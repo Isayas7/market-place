@@ -29,7 +29,7 @@ const MultiText = ({ onChange, value, onRemove, placeholder }) => {
       />
 
       <div className="flex flex-wrap gap-1 mt-4">
-        {value.map((item, index) => (
+        {value?.map((item, index) => (
           <Badge
             key={index}
             variant="secondary"

@@ -1,64 +1,82 @@
 import User from "@/models/User";
-import { deliveryPersonnelSchema } from "@/validationschema/user";
+import {
+  deliveryPersonnelSchema,
+  registerSchema,
+  storefrontSchema,
+} from "@/validationschema/user";
 import connect from "@/utils/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { uploadImage } from "@/utils/cloudinary";
 import Role from "@/models/Role";
+import { roleData } from "@/utils/permission";
 
 export const GET = async (request) => {
+  const { searchParams } = new URL(request.url);
+
+  let query = {};
+
+  searchParams.forEach((value, key) => {
+    query[key] = value;
+  });
+
   try {
     await connect();
-    const users = await User.find();
+    const userRole = await Role.findOne({ role: query.role });
 
-    return new NextResponse(JSON.stringify(users), { status: 200 });
+    if (!!userRole === false) {
+      return new NextResponse(JSON.stringify([]), {
+        status: 200,
+      });
+    }
+
+    delete query.role;
+
+    const users = await User.find({
+      role: { $in: [userRole._id] },
+      ...query,
+    });
+    return new NextResponse(JSON.stringify(users), {
+      status: 200,
+    });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });
   }
 };
 
 export const POST = async (request) => {
-  const formData = await request.formData();
+  const values = await request.json();
 
-  // Extract form values
-  const values = {};
-  for (const [key, value] of formData.entries()) {
-    values[key] = value;
+  const validationResult =
+    values.role === roleData.Personnel_Delivery
+      ? deliveryPersonnelSchema.safeParse(values)
+      : values.role === roleData.Buyer
+      ? registerSchema.safeParse(values)
+      : storefrontSchema.safeParse(values);
+
+  if (!validationResult.success) {
+    return new NextResponse("Invalid", { status: 400 });
   }
 
-  const { selectedIdCard, selectedId, ...other } = values;
-
-  const idCard = await uploadImage(selectedIdCard, "marketplace-cridential");
-  const nationlId = await uploadImage(selectedId, "marketplace-cridential");
+  const { password, role, ...other } = values;
 
   await connect();
 
-  // Hash password
-  const password = "ABCabc123@#";
   const hashedPassword = await bcrypt.hash(password, 5);
-  const role = "Delivery Personnel";
+  const myrole = await Role.findOne({ role: role });
 
-  const myrole = await Role.find({ name: role });
-
-  try {
+  if (!!myrole === true) {
     const newUser = new User({
-      ...other,
       password: hashedPassword,
-      identificationCard: {
-        public_id: idCard.public_id,
-        url: idCard.secure_url,
-      },
-      nationalId: {
-        public_id: nationlId.public_id,
-        url: nationlId.secure_url,
-      },
-      role: myrole[0]._id,
+      role: myrole._id,
+      ...other,
     });
 
-    await newUser.save();
-
-    return new Response("User has been created", { status: 201 });
-  } catch (error) {
-    return new Response(error.message, { status: 500 });
-  }
+    try {
+      await newUser.save();
+      return new NextResponse("User has been created", { status: 201 });
+    } catch (error) {
+      console.log("error", error);
+      return new NextResponse("something went wrong!", { status: 500 });
+    }
+  } else return new NextResponse("role does not exist!", { status: 500 });
 };

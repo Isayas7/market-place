@@ -14,11 +14,9 @@ import { UseSingleCategoryQuery } from "@/hooks/use-product-category-query";
 import { Card } from "@/components/ui/card";
 
 const ViewCategory = ({ params }) => {
-  const { data: product_category, isLoading } = UseSingleCategoryQuery(
+  const { data: single_category, isLoading } = UseSingleCategoryQuery(
     params.id
   );
-
-  console.log(product_category);
 
   return (
     <div>
@@ -43,12 +41,12 @@ const ViewCategory = ({ params }) => {
       <div className="mt-4 grid  grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-8">
         <div className="flex flex-col gap-4">
           <Card className=" text-jade text-2xl font-semibold p-4 bg-swansdown">
-            {product_category?.data.categoryName}
+            {single_category?.data?.categoryName}
           </Card>
 
           <div>
             <Image
-              src={product_category?.data.image.url || "/nullid.jpg"}
+              src={single_category?.data?.categoryImage || "/nullid.jpg"}
               className="size-64 w-full rounded-sm "
               width={400}
               height={200}
@@ -57,7 +55,7 @@ const ViewCategory = ({ params }) => {
           </div>
           <Card className="p-4">
             <div className="text-primary">Products</div>
-            {product_category?.data.productNames.map((product) => (
+            {single_category?.data?.variants?.map((product) => (
               <div key={product.name} className="flex w-full justify-between">
                 <div> {product.name}</div>
                 <div>123</div>
@@ -66,13 +64,13 @@ const ViewCategory = ({ params }) => {
           </Card>
         </div>
         <div className=" grid  grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-5 ">
-          {product_category?.data.productNames.map((product) => (
+          {single_category?.data?.variants?.map((product) => (
             <Card
               key={product.name}
               className="cursor-pointer rounded-sm overflow-hidden"
             >
               <Image
-                src={product?.image.url || "/nullid.jpg"}
+                src={product?.image || "/nullid.jpg"}
                 className={
                   "h-full w-full object-cover transition-all hover:scale-105 aspect-square rounded-sm "
                 }

@@ -1,3 +1,4 @@
+import { statusData } from "@/utils/permission";
 import mongoose from "mongoose";
 
 const { Schema } = mongoose;
@@ -22,18 +23,23 @@ const productCategorySchema = new Schema(
     },
     status: {
       type: String,
-      default: "Active",
+      default: statusData.Active,
     },
-    productType: [
+    variants: [
       {
         name: {
           type: String,
           required: true,
           unique: true,
         },
+
         image: {
           type: String,
           required: true,
+        },
+        status: {
+          type: String,
+          default: statusData.Active,
         },
         brands: [
           {
@@ -46,6 +52,10 @@ const productCategorySchema = new Schema(
             image: {
               type: String,
               required: true,
+            },
+            status: {
+              type: String,
+              default: statusData.Active,
             },
           },
         ],
