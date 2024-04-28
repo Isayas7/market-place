@@ -17,7 +17,11 @@ export function CustomerCard({ name, time, message, onClick, isActive }) {
       <div>
         <div>{name}</div>
         <div>
-          {message.length > 15 ? message.substring(0, 15) + "..." : message}
+          {message
+            ? message.length > 15
+              ? message.substring(0, 15) + "..."
+              : message
+            : "Sent Product"}
         </div>
       </div>
     </div>

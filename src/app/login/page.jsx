@@ -53,10 +53,24 @@ export default function Login() {
             Login with below provider account
           </CardDescription>
           <div className="grid grid-cols-2 gap-6">
-            <Button variant="outline" onClick={() => signIn("google")}>
+            <Button
+              variant="outline"
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl: localStorage.getItem("prevpath"),
+                })
+              }
+            >
               <FcGoogle className="text-2xl" />
             </Button>
-            <Button variant="outline" onClick={() => signIn("facebook")}>
+            <Button
+              variant="outline"
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl: localStorage.getItem("prevpath"),
+                })
+              }
+            >
               <FaSquareFacebook className="text-blue-500 text-2xl" />
             </Button>
           </div>

@@ -21,7 +21,6 @@ import Link from "next/link";
 export default function LoginForm() {
   const session = useSession();
   const router = useRouter();
-
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -30,14 +29,20 @@ export default function LoginForm() {
     },
   });
 
-  if (session.status === "authenticated") {
-    router.push("/");
-  }
-
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit((values) => signIn("credentials", values))}
+        onSubmit={form.handleSubmit(
+          (values) => {
+            const { email, password } = values;
+            signIn("credentials", {
+              email,
+              password,
+              callbackUrl: localStorage.getItem("prevpath"),
+            });
+          }
+          // signIn("credentials", values, { callbackUrl: "/cart" })
+        )}
         className="space-y-8"
       >
         <div>

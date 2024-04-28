@@ -2,20 +2,69 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { usePayQuery } from "@/hooks/use-product-query";
 import { useCart } from "@/store/cart-store";
 import useStore from "@/store/use-store";
 import { MinusCircle, PlusCircle, Trash } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 const Cart = () => {
+  const { toast } = useToast();
+
+  const session = useSession();
+  const path = usePathname();
+  const router = useRouter();
+
+  const { mutate: pay, isSuccess, isLoading, data } = usePayQuery();
+
   const cart = useStore(useCart, (state) => state);
-  // const cart = useCart();
 
   const total = cart?.cartItems?.reduce(
     (acc, cartItem) => acc + cartItem.item.price * cartItem.quantity,
     0
   );
   const totalRounded = parseFloat(total?.toFixed(2));
+
+  const handleCheckout = () => {
+    console.log(cart.cartItems.length === 0);
+    if (cart.cartItems.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Cart went wrong.",
+        description: "You are giong to proceed payout without product",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+    } else if (session.status === "unauthenticated") {
+      localStorage.setItem("prevpath", path);
+      router.push("/login");
+    } else {
+      const dataInfo = cart?.cartItems.map((item) => {
+        return {
+          quantity: item.quantity,
+          color: item.color,
+          size: item.size,
+          price: item.item.price,
+          productId: item.item._id,
+          userId: session.data.user.id,
+        };
+      });
+      // console.log(dataInfo);
+      const orderData = {
+        data: dataInfo,
+        amount: total,
+        userInfo: session.data.user,
+      };
+
+      pay(orderData);
+    }
+  };
+  if (isSuccess) {
+    router.push(data.data);
+  }
 
   return (
     <div className="flex gap-20 py-16 px-10 max-lg:flex-col max-sm:px-3">
@@ -89,7 +138,10 @@ const Cart = () => {
           <span>Total Amount</span>
           <span>$ {totalRounded}</span>
         </div>
-        <Button className="text-lg hover:bg-primary/20" onClick={{}}>
+        <Button
+          className="text-lg hover:bg-primary/20"
+          onClick={handleCheckout}
+        >
           Proceed to Checkout
         </Button>
       </Card>

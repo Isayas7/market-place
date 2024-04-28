@@ -10,13 +10,13 @@ const Main = ({ children }) => {
       className={`${
         currentUrl === "/"
           ? "container h-full"
-          : currentUrl.includes("dashboard")
+          : currentUrl.includes("dashboard") || currentUrl === "/chat"
           ? ""
           : "container h-full pt-10 pb-5"
       }${
         currentUrl !== "/" &&
-        currentUrl !== "/chat" &&
-        !currentUrl.includes("dashboard")
+        !currentUrl.includes("dashboard") &&
+        currentUrl !== "/chat"
           ? "pt-10 pb-5"
           : ""
       }`}

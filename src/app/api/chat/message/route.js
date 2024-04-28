@@ -10,6 +10,7 @@ export const POST = async (request) => {
   const message = new Message(values);
   try {
     const savedMessage = await message.save();
+    console.log(savedMessage);
     return new NextResponse(savedMessage, { status: 201 });
   } catch (error) {
     console.log(error);

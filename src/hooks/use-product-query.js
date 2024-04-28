@@ -117,6 +117,7 @@ export const useCurrentSellerAllProductQuery = (id) => {
 export const usePayQuery = () => {
   return useMutation({
     mutationFn: async (payment) => {
+      console.log(payment);
       const res = await axios.post("http://localhost:3000/api/pay", payment);
       return res;
     },

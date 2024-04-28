@@ -8,6 +8,7 @@ import QueryProvider from "@/components/queryprovider/query-provider";
 import Main from "@/components/home/main";
 import { getServerSession } from "next-auth";
 import { options } from "./api/auth/[...nextauth]/options";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({ subsets: ["latin"], weight: "200" });
@@ -34,6 +35,7 @@ export default async function RootLayout({ children }) {
             <AuthProvider session={session}>
               <Navbar />
               <Main children={children} />
+              <Toaster />
               <Footer />
             </AuthProvider>
           </QueryProvider>

@@ -9,19 +9,24 @@ const config = {
 };
 
 export const POST = async (request) => {
+  const values = await request.json();
+
   const CALLBACK_URL = "http://localhost:3000/api/pay/";
-  const RETURN_URL = "http://localhost:3000/products/pay/payment";
+  const RETURN_URL = "http://localhost:3000/receipt/";
   const TEXT_REF = "tx-myecommerce12345-" + Date.now();
 
   const payData = {
-    amount: "2000",
+    amount: values.amount,
     currency: "ETB",
-    email: "ebisagirma@ekele.com",
-    first_name: "Isayas",
-    last_name: "Melkamu",
+    email: values.userInfo.email,
+    first_name: values.userInfo.name,
+    last_name: values.userInfo.name,
     tx_ref: TEXT_REF,
     callback_url: CALLBACK_URL + TEXT_REF,
     return_url: RETURN_URL,
+    meta: {
+      data: values.data,
+    },
   };
 
   try {

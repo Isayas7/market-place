@@ -1,22 +1,31 @@
+import { orderStatus } from "@/utils/permission";
 import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
 const orderSchema = new Schema(
   {
-    productQuantity: {
-      type: Number,
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
       required: true,
     },
-    date: {
-      type: Date,
+    color: {
+      type: String,
+    },
+    size: {
+      type: String,
+    },
+    quantity: {
+      type: Number,
       required: true,
     },
     orderStatus: {
       type: String,
+      default: orderStatus.Pending,
       required: true,
     },
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
