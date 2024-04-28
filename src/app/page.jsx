@@ -2,7 +2,6 @@
 import List from "@/components/home/list";
 import { CustomCard } from "@/components/custom-card";
 import { useProductQuery } from "@/hooks/use-product-query";
-import { useSession } from "next-auth/react";
 
 export default function Home() {
   const { data: products, isLoading } = useProductQuery();

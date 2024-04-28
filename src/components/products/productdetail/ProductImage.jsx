@@ -22,7 +22,7 @@ export const ProductImage = ({ images }) => {
             key={index}
             className={`${
               selectedImage === index ? " border border-red-400" : ""
-            } flex  items-center space-y-1 p-1 hover:bg-slate-600 rounded-md`}
+            } flex items-center space-y-1 p-1 hover:bg-slate-600 rounded-md`}
           >
             <Image
               src={img}

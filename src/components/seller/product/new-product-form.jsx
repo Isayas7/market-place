@@ -27,7 +27,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import CustomMultiImageIpload from "@/components/multi-image-uploader";
-import { UseCategoryQuery } from "@/hooks/use-product-category-query";
+import {
+  UseCategoryQuery,
+  useAllCategoryDataQuery,
+} from "@/hooks/use-product-category-query";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { multiValueProductForm, ProductForm } from "@/form/form-data";
@@ -71,7 +74,7 @@ const NewProductForm = () => {
     crateProduct(formValues);
     router.push("/seller/product");
   };
-  const { data: product_category } = UseCategoryQuery();
+  const { data: product_category } = useAllCategoryDataQuery();
 
   return (
     <Form {...form}>

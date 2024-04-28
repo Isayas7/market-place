@@ -14,8 +14,33 @@ export const GET = async (request, { params }) => {
     const categoryData = await ProductCategory.findById(
       product.categoryId.toString()
     );
+
+    const totalStars = product?.ratings.reduce(
+      (sum, rate) => sum + rate.star,
+      0
+    );
+    const averageStar = totalStars / product?.ratings?.length;
+
+    const countByStar = product?.ratings.reduce((acc, cur) => {
+      const star = cur.star;
+      acc[star] = (acc[star] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Calculate the percentage of each unique star rating
+    const percentages = {};
+    for (const star in countByStar) {
+      percentages[star] = (countByStar[star] / product?.ratings?.length) * 100;
+    }
+
     const productData = {
       categoryName: categoryData.categoryName,
+      averageStar: averageStar,
+      starFive: percentages[5],
+      starFour: percentages[4],
+      starThree: percentages[3],
+      starTwo: percentages[2],
+      starOne: percentages[1],
       ...product._doc,
     };
 

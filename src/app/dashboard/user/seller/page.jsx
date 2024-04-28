@@ -1,15 +1,15 @@
 "use client";
-import { columns } from "@/components/dashboard/table/column/buyer-column";
+import { seller_column } from "@/components/dashboard/table/column/seller-column";
 import { DataTable } from "@/components/dashboard/table/data_table";
 import { useUserQuery } from "@/hooks/use-users-query";
 
-const Buyer = () => {
+const Seller = () => {
   const { data: userData } = useUserQuery();
 
   return (
     <DataTable
       userGroup="user"
-      columns={columns}
+      columns={seller_column}
       data={userData?.data?.users}
       totalPage={userData?.data?.totalPage}
       currentPage={userData?.data?.currentPage}
@@ -18,4 +18,4 @@ const Buyer = () => {
   );
 };
 
-export default Buyer;
+export default Seller;

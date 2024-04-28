@@ -44,7 +44,6 @@ const UpdateProductForm = ({ productId }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedVariants, setSelectedVariants] = useState("");
   const [selectedBrand, setSelectedBrand] = useState();
-  const { data: session, status } = useSession();
 
   const form = useForm({
     // resolver: zodResolver(productSchema),

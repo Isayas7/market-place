@@ -45,6 +45,25 @@ const productSchema = new Schema(
     description: {
       type: String,
     },
+    purchasedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    ratings: [
+      {
+        star: {
+          type: Number,
+          default: null,
+          max: 5,
+        },
+        postedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

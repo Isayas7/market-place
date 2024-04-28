@@ -31,6 +31,9 @@ const SellectForFilter = ({ dataInfo, filter, rendered, clear, setClear }) => {
     (name, value) => {
       const params = new URLSearchParams(searchParams.toString());
       params.set(name, value);
+      if (params.has("page")) {
+        params.set("page", 1);
+      }
 
       return params.toString();
     },

@@ -18,6 +18,8 @@ export const GET = async (request) => {
   searchParams.forEach((value, key) => {
     query[key] = value;
   });
+  const pageSize = 1;
+  const currentPage = parseInt(query.page);
 
   try {
     await connect();
@@ -28,16 +30,38 @@ export const GET = async (request) => {
         status: 200,
       });
     }
-
     delete query.role;
+    if (query.page) {
+      delete query.page;
+      const count = await User.find({
+        role: { $in: [userRole._id] },
+        ...query,
+      }).countDocuments();
 
-    const users = await User.find({
-      role: { $in: [userRole._id] },
-      ...query,
-    });
-    return new NextResponse(JSON.stringify(users), {
-      status: 200,
-    });
+      const users = await User.find({
+        role: { $in: [userRole._id] },
+        ...query,
+      })
+        .limit(pageSize)
+        .skip((currentPage - 1) * pageSize);
+
+      const totalPage = Math.ceil(count / pageSize);
+
+      return new NextResponse(
+        JSON.stringify({ users, totalPage, currentPage }),
+        {
+          status: 200,
+        }
+      );
+    } else {
+      const users = await User.find({
+        role: { $in: [userRole._id] },
+        ...query,
+      });
+      return new NextResponse(JSON.stringify(users), {
+        status: 200,
+      });
+    }
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });
   }

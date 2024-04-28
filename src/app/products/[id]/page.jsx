@@ -7,6 +7,7 @@ import {
   UseSingleProductQuery,
   useSimilarProducQuery,
 } from "@/hooks/use-product-query";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SingleProduct({ params }) {
   const { data: product, isLoading } = UseSingleProductQuery(params.id);
@@ -14,10 +15,21 @@ export default function SingleProduct({ params }) {
     product?.data?.variants
   );
 
+  if (isLoading) {
+    return (
+      <div className="flex flex-col space-y-3">
+        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
+      </div>
+    );
+  }
   return (
     <>
       <div className="flex flex-col md:flex-row gap-10  ">
-        <div className="md:sticky top-20 self-start w-10/12   md:w-6/12 lg:w-5/12 xl:w-4/12 flex gap-6">
+        <div className="md:sticky top-20 self-start w-full   md:w-6/12 lg:w-5/12 xl:w-4/12 flex gap-6">
           <ProductImage images={product?.data.productImage} />
         </div>
 

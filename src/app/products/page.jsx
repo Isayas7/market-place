@@ -6,14 +6,11 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useProductQuery } from "@/hooks/use-product-query";
-import {
-  UseCategoryQuery,
-  useCategoryDataQuery,
-} from "@/hooks/use-product-category-query";
+import { useAllCategoryDataQuery } from "@/hooks/use-product-category-query";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Variants = ({ searchParams }) => {
-  const { data: categorydata } = useCategoryDataQuery();
+  const { data: categorydata } = useAllCategoryDataQuery();
   let currentBrands;
 
   if (categorydata?.data) {

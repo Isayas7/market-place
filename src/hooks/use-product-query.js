@@ -6,8 +6,14 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 // get all product
 export const useProductQuery = () => {
   const search = useSearchParams();
-  const queryString = new URLSearchParams(search).toString();
+  const params = new URLSearchParams(search);
 
+  const decodedParams = {};
+  params.forEach((value, key) => {
+    decodedParams[key] = decodeURIComponent(value);
+  });
+
+  const queryString = new URLSearchParams(decodedParams).toString();
   return useQuery({
     queryKey: ["products", queryString],
     queryFn: async () => {

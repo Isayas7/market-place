@@ -1,30 +1,14 @@
 "use client";
-import { roleData } from "@/utils/permission";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
 const SidebarLink = ({ list, isCollapsed }) => {
   const path = usePathname();
-  let tab;
-  if (typeof localStorage !== "undefined") {
-    tab = localStorage.getItem("tab");
-  }
 
   return (
     <Link
-      href={{
-        pathname: `${list.path}`,
-        query:
-          list.path === "/dashboard/user"
-            ? { role: tab || roleData.Buyer }
-            : null,
-      }}
-      onClick={() => {
-        list.path === "/dashboard/user"
-          ? localStorage.setItem("tab", roleData.Buyer)
-          : null;
-      }}
+      href={list.path}
       className={`flex gap-3 items-center pl-5 p-3 my-1 rounded-xl ${
         (list.path === "/dashboard" && path === "/dashboard") ||
         (path.includes(list.path) && list.path !== "/dashboard")

@@ -60,7 +60,6 @@ const UpdateDeliveryPersonnelForm = ({ userId }) => {
   });
 
   const onSubmit = (formValues) => {
-    console.log("formValues", formValues);
     updateDP({ userInfo: formValues, id: formValues._id });
   };
 

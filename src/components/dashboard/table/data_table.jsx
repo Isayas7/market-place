@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import usePermissionStore from "@/store/role-store";
 import { useRoleUpdateQuery } from "@/hooks/use-role-query";
@@ -37,6 +37,8 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export function DataTable({
+  currentPage,
+  totalPage,
   columns,
   data,
   dataInfo,
@@ -48,16 +50,67 @@ export function DataTable({
   const [columnFilters, setColumnFilters] = useState();
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
-  const search = useSearchParams();
-  const queryString = new URLSearchParams(search).toString();
+  const [clear, setClear] = useState(false);
+
   const pathname = usePathname();
   const router = useRouter();
 
-  const [clear, setClear] = useState(false);
+  const search = useSearchParams();
+  const queryString = new URLSearchParams(search);
+
+  const parametersToKeep = ["page", "role"];
   let tab;
+
   if (typeof localStorage !== "undefined") {
     tab = localStorage.getItem("tab");
   }
+
+  const createQueryString = useCallback(
+    (name, value) => {
+      const params = new URLSearchParams(search.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [search]
+  );
+
+  const filterSearchParams = () => {
+    for (const key of Array.from(queryString.keys())) {
+      if (!parametersToKeep.includes(key)) {
+        queryString.delete(key);
+      }
+    }
+    router.replace(`${pathname}?${queryString.toString()}`);
+  };
+
+  const checkParamsExistence = () => {
+    const keys = Array.from(queryString.keys());
+    return (
+      keys.length === 0 ||
+      (parametersToKeep.some((key) => keys.includes(key)) &&
+        keys.every((key) => parametersToKeep.includes(key)) &&
+        keys.length <= parametersToKeep.length)
+    );
+  };
+
+  const RenderResetButton = () => {
+    if (!checkParamsExistence()) {
+      return (
+        <Button
+          variant="outline"
+          onClick={() => {
+            setClear(true);
+            filterSearchParams();
+          }}
+        >
+          Reset
+        </Button>
+      );
+    } else {
+      return null;
+    }
+  };
 
   const table = useReactTable({
     data,
@@ -114,37 +167,19 @@ export function DataTable({
             </>
           )}
 
-          <SellectForFilter
-            clear={clear}
-            setClear={setClear}
-            rendered="all"
-            filter="Status"
-            dataInfo={dataInfo}
-          />
-
-          {queryString && !userGroup ? (
-            <Button
-              variant="outline"
-              onClick={() => {
-                setClear(true);
-                router.replace(pathname);
-              }}
-            >
-              Reset
-            </Button>
-          ) : userGroup && queryString !== `role=${tab}` ? (
-            <Button
-              variant="outline"
-              onClick={() => {
-                setClear(true);
-                router.replace(`${pathname}?role=${tab}`);
-              }}
-            >
-              Reset
-            </Button>
-          ) : (
-            ""
+          {rendered !== "role" && (
+            <>
+              <SellectForFilter
+                clear={clear}
+                setClear={setClear}
+                rendered="all"
+                filter="Status"
+                dataInfo={dataInfo}
+              />
+            </>
           )}
+
+          <RenderResetButton />
         </div>
         <div className="ml-auto flex space-x-5">
           <DropdownMenu>
@@ -249,19 +284,31 @@ export function DataTable({
               {table.getFilteredRowModel().rows.length} row selected.
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">
+              <span>
+                Page {currentPage} of {totalPage}
+              </span>
               <Button
+                disabled={currentPage - 1 === 0 || currentPage > totalPage}
                 variant="outline"
                 size="sm"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
+                onClick={() => {
+                  router.push(
+                    pathname + "?" + createQueryString("page", currentPage - 1)
+                  );
+                }}
               >
                 Previous
               </Button>
+
               <Button
+                disabled={currentPage === totalPage || currentPage >= totalPage}
                 variant="outline"
                 size="sm"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
+                onClick={() => {
+                  router.push(
+                    pathname + "?" + createQueryString("page", currentPage + 1)
+                  );
+                }}
               >
                 Next
               </Button>

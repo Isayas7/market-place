@@ -9,23 +9,49 @@ export const GET = async (request) => {
     query[key] = value;
   });
 
-  delete query.page;
-
-  const pageSize = 1;
-  const pageNumber = parseInt(query.page);
-  const count = await ProductCategory.find(query).countDocuments();
+  const pageSize = 2;
+  const currentPage = parseInt(query.page);
 
   try {
     await connect();
-    const productCategories = await ProductCategory.find(query)
-      .limit(pageSize)
-      .skip((pageNumber - 1) * pageSize);
+    if (query.page) {
+      delete query.page;
 
-    const totalPage = Math.ceil(count / pageSize);
+      const count = await ProductCategory.find(query).countDocuments();
 
-    productCategories.totalPage = totalPage;
+      if (count > currentPage) {
+        const productCategories = await ProductCategory.find(query)
+          .limit(pageSize)
+          .skip((currentPage - 1) * pageSize);
 
-    return new NextResponse(JSON.stringify(productCategories), { status: 200 });
+        const totalPage = Math.ceil(count / pageSize);
+
+        return new NextResponse(
+          JSON.stringify({ productCategories, totalPage, currentPage }),
+          {
+            status: 200,
+          }
+        );
+      } else {
+        const productCategories = await ProductCategory.find(query).limit(
+          pageSize
+        );
+        const totalPage = Math.ceil(count / pageSize);
+
+        return new NextResponse(
+          JSON.stringify({ productCategories, totalPage, currentPage }),
+          {
+            status: 200,
+          }
+        );
+      }
+    } else {
+      const productCategories = await ProductCategory.find(query);
+
+      return new NextResponse(JSON.stringify(productCategories), {
+        status: 200,
+      });
+    }
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });
   }

@@ -7,10 +7,10 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Link from "next/link";
-import { useCategoryDataQuery } from "@/hooks/use-product-category-query";
+import { useAllCategoryDataQuery } from "@/hooks/use-product-category-query";
 
 const List = ({ handleClick }) => {
-  const { data: product_category, isLoading } = useCategoryDataQuery();
+  const { data: product_category, isLoading } = useAllCategoryDataQuery();
 
   return (
     <>

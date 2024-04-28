@@ -1,13 +1,35 @@
+import { roleData } from "@/utils/permission";
 import axios from "axios";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 //get all users
 export const useUserQuery = () => {
   const search = useSearchParams();
-  const queryString = new URLSearchParams(search).toString();
+  const params = new URLSearchParams(search);
+  const pathname = usePathname();
 
-  return useQuery({
+  let query = {};
+  params.forEach((value, key) => {
+    query[key] = value;
+  });
+
+  const role =
+    pathname === "/dashboard/user"
+      ? roleData.Buyer
+      : pathname === "/dashboard/user/seller"
+      ? roleData.Seller
+      : roleData.Personnel_Delivery;
+
+  query.role = role;
+  query.page = !query.page ? 1 : query.page;
+
+  const increment = parseInt(query.page) + 1;
+  const decrement = parseInt(query.page) - 1;
+
+  const queryClient = useQueryClient();
+  const queryString = new URLSearchParams(query).toString();
+  const response = useQuery({
     queryKey: ["users", queryString],
     queryFn: async () => {
       const res = await axios.get(
@@ -16,6 +38,36 @@ export const useUserQuery = () => {
       return res;
     },
   });
+
+  query.page = increment;
+  const incrementQueryString = new URLSearchParams(query).toString();
+  response?.data?.data &&
+  response?.data?.data?.totalPage > response.data.data.currentPage
+    ? queryClient.prefetchQuery({
+        queryKey: ["users", incrementQueryString],
+        queryFn: async () => {
+          const res = await axios.get(
+            `http://localhost:3000/api/user?${incrementQueryString}`
+          );
+          return res;
+        },
+      })
+    : "";
+
+  query.page = decrement;
+  const decrementQueryString = new URLSearchParams(query).toString();
+  response?.data?.data && response?.data?.data?.currentPage - 1 > 0
+    ? queryClient.prefetchQuery({
+        queryKey: ["users", decrementQueryString],
+        queryFn: async () => {
+          const res = await axios.get(
+            `http://localhost:3000/api/user?${decrementQueryString}`
+          );
+          return res;
+        },
+      })
+    : "";
+  return response;
 };
 
 // get single user
