@@ -125,7 +125,12 @@ const Navbar = () => {
             )}
 
             {session.status === "unauthenticated" && (
-              <Link href={"/login"}>Login</Link>
+              <Link
+                href={"/login"}
+                onClick={() => localStorage.setItem("prevpath", currentUrl)}
+              >
+                Login
+              </Link>
             )}
             {session.status === "authenticated" && (
               <Link href={"/chat"}>

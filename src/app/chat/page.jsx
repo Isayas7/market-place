@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomerCard } from "@/components/chat/customer-card";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { IoIosSend } from "react-icons/io";
 import React, { useEffect, useRef, useState } from "react";
@@ -14,11 +14,21 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import OnlineCustomer from "@/components/chat/online-customer";
 import { io } from "socket.io-client";
 import { CgMenuLeft } from "react-icons/cg";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import CustomSingleImageIpload from "@/components/single-image-uploader";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 
 const Chat = () => {
   const [currentConversation, setCurrentConversation] = useState("");
   const [receiverId, setReceiverId] = useState("");
-  const [text, setText] = useState("");
   const [onlineUser, setOnlneUser] = useState([]);
   const [isHidden, setIsHidden] = useState(true);
   const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -26,12 +36,20 @@ const Chat = () => {
   const session = useSession();
   const route = useRouter();
 
+  const form = useForm({
+    defaultValues: {
+      text: "",
+      image: null,
+    },
+  });
+
   const { mutate: sendMessage, isSuccess, isLoading } = useSendMessage();
   const { data: conversation } = UseConversationQuery();
 
   useEffect(() => {
     socket.current = io("ws://localhost:8900");
     socket.current.on("getMessage", (data) => {
+      console.log(data);
       setArrivalMessage({
         sender: data.senderId,
         text: data.text,
@@ -58,36 +76,29 @@ const Chat = () => {
     );
   }
 
-  const handleSubmit = () => {
+  const onSubmit = async (value) => {
     const message = {
       sender: session?.data?.user.id,
-      text: text,
       conversationId: currentConversation,
+      ...value,
     };
 
     sendMessage(message);
     socket?.current.emit("sendMessage", {
       senderId: session?.data?.user.id,
       receiverId,
-      text,
+      text: message.text,
     });
-    setText("");
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter" && event.shiftKey) {
-      event.preventDefault();
-      setText((prevMessage) => prevMessage + "\n");
-    } else if (event.key === "Enter" && text.trim() !== "") {
-      event.preventDefault();
-      handleSubmit();
-    }
+    form.reset({
+      text: "",
+      image: null,
+    });
   };
 
   return (
-    <Card className="flex  my-3 relative h-[calc(100vh-81px)] overflow-hidden ">
+    <Card className="flex my-2 mx-2 xl:mx-10 relative h-[calc(100vh-68px)] overflow-hidden ">
       <div
-        className={`w-64 xl:w-1/4 border-r-2 p-3  ${
+        className={`w-64 xl:w-1/5 border-r-2 p-3  ${
           isHidden
             ? "hidden"
             : " z-[20] bg-white dark:bg-mirage-200  h-full absolute overflow-hidden hover:overflow-y-scroll"
@@ -126,10 +137,10 @@ const Chat = () => {
       </div>
 
       <div
-        className="w-full xl:w-3/4 z-0"
+        className="w-full xl:w-4/5 z-0"
         onClick={() => !isHidden && setIsHidden(true)}
       >
-        <div className="border-b-2 flex gap-3 pl-4 py-2 h-[13%] items-center">
+        <div className="border-b-2 flex gap-3 pl-4 py-2 h-[10%] items-center">
           <CgMenuLeft
             className="text-2xl cursor-pointer block xl:hidden"
             onClick={() => setIsHidden(!isHidden)}
@@ -152,7 +163,7 @@ const Chat = () => {
         </div>
 
         <div
-          className="overflow-y-scroll h-[77%] p-4"
+          className="overflow-y-scroll h-[80%] p-4"
           onClick={() => setIsHidden(true)}
         >
           {currentConversation ? (
@@ -166,26 +177,73 @@ const Chat = () => {
             </div>
           )}
         </div>
-        <div className="flex gap-2 border-t-2 h-[10%]  items-center ">
-          <input
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={"Type message"}
-            value={text}
-            disabled={currentConversation !== "" ? false : true}
-            className="w-full h-full rounded-none border-none border-t-2 p-4 dark:bg-mirage-200 focus:outline-none focus:border-none "
-          />
-          <div
-            className="flex p-2 space-x-2 cursor-pointer items-center"
-            disabled={currentConversation !== "" ? false : true}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className={`h-[10%] ${
+              currentConversation === "" ? "hidden" : "block"
+            }`}
           >
-            <GrAttachment className="text-2xl" />
-            <IoIosSend
-              onClick={handleSubmit}
-              className="text-3xl cursor-pointer"
-            />
-          </div>
-        </div>
+            <div className="flex gap-2 border-t-2 h-full justify-between  items-center">
+              <div className="h-full w-full">
+                <FormField
+                  control={form.control}
+                  name="text"
+                  render={({ field }) => (
+                    <FormItem className="h-full">
+                      <FormControl>
+                        <input
+                          className="w-full h-[100%] rounded-none border-none border-t-2 p-4 dark:bg-mirage-200 focus:outline-none focus:border-none "
+                          placeholder="Type message"
+                          {...field}
+                          disabled={currentConversation !== "" ? false : true}
+                          autoComplete=""
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div
+                className="flex p-2"
+                disabled={currentConversation !== "" ? false : true}
+              >
+                <FormField
+                  control={form.control}
+                  name="image"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <CustomSingleImageIpload
+                          name={<GrAttachment className="text-2xl" />}
+                          value={field.value}
+                          onChange={(url) => field.onChange(url)}
+                          onRemove={() => field.onChange("")}
+                          className="size-8 hover:bg-mirage-200 border-none rounded-none"
+                          disabled={currentConversation !== "" ? false : true}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  disabled={isLoading}
+                  className="w-full ml-auto text-xl"
+                  type="submit"
+                >
+                  <IoIosSend
+                    className="text-3xl cursor-pointer"
+                    disabled={currentConversation !== "" ? false : true}
+                  />
+                </Button>
+              </div>
+            </div>
+          </form>
+        </Form>
       </div>
     </Card>
   );

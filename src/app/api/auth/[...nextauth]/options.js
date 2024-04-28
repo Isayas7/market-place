@@ -99,6 +99,9 @@ export const options = {
       return token;
     },
 
+    async redirect({ url, baseUrl }) {
+      return url;
+    },
     async signIn({ account, profile }) {
       if (account.provider === "credentials") {
         return true;

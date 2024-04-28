@@ -51,7 +51,6 @@ export function UserNav() {
         <DropdownMenuItem
           onClick={() => {
             signOut();
-            localStorage.clear();
           }}
         >
           Log out

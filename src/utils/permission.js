@@ -52,6 +52,11 @@ export const statusData = {
   Active: "Active",
   Banned: "Banned",
 };
+export const orderStatus = {
+  Pending: "Pending",
+  Shipping: "Shipping",
+  Delivered: "Delivered",
+};
 
 const admin = {
   _id: "123456789",
