@@ -1,39 +1,104 @@
-"use client";
-import { usePathname } from "next/navigation";
 import React from "react";
+import { FaInstagram, FaYoutube, FaTwitter, FaFacebook } from "react-icons/fa";
+import Link from "next/link";
 
 const Footer = () => {
-  const currentUrl = usePathname();
-
   return (
-    <div
-      className={`container mx-auto transition-all duration-300 px-4 border-t border-slate-900/10 dark:border-slate-300/10 flex items-center justify-center ${
-        currentUrl === "/" ? "" : "hidden"
-      }`}
-    >
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
-      repellendus molestiae consectetur, perferendis at natus nihil? Harum
-      aspernatur earum eos facere minus, consectetur saepe at, nihil
-      exercitationem sit repellat expedita necessitatibus sint, veritatis
-      molestiae eveniet fugiat aliquam nulla error illum doloribus mollitia
-      tenetur est. Saepe ipsum culpa dicta commodi consequatur quibusdam
-      doloribus inventore, at voluptatum, dolor temporibus quia! Nam
-      reprehenderit fugit tempora laborum eos perspiciatis quisquam illum saepe
-      ex blanditiis amet, dolores incidunt. Adipisci illo inventore repudiandae!
-      Harum consequatur laudantium tempore nesciunt a rem quaerat, architecto
-      temporibus voluptate modi aliquam dolorem quia distinctio tenetur id
-      laboriosam nam. Dolores perferendis omnis optio, recusandae, perspiciatis
-      explicabo ipsa consectetur deserunt minus placeat quo in aut cum amet
-      assumenda, excepturi alias nostrum! Nulla sit sint adipisci sapiente odit
-      molestias maxime magni, laboriosam nemo suscipit autem magnam
-      reprehenderit molestiae sed qui labore, quas dolore iure possimus? Dolores
-      maiores eos aspernatur corrupti, dicta consequatur ipsum quo maxime eius
-      cum hic laboriosam provident enim optio distinctio animi reiciendis odit,
-      ducimus delectus illum. Ad et veritatis dolorum architecto earum tenetur
-      quos, ab voluptatem eaque ducimus, sint ex recusandae a eos ullam
-      provident! Cumque minima, nisi perferendis esse asperiores pariatur omnis
-      facilis eius ut sint optio maxime dolore velit?
-    </div>
+    <footer className="bg-green-200 text-black py-8">
+      <div className="container mx-auto flex flex-wrap justify-between">
+        <div className="footer-col w-full md:w-auto mb-8 md:mb-0 flex-grow">
+          <h4 className="font-bold">Shop Categories</h4>
+          <ul className="list-none mt-4">
+            <li className="mb-2">
+              <a href="#" className="text-black hover:underline">
+                Laptops
+              </a>
+            </li>
+            <li className="mb-2">
+              <a href="#" className="text-black hover:underline">
+                Desktops
+              </a>
+            </li>
+            <li className="mb-2">
+              <a href="#" className="text-black hover:underline">
+                Phones
+              </a>
+            </li>
+            <li className="mb-2">
+              <a href="#" className="text-black hover:underline">
+                Watches
+              </a>
+            </li>
+            <li className="mb-2">
+              <a href="#" className="text-black hover:underline">
+                TVs
+              </a>
+            </li>
+            <li className="mb-2">
+              <a href="#" className="text-black hover:underline">
+                accessories
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div className="footer-col w-full md:w-auto mb-8 md:mb-0 flex-grow">
+          <h4 className="font-bold">Customer Service</h4>
+          <ul className="list-none mt-4">
+            <li className="mb-2">
+              <span className="text-black hover:underline">
+                <Link href="/contactus">Contact Us</Link>
+              </span>
+            </li>
+            <li className="mb-2">
+              <a href="#" className="text-black hover:underline">
+                Shipping Policy
+              </a>
+            </li>
+            <li className="mb-2">
+              <a href="#" className="text-black hover:underline">
+                Returns & Exchanges
+              </a>
+            </li>
+            <li className="mb-2">
+              <a href="#" className="text-black hover:underline">
+                FAQ
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div className="footer-col w-full md:w-auto mb-8 md:mb-0 flex-grow">
+          <h4 className="font-bold">About Us</h4>
+          <p className="text-gray-400">At our electronics store.</p>
+        </div>
+
+        <div className="footer-col w-full md:w-auto mb-8 md:mb-0 flex-grow">
+          <h4 className="font-bold">Follow Us</h4>
+          <ul className="flex space-x-4">
+            <li>
+              <a href="#" className="text-black hover:underline">
+                <FaInstagram />
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-black hover:underline">
+                <FaYoutube />
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-black hover:underline">
+                <FaTwitter />
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-black hover:underline">
+                <FaFacebook />
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
   );
 };
 
