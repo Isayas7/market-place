@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import ProductCategory from "@/models/ProductCategory";
-import { uploadImage } from "@/utils/cloudinary";
+import { statusData } from "@/utils/permission";
 
 export const GET = async (request, { params }) => {
   const { id } = params;
@@ -16,16 +16,15 @@ export const GET = async (request, { params }) => {
 
 export const POST = async (request, { params }) => {
   const values = await request.json();
-  const { productType, brands } = values;
-  console.log(values);
+  const { variants, brands } = values;
 
   try {
     const productCategory = await ProductCategory.findOne({
       categoryName: params.id,
     });
 
-    const product = productCategory.productType.find(
-      (prod) => prod.name === productType
+    const product = productCategory.variants.find(
+      (prod) => prod.name === variants
     );
 
     const updatedBrands = [...product.brands, ...brands];
@@ -45,16 +44,14 @@ export const POST = async (request, { params }) => {
 
 export const PUT = async (request, { params }) => {
   const { id } = params;
-  const values = request.json();
-
-  const { ...other } = values;
+  const values = await request.json();
 
   try {
     await connect();
 
     const updatedProductCategory = await ProductCategory.findOneAndUpdate(
       { _id: id },
-      { $set: other },
+      { $set: values },
       { new: true }
     );
 
@@ -79,7 +76,13 @@ export const DELETE = async (request, { params }) => {
     if (!productcategory) {
       return new NextResponse("ProductCategory not found", { status: 404 });
     }
-    productcategory.isActive = false;
+
+    // change status property
+    productcategory.status =
+      productcategory.status === statusData.Active
+        ? statusData.Banned
+        : statusData.Active;
+
     await productcategory.save();
 
     return new NextResponse(JSON.stringify(productcategory), { status: 200 });

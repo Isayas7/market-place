@@ -1,22 +1,22 @@
 "use client";
-import CategoryList from "@/components/category/category-list";
+import CategoryList from "@/components/products/category-list";
 import { CustomCard } from "@/components/custom-card";
 import React, { useEffect, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
 import { useProductQuery } from "@/hooks/use-product-query";
-import { UseCategoryQuery } from "@/hooks/use-product-category-query";
+import { useAllCategoryDataQuery } from "@/hooks/use-product-category-query";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-const ProductType = ({ searchParams }) => {
-  const { data: categorydata } = UseCategoryQuery();
+const Variants = ({ searchParams }) => {
+  const { data: categorydata } = useAllCategoryDataQuery();
   let currentBrands;
 
   if (categorydata?.data) {
     categorydata?.data?.find((category) =>
-      category.productType.find((product) => {
-        if (product.name === searchParams.productType) {
+      category.variants.find((product) => {
+        if (product.name === searchParams.variants) {
           currentBrands = product.brands;
           return true;
         }
@@ -24,7 +24,7 @@ const ProductType = ({ searchParams }) => {
     );
   }
 
-  const { data: productType, isLoading } = useProductQuery();
+  const { data: variants, isLoading } = useProductQuery();
 
   if (isLoading) {
     return (
@@ -33,14 +33,14 @@ const ProductType = ({ searchParams }) => {
       </div>
     );
   }
-  if (productType?.data) {
+  if (variants?.data) {
     return (
       <div className=" flex gap-5  ">
         <div className="w-80 hidden lg:flex flex-col gap-2">
           <CategoryList
             category={categorydata?.data}
             currentCategory={searchParams.categoryName}
-            currentType={searchParams.productType}
+            currentVariants={searchParams.variants}
           />
         </div>
         <div className=" w-full lg:ml-auto  xl:w-[70%]">
@@ -53,7 +53,7 @@ const ProductType = ({ searchParams }) => {
                       pathname: "/products",
                       query: {
                         categoryName: searchParams.categoryName,
-                        productType: searchParams.productType,
+                        variants: searchParams.variants,
                         brand: brand.name,
                       },
                     }}
@@ -73,7 +73,7 @@ const ProductType = ({ searchParams }) => {
             </div>
           )}
           <div className="grid  grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-5">
-            {productType?.data.map((product, index) => (
+            {variants?.data.map((product, index) => (
               <CustomCard
                 key={index}
                 product={product}
@@ -88,4 +88,4 @@ const ProductType = ({ searchParams }) => {
   }
 };
 
-export default ProductType;
+export default Variants;

@@ -9,7 +9,6 @@ import { RiMenu4Line } from "react-icons/ri";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TabProvider } from "@/components/tabprovider/tab-provider";
 
 const Layout = ({ children }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -73,11 +72,8 @@ const Layout = ({ children }) => {
           </div>
           <div className=" w-[5px]  group-hover:hidden  " />
         </aside>
-        <TabProvider>
-          <main className=" container pt-7 overflow-y-scroll  ">
-            {children}
-          </main>
-        </TabProvider>
+
+        <main className=" container pt-7 overflow-y-scroll  ">{children}</main>
       </div>
     );
   }

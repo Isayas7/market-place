@@ -11,13 +11,9 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { productSchema } from "@/validationschema/user";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  ProductForm,
-  SellectProductForm,
-  multiValueProductForm,
-} from "@/form/form";
+
 import {
   Select,
   SelectContent,
@@ -31,22 +27,28 @@ import { Textarea } from "@/components/ui/textarea";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import CustomMultiImageIpload from "@/components/multi-image-uploader";
-import { UseCategoryQuery } from "@/hooks/use-product-category-query";
+import {
+  UseCategoryQuery,
+  useAllCategoryDataQuery,
+} from "@/hooks/use-product-category-query";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { multiValueProductForm, ProductForm } from "@/form/form-data";
 
 const NewProductForm = () => {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedProductName, setSelectedProductName] = useState("");
+  const [selectedVariants, setSelectedVariants] = useState("");
+  const { data: session, status } = useSession();
 
   const form = useForm({
     resolver: zodResolver(productSchema),
     defaultValues: {
       productImage: [],
       categoryId: "",
-      productType: "",
+      variants: "",
       brand: "",
-      productName: "",
+      title: "",
       size: [],
       price: "",
       color: [],
@@ -67,12 +69,12 @@ const NewProductForm = () => {
     }
   };
 
-  const onSubmit = (formvalues) => {
-    // console.log("formvalues", formvalues);
-    crateProduct(formvalues);
+  const onSubmit = (formValues) => {
+    formValues.user = session?.user?.id;
+    crateProduct(formValues);
     router.push("/seller/product");
   };
-  const { data: product_category } = UseCategoryQuery();
+  const { data: product_category } = useAllCategoryDataQuery();
 
   return (
     <Form {...form}>
@@ -134,14 +136,14 @@ const NewProductForm = () => {
               />
               <FormField
                 control={form.control}
-                name="productType"
+                name="variants"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Product Type</FormLabel>
                     <Select
                       onValueChange={(value) => {
                         field.onChange(value);
-                        setSelectedProductName(value);
+                        setSelectedVariants(value);
                       }}
                     >
                       <FormControl>
@@ -153,7 +155,7 @@ const NewProductForm = () => {
                         {product_category?.data.map(
                           (option) =>
                             option._id === selectedCategory &&
-                            option.productType.map((product) => (
+                            option.variants.map((product) => (
                               <SelectItem
                                 key={product._id}
                                 value={product.name}
@@ -188,9 +190,9 @@ const NewProductForm = () => {
                         {product_category?.data.map(
                           (option) =>
                             option._id === selectedCategory &&
-                            option.productType.map(
+                            option.variants.map(
                               (product) =>
-                                product.name === selectedProductName &&
+                                product.name === selectedVariants &&
                                 product.brands.map((brand) => (
                                   <SelectItem
                                     key={brand._id}

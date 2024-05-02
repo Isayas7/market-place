@@ -1,136 +1,14 @@
-import { columns } from "@/components/dashboard/table/column/user-column";
+"use client";
+import { columns } from "@/components/dashboard/table/column/buyer-column";
 import { DataTable } from "@/components/dashboard/table/data_table";
+import { useOrderQuery } from "@/hooks/use-order-query";
 
-async function getData() {
-  // Fetch data from your API here.
-  return [
-    {
-      id: "728ed52f",
-      email: "nonummy.ut@protonmail.ca",
-      amount: 6,
-      status: "backlog",
-    },
-    {
-      id: "728ed52e",
-      email: "consectetuer.rhoncus@outlook.edu",
-      amount: 3,
-      status: "backlog",
-    },
-    {
-      id: "728ed52q",
-      email: "dolor.fusce@aol.org",
-      amount: 4,
-      status: "todo",
-    },
-    {
-      id: "728ed52s",
-      email: "mauris@aol.ca",
-      amount: 8,
-      status: "in progress",
-    },
-    {
-      id: "728ed52c",
-      email: "nullam@yahoo.couk",
-      amount: 5,
-      status: "in progress",
-    },
-    {
-      id: "728ed52f",
-      email: "nonummy.ut@protonmail.ca",
-      amount: 6,
-      status: "canceled",
-    },
-    {
-      id: "728ed52e",
-      email: "consectetuer.rhoncus@outlook.edu",
-      amount: 3,
-      status: "canceled",
-    },
-    {
-      id: "728ed52q",
-      email: "dolor.fusce@aol.org",
-      amount: 4,
-      status: "backlog",
-    },
-    {
-      id: "728ed52s",
-      email: "mauris@aol.ca",
-      amount: 8,
-      status: "canceled",
-    },
-    {
-      id: "728ed52c",
-      email: "nullam@yahoo.couk",
-      amount: 5,
-      status: "todo",
-    },
-    {
-      id: "728ed52f",
-      email: "nonummy.ut@protonmail.ca",
-      amount: 6,
-      status: "backlog",
-    },
-    {
-      id: "728ed52e",
-      email: "consectetuer.rhoncus@outlook.edu",
-      amount: 3,
-      status: "backlog",
-    },
-    {
-      id: "728ed52q",
-      email: "dolor.fusce@aol.org",
-      amount: 4,
-      status: "todo",
-    },
-    {
-      id: "728ed52s",
-      email: "mauris@aol.ca",
-      amount: 8,
-      status: "in progress",
-    },
-    {
-      id: "728ed52c",
-      email: "nullam@yahoo.couk",
-      amount: 5,
-      status: "in progress",
-    },
-    {
-      id: "728ed52f",
-      email: "nonummy.ut@protonmail.ca",
-      amount: 6,
-      status: "canceled",
-    },
-    {
-      id: "728ed52e",
-      email: "consectetuer.rhoncus@outlook.edu",
-      amount: 3,
-      status: "canceled",
-    },
-    {
-      id: "728ed52q",
-      email: "dolor.fusce@aol.org",
-      amount: 4,
-      status: "backlog",
-    },
-    {
-      id: "728ed52s",
-      email: "mauris@aol.ca",
-      amount: 8,
-      status: "canceled",
-    },
-    {
-      id: "728ed52c",
-      email: "nullam@yahoo.couk",
-      amount: 5,
-      status: "todo",
-    },
-  ];
-}
-const Orders = async () => {
-  const data = await getData();
+const Orders = () => {
+  const { data: order_product, isLoading } = useOrderQuery();
+
   return (
     <div>
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={order_product?.data} />
     </div>
   );
 };

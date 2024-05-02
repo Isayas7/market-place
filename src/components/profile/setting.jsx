@@ -28,7 +28,7 @@ function Setting() {
         {" "}
         <CardContent>
           <div className="flex flex-col space-y-2">
-            <div className="flex items-center hover:bg-gray-100 px-2 py-1 rounded">
+            <div className="flex items-center px-2 py-1 rounded">
               <i className="fas fa-envelope mr-2 text-gray-400"></i>
               Business Details
               <button className="ml-auto">
@@ -36,14 +36,14 @@ function Setting() {
               </button>
             </div>
             <div
-              className="flex items-center hover:bg-gray-100 px-2 py-1 rounded cursor-pointer"
+              className="flex items-center px-2 py-1 rounded cursor-pointer"
               onClick={handlePhoneNumberClick}
             >
               <i className="fas fa-plus-circle mr-2 text-gray-400"></i>
               Add phone number
             </div>
             <div
-              className="flex items-center hover:bg-gray-100 px-2 py-1 rounded cursor-pointer"
+              className="flex items-center  px-2 py-1 rounded cursor-pointer"
               onClick={handleEmailChangeClick}
             >
               <i className="fas fa-envelope mr-2 text-gray-400"></i>

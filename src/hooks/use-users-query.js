@@ -1,42 +1,79 @@
+import { roleData } from "@/utils/permission";
 import axios from "axios";
-import React from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-// get all user
-export const UseBuyersQuery = () => {
-  return useQuery({
-    queryKey: ["buyers"],
-    queryFn: async () => {
-      const res = await axios.get("http://localhost:3000/api/user/buyer");
-      return res;
-    },
+//get all users
+export const useUserQuery = () => {
+  const search = useSearchParams();
+  const params = new URLSearchParams(search);
+  const pathname = usePathname();
+
+  let query = {};
+  params.forEach((value, key) => {
+    query[key] = value;
   });
-};
-export const UseSellersQuery = () => {
-  return useQuery({
-    queryKey: ["sellers"],
-    queryFn: async () => {
-      const res = await axios.get("http://localhost:3000/api/user/seller");
-      return res;
-    },
-  });
-};
-export const UseDPsQuery = () => {
-  return useQuery({
-    queryKey: ["delivery_personnels"],
+
+  const role =
+    pathname === "/dashboard/user"
+      ? roleData.Buyer
+      : pathname === "/dashboard/user/seller"
+      ? roleData.Seller
+      : roleData.Personnel_Delivery;
+
+  query.role = role;
+  query.page = !query.page ? 1 : query.page;
+
+  const increment = parseInt(query.page) + 1;
+  const decrement = parseInt(query.page) - 1;
+
+  const queryClient = useQueryClient();
+  const queryString = new URLSearchParams(query).toString();
+  const response = useQuery({
+    queryKey: ["users", queryString],
     queryFn: async () => {
       const res = await axios.get(
-        "http://localhost:3000/api/user/deliverypersonnel"
+        `http://localhost:3000/api/user?${queryString}`
       );
       return res;
     },
   });
+
+  query.page = increment;
+  const incrementQueryString = new URLSearchParams(query).toString();
+  response?.data?.data &&
+  response?.data?.data?.totalPage > response.data.data.currentPage
+    ? queryClient.prefetchQuery({
+        queryKey: ["users", incrementQueryString],
+        queryFn: async () => {
+          const res = await axios.get(
+            `http://localhost:3000/api/user?${incrementQueryString}`
+          );
+          return res;
+        },
+      })
+    : "";
+
+  query.page = decrement;
+  const decrementQueryString = new URLSearchParams(query).toString();
+  response?.data?.data && response?.data?.data?.currentPage - 1 > 0
+    ? queryClient.prefetchQuery({
+        queryKey: ["users", decrementQueryString],
+        queryFn: async () => {
+          const res = await axios.get(
+            `http://localhost:3000/api/user?${decrementQueryString}`
+          );
+          return res;
+        },
+      })
+    : "";
+  return response;
 };
 
-// get individual delivery personnel
-export const UseDPQuery = (id) => {
+// get single user
+export const useSingleUserQuery = (id) => {
   return useQuery({
-    queryKey: ["delivery_personnel"],
+    queryKey: ["user"],
     queryFn: async () => {
       const res = await axios.get(`http://localhost:3000/api/user/${id}`);
       return res;
@@ -44,110 +81,61 @@ export const UseDPQuery = (id) => {
   });
 };
 
-// user registration
-export const UseRegisterQuery = () => {
+// user Create
+export const useUserRegisterQuery = () => {
   return useMutation({
-    mutationFn: (newUser) => {
-      return axios.post("http://localhost:3000/api/auth/register", newUser);
+    mutationFn: async (newUser) => {
+      const res = await axios.post("http://localhost:3000/api/user", newUser);
+      return res;
     },
   });
 };
 
-// delivery personnel registration
-export const useDPRegisterQuery = () => {
-  return useMutation({
-    mutationFn: (newUser) => {
-      return axios.post("http://localhost:3000/api/user", newUser);
-    },
-  });
-};
-
-// user or delivery personnel update
-export const UseUpdateDPQuery = () => {
-  return useMutation({
-    mutationFn: ({ updateUser, id }) => {
-      return axios.put(`http://localhost:3000/api/user/${id}`, updateUser);
-    },
-  });
-};
-
-// user or delivery personnel deactivate
-export const UseDeactivateQuery = (myparams) => {
+// update user
+export const useUserUpdateQuery = () => {
   const queryClient = useQueryClient();
+  const search = useSearchParams();
+  const queryString = new URLSearchParams(search).toString();
+  return useMutation({
+    mutationFn: ({ userInfo, id }) => {
+      return axios.put(`http://localhost:3000/api/user/${id}`, userInfo);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["users", queryString]);
+    },
+  });
+};
+
+export const useUserDeactivateQuery = () => {
+  const queryClient = useQueryClient();
+  const search = useSearchParams();
+  const queryString = new URLSearchParams(search).toString();
   return useMutation({
     mutationFn: (id) => {
       return axios.delete(`http://localhost:3000/api/user/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(myparams);
+      queryClient.invalidateQueries(["users", queryString]);
     },
   });
 };
 
-// user or seller approve
-export const UseApproveQuery = (myparams) => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (id) => {
-      return axios.delete(`http://localhost:3000/api/user/seller/${id}`);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(myparams);
-      queryClient.invalidateQueries("delivery_personnel");
-    },
-  });
-};
-
-// store front creation
-export const useStorefrontCreationQuery = () => {
-  return useMutation({
-    mutationFn: (newStore) => {
-      return axios.post("http://localhost:3000/api/storefront", newStore);
-    },
-  });
-};
-
-// get all user
-export const UseBanksQuery = () => {
-  const config = {
-    headers: {
-      Authorization: "Bearer CHASECK_TEST-1x94uO95pov8QpnzHXI1bNgUl6FwLMyH",
-      "Content-Type": "application/json",
-    },
-  };
-
+// get all banks
+export const UseBankQuery = () => {
   return useQuery({
-    queryKey: ["banks"],
+    queryKey: ["bank"],
     queryFn: async () => {
-      var myHeaders = new Headers();
-      myHeaders.append(
-        "Authorization",
-        "Bearer CHASECK_TEST-1x94uO95pov8QpnzHXI1bNgUl6FwLMyH"
-      );
-
-      var requestOptions = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow",
-      };
-
-      await fetch("https://api.chapa.co/v1/banks", requestOptions)
-        .then((response) => response.text())
-        .then((result) => console.log(result))
-        .catch((error) => console.log("error", error));
+      const res = await axios.get("http://localhost:3000/api/bank");
+      return res;
     },
   });
 };
 
-// user or delivery personnel update
-export const UseChangePasswordQuery = () => {
+// withdrawal post
+export const useWithdrawalQuery = () => {
   return useMutation({
-    mutationFn: ({ values, id }) => {
-      console.log(values, id);
-      return axios.put(
-        `http://localhost:3000/api/changepassword/${id}`,
-        values
-      );
+    mutationFn: (transfer) => {
+      return axios.post("http://localhost:3000/api/bank", transfer);
     },
   });
 };

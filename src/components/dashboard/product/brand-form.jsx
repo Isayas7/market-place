@@ -24,17 +24,15 @@ import { useSession } from "next-auth/react";
 import CustomSingleImageIpload from "@/components/single-image-uploader";
 
 const BrandForm = ({ searchParams }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImages, setSelectedImages] = useState([]);
   const [textFields, setTextFields] = useState([{ id: 0, isDefault: true }]);
 
   const router = useRouter();
-  const session = useSession();
 
   const form = useForm({
     // resolver: zodResolver(categorySchema),
     defaultValues: {
-      productType: "",
+      variants: "",
       brands: [
         {
           name: "",
@@ -53,7 +51,7 @@ const BrandForm = ({ searchParams }) => {
   const onSubmit = async (formValues) => {
     const category = {
       ...formValues,
-      productType: searchParams.productType,
+      variants: searchParams.variants,
     };
 
     registerBrand({ newBrand: category, id: searchParams.categoryName });
@@ -134,6 +132,7 @@ const BrandForm = ({ searchParams }) => {
                     <FormItem>
                       <FormControl>
                         <CustomSingleImageIpload
+                          name="Upload image"
                           className="size-20"
                           value={field.value}
                           onChange={(url) => field.onChange(url)}

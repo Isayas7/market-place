@@ -28,16 +28,89 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import usePermissionStore from "@/store/role-store";
 import { useRoleUpdateQuery } from "@/hooks/use-role-query";
+import SellectForFilter from "@/components/select-for-filter";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export function DataTable({ columns, data, rendered, searchBy }) {
+export function DataTable({
+  currentPage,
+  totalPage,
+  columns,
+  data,
+  dataInfo,
+  rendered,
+  userGroup,
+  searchBy,
+}) {
   const [sorting, setSorting] = useState();
   const [columnFilters, setColumnFilters] = useState();
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
+  const [clear, setClear] = useState(false);
+
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const search = useSearchParams();
+  const queryString = new URLSearchParams(search);
+
+  const parametersToKeep = ["page", "role"];
+  let tab;
+
+  if (typeof localStorage !== "undefined") {
+    tab = localStorage.getItem("tab");
+  }
+
+  const createQueryString = useCallback(
+    (name, value) => {
+      const params = new URLSearchParams(search.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [search]
+  );
+
+  const filterSearchParams = () => {
+    for (const key of Array.from(queryString.keys())) {
+      if (!parametersToKeep.includes(key)) {
+        queryString.delete(key);
+      }
+    }
+    router.replace(`${pathname}?${queryString.toString()}`);
+  };
+
+  const checkParamsExistence = () => {
+    const keys = Array.from(queryString.keys());
+    return (
+      keys.length === 0 ||
+      (parametersToKeep.some((key) => keys.includes(key)) &&
+        keys.every((key) => parametersToKeep.includes(key)) &&
+        keys.length <= parametersToKeep.length)
+    );
+  };
+
+  const RenderResetButton = () => {
+    if (!checkParamsExistence()) {
+      return (
+        <Button
+          variant="outline"
+          onClick={() => {
+            setClear(true);
+            filterSearchParams();
+          }}
+        >
+          Reset
+        </Button>
+      );
+    } else {
+      return null;
+    }
+  };
 
   const table = useReactTable({
     data,
@@ -72,14 +145,42 @@ export function DataTable({ columns, data, rendered, searchBy }) {
   return (
     <div>
       <div className="flex items-center py-4">
-        <Input
-          placeholder={"Filter table..."}
-          value={table.getColumn(searchBy)?.getFilterValue()}
-          onChange={(event) =>
-            table.getColumn(searchBy)?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+        <div className="flex gap-2 items-center">
+          <Input
+            placeholder={"Search table..."}
+            value={table.getColumn(searchBy)?.getFilterValue()}
+            onChange={(event) =>
+              table.getColumn(searchBy)?.setFilterValue(event.target.value)
+            }
+            className="w-44"
+          />
+          <span>Filter By: </span>
+          {(rendered === "category" || rendered === "product") && (
+            <>
+              <SellectForFilter
+                clear={clear}
+                setClear={setClear}
+                rendered="category"
+                filter="Category"
+                dataInfo={dataInfo}
+              />
+            </>
+          )}
+
+          {rendered !== "role" && (
+            <>
+              <SellectForFilter
+                clear={clear}
+                setClear={setClear}
+                rendered="all"
+                filter="Status"
+                dataInfo={dataInfo}
+              />
+            </>
+          )}
+
+          <RenderResetButton />
+        </div>
         <div className="ml-auto flex space-x-5">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -125,81 +226,100 @@ export function DataTable({ columns, data, rendered, searchBy }) {
         </div>
       </div>
 
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
+      {data ? (
+        <>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows?.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
                           )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows?.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results.
                     </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <div className=" flex justify-between items-center">
+            <div className="flex-1 text-sm text-muted-foreground">
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
+              {table.getFilteredRowModel().rows.length} row selected.
+            </div>
+            <div className="flex items-center justify-end space-x-2 py-4">
+              <span>
+                Page {currentPage} of {totalPage}
+              </span>
+              <Button
+                disabled={currentPage - 1 === 0 || currentPage > totalPage}
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  router.push(
+                    pathname + "?" + createQueryString("page", currentPage - 1)
+                  );
+                }}
+              >
+                Previous
+              </Button>
 
-      <div className=" flex justify-between items-center">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row selected.
+              <Button
+                disabled={currentPage === totalPage || currentPage >= totalPage}
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  router.push(
+                    pathname + "?" + createQueryString("page", currentPage + 1)
+                  );
+                }}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="flex items-center justify-center h-1/2">
+          <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
         </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

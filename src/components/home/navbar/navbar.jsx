@@ -13,6 +13,11 @@ import { AlignJustify } from "lucide-react";
 import List from "../list";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { PiWechatLogoDuotone } from "react-icons/pi";
+import { FaLuggageCart } from "react-icons/fa";
+import { FaCartPlus } from "react-icons/fa6";
+import { Badge } from "@/components/ui/badge";
+import { useCart } from "@/store/cart-store";
+import useStore from "@/store/use-store";
 
 const links = [
   {
@@ -28,6 +33,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const myRef = useRef(null);
   const isDesktop = useMediaQuery("(min-width: 1280px)");
+  const cartItems = useStore(useCart, (state) => state.cartItems);
 
   useEffect(() => {
     document.addEventListener("click", handleClick, true);
@@ -119,13 +125,25 @@ const Navbar = () => {
             )}
 
             {session.status === "unauthenticated" && (
-              <Link href={"/login"}>Login</Link>
+              <Link
+                href={"/login"}
+                onClick={() => localStorage.setItem("prevpath", currentUrl)}
+              >
+                Login
+              </Link>
             )}
             {session.status === "authenticated" && (
               <Link href={"/chat"}>
                 <PiWechatLogoDuotone className="text-xl" />
               </Link>
             )}
+            <Link href="/cart" className="relative">
+              <FaCartPlus className="size-6" />
+              <Badge className="absolute -top-2 -right-4 text-[10px] rounded-full">
+                {cartItems?.length}
+              </Badge>
+            </Link>
+
             {session.status === "authenticated" && (
               <Link href={"/dashboard"}>Dashboard</Link>
             )}

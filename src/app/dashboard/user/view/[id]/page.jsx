@@ -7,7 +7,11 @@ import { RiEdit2Line } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { UseApproveQuery, UseDPQuery } from "@/hooks/use-users-query";
+import {
+  UseApproveQuery,
+  useSingleUserQuery,
+  useUserUpdateQuery,
+} from "@/hooks/use-users-query";
 
 import {
   Breadcrumb,
@@ -19,14 +23,17 @@ import {
 import Link from "next/link";
 
 const ViewUser = ({ params }) => {
-  const router = useRouter();
+  const { data: user, isFetching } = useSingleUserQuery(params.id);
 
-  const { data: user } = UseDPQuery(params.id);
-  const handleUpdateClick = () => {
-    router.push(`/dashboard/user/update/${params.id}`);
+  const { mutate: approve, isSuccess, isLoading } = useUserUpdateQuery();
+
+  const handleUpdateUser = () => {
+    const { isActive, ...other } = user?.data;
+
+    const updateUser = { isActive: !isActive, ...other };
+
+    approve({ userInfo: updateUser, id: user?.data?._id });
   };
-
-  const { mutate: approve, isSuccess, isLoading } = UseApproveQuery("sellers");
 
   return (
     <div>
@@ -55,14 +62,16 @@ const ViewUser = ({ params }) => {
               <AvatarImage src="https://github.com/shadcn.png" alt="man" />
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
-            <button className="bg-primary">
-              <RiEdit2Line
-                onClick={handleUpdateClick}
-                className="absolute top-2 right-3  text-3xl bg-primary text-white rounded-full p-1 hover:bg-swansdown hover:text-jade"
-              />
-            </button>
+            <Link
+              href={`/dashboard/user/update/${params.id}`}
+              className="bg-primary"
+            >
+              <RiEdit2Line className="absolute top-2 right-3  text-3xl bg-primary text-white rounded-full p-1 hover:bg-swansdown hover:text-jade" />
+            </Link>
             <div className="text-xl font-bold">
-              {user?.data.firstName + " " + user?.data.middleName}
+              {user?.data.firstName && user.data.firstName + " "}
+              {user?.data.middleName && user.data.middleName + " "}
+              {user?.data.lastName && user.data.lastName}
             </div>
             <div className="bg-primary px-2 text-white rounded-sm">Seller</div>
           </div>
@@ -71,23 +80,20 @@ const ViewUser = ({ params }) => {
               <div>User attribute</div>
               <div className="text-md my-4 flex">
                 <div className="w-1/2">Email</div>
-                <div>{user?.data.email}</div>
+                <div>{user?.data.email} </div>
               </div>
               <hr />
-              <div className="text-md my-4 flex">
-                <div className="w-1/2">Email</div>
-                <div>
-                  {user?.data.firstName +
-                    " " +
-                    user?.data.middleName +
-                    " " +
-                    user?.data.lastName}
-                </div>
-              </div>
+
               <hr />
               <div className="text-md my-4 flex">
                 <div className="w-1/2">Address</div>
-                <div>{user?.data.address}</div>
+                {user?.data.address ? (
+                  <div>{user.data.address}</div>
+                ) : (
+                  <div>
+                    <span>&mdash;</span>
+                  </div>
+                )}
               </div>
               <hr />
               <div className="text-md my-4 flex">
@@ -147,13 +153,10 @@ const ViewUser = ({ params }) => {
             </div>
           </CardContent>
           <CardContent>
-            {user?.data.status ? (
-              <Button onClick={() => approve(params.id)}>Approved</Button>
+            {user?.data?.isActive ? (
+              <Button onClick={handleUpdateUser}>Approved</Button>
             ) : (
-              <Button
-                className="bg-destructive"
-                onClick={() => approve(params.id)}
-              >
+              <Button className="bg-destructive" onClick={handleUpdateUser}>
                 Approve
               </Button>
             )}

@@ -6,8 +6,9 @@ const { Schema } = mongoose;
 
 const roleSchema = new Schema(
   {
-    name: {
+    role: {
       type: String,
+      unique: true,
       required: true,
     },
     permission: [String],

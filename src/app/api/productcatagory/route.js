@@ -3,11 +3,55 @@ import connect from "@/utils/db";
 import { NextResponse } from "next/server";
 
 export const GET = async (request) => {
+  const { searchParams } = new URL(request.url);
+  let query = {};
+  searchParams.forEach((value, key) => {
+    query[key] = value;
+  });
+
+  const pageSize = 2;
+  const currentPage = parseInt(query.page);
+
   try {
     await connect();
-    const productCategories = await ProductCategory.find();
+    if (query.page) {
+      delete query.page;
 
-    return new NextResponse(JSON.stringify(productCategories), { status: 200 });
+      const count = await ProductCategory.find(query).countDocuments();
+
+      if (count > currentPage) {
+        const productCategories = await ProductCategory.find(query)
+          .limit(pageSize)
+          .skip((currentPage - 1) * pageSize);
+
+        const totalPage = Math.ceil(count / pageSize);
+
+        return new NextResponse(
+          JSON.stringify({ productCategories, totalPage, currentPage }),
+          {
+            status: 200,
+          }
+        );
+      } else {
+        const productCategories = await ProductCategory.find(query).limit(
+          pageSize
+        );
+        const totalPage = Math.ceil(count / pageSize);
+
+        return new NextResponse(
+          JSON.stringify({ productCategories, totalPage, currentPage }),
+          {
+            status: 200,
+          }
+        );
+      }
+    } else {
+      const productCategories = await ProductCategory.find(query);
+
+      return new NextResponse(JSON.stringify(productCategories), {
+        status: 200,
+      });
+    }
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });
   }

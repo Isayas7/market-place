@@ -5,22 +5,17 @@ const { Schema } = mongoose;
 
 const reviewSchema = new Schema(
   {
-    rating: {
-      type: Number,
-      required: true,
-      max: 5,
-    },
-    comment: {
-      type: String,
-      required: true,
-    },
-    product: {
+    productId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
     },
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
+      required: true,
+    },
+    comment: {
+      type: String,
       required: true,
     },
   },

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-// delete mongoose.connection.models["Message"];
+delete mongoose.connection.models["Message"];
 
 const messageSchema = new Schema(
   {
@@ -16,6 +16,13 @@ const messageSchema = new Schema(
     },
     text: {
       type: String,
+    },
+    image: {
+      type: String,
+    },
+    product: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
     },
   },
   { timestamps: true }

@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { passwordChange } from "@/schema/user";
+import { passwordChange } from "@/validationschema/user";
 import { UseChangePasswordQuery } from "@/hooks/use-users-query";
 import { useSession } from "next-auth/react";
 

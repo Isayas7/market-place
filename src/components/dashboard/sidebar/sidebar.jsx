@@ -26,12 +26,17 @@ export const menuUtems = [
     icon: <MdPersonalInjury />,
   },
   {
-    title: "Product Category",
+    title: "Category",
     path: "/dashboard/category",
     icon: <FaStore />,
   },
   {
-    title: "Product",
+    title: "Brand",
+    path: "/dashboard/brand",
+    icon: <MdProductionQuantityLimits />,
+  },
+  {
+    title: "product",
     path: "/dashboard/product",
     icon: <MdProductionQuantityLimits />,
   },

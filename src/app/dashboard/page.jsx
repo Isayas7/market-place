@@ -23,8 +23,6 @@ import { MdAutoGraph } from "react-icons/md";
 import { BsGraphDownArrow } from "react-icons/bs";
 import { VscGraphLine } from "react-icons/vsc";
 
-// import PieChartWithPaddingAngle from "@/components/dashboard/PieChartWithPaddingAngle";
-
 const Dashboard = () => {
   return (
     <div className="">

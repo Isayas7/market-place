@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,13 +15,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { registerSchema } from "@/validationschema/user";
-import { useMutation } from "react-query";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import { UseRegisterQuery } from "@/hooks/use-users-query";
+import { useUserRegisterQuery } from "@/hooks/use-users-query";
+import { roleData } from "@/utils/permission";
 
 export default function RegistrationForm() {
   const router = useRouter();
+
+  const { mutate: register, isSuccess } = useUserRegisterQuery();
 
   const form = useForm({
     resolver: zodResolver(registerSchema),
@@ -35,7 +35,10 @@ export default function RegistrationForm() {
     },
   });
 
-  const { mutate: register, isSuccess } = UseRegisterQuery();
+  const onSubmit = (formValues) => {
+    formValues.role = roleData.Buyer;
+    register(formValues);
+  };
 
   if (isSuccess) {
     router.push("/login");
@@ -45,7 +48,7 @@ export default function RegistrationForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(register)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div>
           <div className="flex space-x-4">
             <FormField

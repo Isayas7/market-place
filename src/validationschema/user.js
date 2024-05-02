@@ -45,6 +45,16 @@ export const loginSchema = z.object({
 
 // delivery personnel information validator
 export const deliveryPersonnelSchema = z.object({
+  profileImage: z.string().min(2, {
+    message: "Please enter valid bank information.",
+  }),
+  identificationCard: z.string().min(2, {
+    message: "Please enter valid bank information.",
+  }),
+  nationalId: z.string().min(2, {
+    message: "Please enter valid bank information.",
+  }),
+
   firstName: z.string().min(2, {
     message: "Please enter a valid first name.",
   }),
@@ -75,6 +85,15 @@ export const deliveryPersonnelSchema = z.object({
 
 // delivery personnel information validator
 export const storefrontSchema = z.object({
+  profileImage: z.string().min(2, {
+    message: "Please enter valid bank information.",
+  }),
+  identificationCard: z.string().min(2, {
+    message: "Please enter valid bank information.",
+  }),
+  nationalId: z.string().min(2, {
+    message: "Please enter valid bank information.",
+  }),
   lastName: z.string().min(2, {
     message: "Please enter a valid last name.",
   }),
@@ -92,9 +111,6 @@ export const storefrontSchema = z.object({
   accountNumber: z.string().min(2, {
     message: "Please enter a valid account number.",
   }),
-  location: z.string().min(2, {
-    message: "Please enter a valid location",
-  }),
 });
 
 // product information validator
@@ -105,14 +121,14 @@ export const productSchema = z.object({
   categoryId: z.string().min(2, {
     message: "Please sellect one category.",
   }),
-  productType: z.string().min(2, {
+  variants: z.string().min(2, {
     message: "Please sellect one product type.",
   }),
   brand: z.string().min(2, {
     message: "Please enter brand name.",
   }),
-  productName: z.string().min(2, {
-    message: "Please enter product name.",
+  title: z.string().min(2, {
+    message: "Please enter title name.",
   }),
 
   size: z.array(z.string()).min(1, {
@@ -140,13 +156,13 @@ export const categorySchema = z.object({
   categoryName: z.string().min(2, {
     message: "please enter category Name",
   }),
-  productType: z.string().min(2, {
+  variants: z.string().min(2, {
     message: "please enter product Names",
   }),
 });
 // category validator
 export const roleSchema = z.object({
-  name: z.string().min(2, {
+  role: z.string().min(2, {
     message: "please enter role Name",
   }),
 });
@@ -168,3 +184,22 @@ export const passwordChange = z
     message: "Password don't match",
     path: ["confirm_password"],
   });
+
+//withdrawal form validation
+export const wathdrawalform = z.object({
+  name: z.string().min(2, {
+    message: "account holder name required",
+  }),
+  bankinfo: z.string().min(2, {
+    message: "bank infromation required",
+  }),
+  accountNumber: z.string().min(2, {
+    message: "account number required",
+  }),
+  amount: z.string().min(2, {
+    message: "amount required in ETB",
+  }),
+  remark: z.string().min(2, {
+    message: "Remark required",
+  }),
+});

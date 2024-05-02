@@ -41,12 +41,30 @@ export const permissions = {
   ],
 };
 
+export const roleData = {
+  Buyer: "Buyer",
+  Seller: "Seller",
+  Admin: "Admin",
+  Personnel_Delivery: "Personnel-Delivery",
+};
+
+export const statusData = {
+  Active: "Active",
+  Banned: "Banned",
+};
+export const orderStatus = {
+  Pending: "Pending",
+  Shipping: "Shipping",
+  Delivered: "Delivered",
+};
+
 const admin = {
+  _id: "123456789",
   firstName: "Isayas",
   middleName: "Melkamu",
   email: "isaias@gmail.com",
+  role: roleData.Admin,
   password: "1234",
-  _id: "123456789",
   permissions: Object.values(permissions).reduce(
     (acc, val) => acc.concat(val),
     []
