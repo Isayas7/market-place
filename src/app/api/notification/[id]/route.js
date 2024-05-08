@@ -7,8 +7,7 @@ export const GET = async (request, { params }) => {
   try {
     await connect();
 
-    const notification = await Notification.findById(id);
-    console.log(notification);
+    const notification = await Notification.find({ user: id });
     return new NextResponse(JSON.stringify(notification), { status: 200 });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });
@@ -17,8 +16,7 @@ export const GET = async (request, { params }) => {
 
 export const PUT = async (request, { params }) => {
   const { id } = params;
-  const values = request.json();
-
+  const values = await request.json();
   const { ...other } = values;
 
   try {

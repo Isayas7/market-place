@@ -24,12 +24,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import {
+  UseBankQuery,
   useUserDeactivateQuery,
   useUserUpdateQuery,
 } from "@/hooks/use-users-query";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { statusData } from "@/utils/permission";
+import { notificationType, statusData } from "@/utils/permission";
+import { useSocket } from "@/components/socketprovider/socket-provider";
 
 export const seller_column = [
   {
@@ -95,6 +97,12 @@ export const seller_column = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Bank" />
     ),
+    cell: ({ row }) => {
+      const { data: banks } = UseBankQuery();
+
+      return banks?.data?.data?.find((b) => b.id === row.original.bankInfo)
+        ?.name;
+    },
   },
   {
     accessorKey: "accountNumber",
@@ -112,11 +120,22 @@ export const seller_column = [
       const user = row.original;
       const { isSeller, ...other } = user;
 
-      const { mutate: approve, isSuccess, isLoading } = useUserUpdateQuery();
+      const socket = useSocket();
+
+      const {
+        mutate: approve,
+        isSuccess,
+        isLoading,
+      } = useUserUpdateQuery(user._id);
 
       const handleUpdateUser = () => {
         const updateUser = { isSeller: !isSeller, ...other };
         approve({ userInfo: updateUser, id: user._id });
+        socket?.emit("sendStoreApproved", {
+          seller: user._id,
+          type: notificationType.approvalRequest,
+          createdAt: Date.now(),
+        });
       };
       if (open) {
         return (
@@ -161,7 +180,7 @@ export const seller_column = [
             onClick={() => setOpen(true)}
             variant="secondary"
           >
-            panding
+            Pending
           </Badge>
         );
       }
@@ -206,7 +225,7 @@ export const seller_column = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-            <Link href={`user/view/${user._id}`}>
+            <Link href={`view/${user._id}`}>
               <DropdownMenuItem>View</DropdownMenuItem>
             </Link>
             <DropdownMenuItem onClick={() => setOpen(true)}>

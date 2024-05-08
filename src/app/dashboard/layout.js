@@ -73,7 +73,7 @@ const Layout = ({ children }) => {
           <div className=" w-[5px]  group-hover:hidden  " />
         </aside>
 
-        <main className=" container pt-7 overflow-y-scroll  ">{children}</main>
+        <main className=" container py-7 overflow-y-scroll  ">{children}</main>
       </div>
     );
   }

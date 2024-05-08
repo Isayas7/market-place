@@ -7,7 +7,6 @@ import connect from "@/utils/db";
 import { loginSchema } from "@/validationschema/user";
 import Role from "@/models/Role";
 import admin, { roleData, statusData } from "@/utils/permission";
-import { redirect } from "next/navigation";
 
 const Login = async (credentials) => {
   const validationResult = loginSchema.safeParse(credentials);
@@ -81,6 +80,8 @@ export const options = {
       if (token) {
         session.user.id = token.id;
         session.user.role = token.role;
+        session.user.name = token.name;
+        session.user.image = token.image;
       }
       return session;
     },
@@ -90,11 +91,14 @@ export const options = {
         const userExist = await User.findOne({ email: user?.email });
         if (userExist) {
           token.id = userExist._id;
+          token.image = userExist.profileImage;
           token.role = userExist.role;
+          token.name = userExist.firstName + " " + userExist.middleName;
         }
       } else if (token?.email === admin.email) {
         token.id = admin._id;
         token.role = admin.role;
+        token.name = admin.firstName + " " + admin.middleName;
       }
       return token;
     },

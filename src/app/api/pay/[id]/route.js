@@ -1,5 +1,4 @@
 import axios from "axios";
-import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 const CHAPA_URL = "https://api.chapa.co/v1/transaction/initialize";
@@ -17,19 +16,14 @@ export const GET = async (request, { params }) => {
       "https://api.chapa.co/v1/transaction/verify/" + params.id,
       config
     );
-    console.log("Payment was successfully verified");
-    if (response.data.status === "success") {
-      await axios.post(
-        "http://localhost:3000/api/order",
-        response.data.data.meta
-      );
-    }
 
-    return new NextResponse(JSON.stringify(response.data.data.meta), {
+    const orders = response?.data?.data?.meta;
+    const result = await axios.post("http://localhost:3000/api/order", orders);
+
+    return new NextResponse(result, {
       status: 200,
     });
   } catch (error) {
-    console.error("Error:", error);
     return new NextResponse("Payment verification failed", { status: 500 });
   }
 };

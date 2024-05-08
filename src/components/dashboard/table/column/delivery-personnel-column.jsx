@@ -23,7 +23,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
-import { useUserDeactivateQuery } from "@/hooks/use-users-query";
+import { UseBankQuery, useUserDeactivateQuery } from "@/hooks/use-users-query";
 import Link from "next/link";
 import { statusData } from "@/utils/permission";
 import { Badge } from "@/components/ui/badge";
@@ -92,6 +92,11 @@ export const delivery_columns = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Bank" />
     ),
+    cell: ({ row }) => {
+      const { data: banks } = UseBankQuery();
+      return banks?.data?.data?.find((b) => b.id === row.original.bankInfo)
+        ?.name;
+    },
   },
   {
     accessorKey: "accountNumber",
@@ -139,7 +144,7 @@ export const delivery_columns = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-            <Link href={`user/view/${user._id}`}>
+            <Link href={`view/${user._id}`}>
               <DropdownMenuItem>View</DropdownMenuItem>
             </Link>
             <DropdownMenuItem onClick={() => setOpen(true)}>

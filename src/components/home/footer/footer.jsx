@@ -1,4 +1,6 @@
 "use client";
+import { FlagIcon } from "lucide-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
@@ -11,28 +13,67 @@ const Footer = () => {
         currentUrl === "/" ? "" : "hidden"
       }`}
     >
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
-      repellendus molestiae consectetur, perferendis at natus nihil? Harum
-      aspernatur earum eos facere minus, consectetur saepe at, nihil
-      exercitationem sit repellat expedita necessitatibus sint, veritatis
-      molestiae eveniet fugiat aliquam nulla error illum doloribus mollitia
-      tenetur est. Saepe ipsum culpa dicta commodi consequatur quibusdam
-      doloribus inventore, at voluptatum, dolor temporibus quia! Nam
-      reprehenderit fugit tempora laborum eos perspiciatis quisquam illum saepe
-      ex blanditiis amet, dolores incidunt. Adipisci illo inventore repudiandae!
-      Harum consequatur laudantium tempore nesciunt a rem quaerat, architecto
-      temporibus voluptate modi aliquam dolorem quia distinctio tenetur id
-      laboriosam nam. Dolores perferendis omnis optio, recusandae, perspiciatis
-      explicabo ipsa consectetur deserunt minus placeat quo in aut cum amet
-      assumenda, excepturi alias nostrum! Nulla sit sint adipisci sapiente odit
-      molestias maxime magni, laboriosam nemo suscipit autem magnam
-      reprehenderit molestiae sed qui labore, quas dolore iure possimus? Dolores
-      maiores eos aspernatur corrupti, dicta consequatur ipsum quo maxime eius
-      cum hic laboriosam provident enim optio distinctio animi reiciendis odit,
-      ducimus delectus illum. Ad et veritatis dolorum architecto earum tenetur
-      quos, ab voluptatem eaque ducimus, sint ex recusandae a eos ullam
-      provident! Cumque minima, nisi perferendis esse asperiores pariatur omnis
-      facilis eius ut sint optio maxime dolore velit?
+      <footer className=" ">
+        <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div>
+              <Link className="flex items-center" href="#">
+                <FlagIcon className="h-8 w-auto " />
+                <span className="ml-2 text-xl font-bold">Marketplace</span>
+              </Link>
+              <p className="mt-4 max-w-md text-sm">
+                Discover the best products and services in our vibrant
+                marketplace.
+              </p>
+            </div>
+            <div>
+              <h4 className="text-lg font-bold">About</h4>
+              <nav className="mt-4 space-y-2 flex flex-col">
+                <Link className="text-sm hover:underline" href="#">
+                  About Us
+                </Link>
+                <Link className="text-sm hover:underline" href="#">
+                  Our Team
+                </Link>
+                <Link className="text-sm hover:underline" href="#">
+                  Our Mission
+                </Link>
+              </nav>
+            </div>
+            <div>
+              <h4 className="text-lg font-bold">Contact</h4>
+              <nav className="mt-4 space-y-2 flex flex-col">
+                <Link className="text-sm hover:underline" href="#">
+                  Contact Us
+                </Link>
+                <Link className="text-sm hover:underline" href="#">
+                  Support
+                </Link>
+                <Link className="text-sm hover:underline" href="#">
+                  Feedback
+                </Link>
+              </nav>
+            </div>
+            <div>
+              <h4 className="text-lg font-bold">Legal</h4>
+              <nav className="mt-4 space-y-2 flex flex-col">
+                <Link className="text-sm hover:underline" href="#">
+                  Terms of Service
+                </Link>
+                <Link className="text-sm hover:underline" href="#">
+                  Privacy Policy
+                </Link>
+                <Link className="text-sm hover:underline" href="#">
+                  Cookie Policy
+                </Link>
+              </nav>
+            </div>
+          </div>
+          <div className="mt-8 border-t border-jade pt-8 text-center text-sm">
+            © 2024 Marketplace. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

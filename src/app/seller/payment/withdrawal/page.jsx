@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Form,
   FormControl,
@@ -14,11 +14,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import {
-  UseBankQuery,
-  useDPRegisterQuery,
-  useWithdrawalQuery,
-} from "@/hooks/use-users-query";
+import { UseBankQuery, useSingleUserQuery } from "@/hooks/use-users-query";
 import { useRouter } from "next/navigation";
 
 import { useSession } from "next-auth/react";
@@ -30,32 +26,76 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { wathdrawalform } from "@/validationschema/user";
+import { useToast } from "@/components/ui/use-toast";
+import axios from "axios";
+import {
+  useTransactionQuery,
+  useWithdrawalQuery,
+} from "@/hooks/use-order-query";
+import formatDate from "@/utils/formatDate";
 
 const Withrawal = () => {
   const router = useRouter();
+  const session = useSession();
+  const { toast } = useToast();
+
+  const { data: seller } = useSingleUserQuery(session?.data?.user?.id);
+  const { data: transaction } = useTransactionQuery(session?.data?.user?.id);
+  const {
+    mutate: withdraw,
+    isSuccess,
+    isLoading,
+    data,
+    error,
+    isError,
+  } = useWithdrawalQuery(session?.data?.user?.id);
+  const { data: banks } = UseBankQuery();
+
+  console.log(banks);
 
   const form = useForm({
     resolver: zodResolver(wathdrawalform),
-    defaultValues: {
-      name: "",
-      bankinfo: "",
-      accountNumber: "",
-      amount: "",
-      remark: "",
+    defaultValues: async () => {
+      const user = await axios.get(
+        `http://localhost:3000/api/user/${session?.data?.user?.id}`
+      );
+      return {
+        name: `${user?.data?.firstName} ${user?.data?.middleName} ${user?.data?.lastName}`,
+        address: user?.data?.address,
+        bankInfo: user?.data?.bankInfo,
+        accountNumber: user?.data?.accountNumber,
+        amount: "",
+        remark: "",
+      };
     },
   });
 
-  const { mutate: withdraw, isSuccess, isLoading } = useWithdrawalQuery();
-  const { data: banks } = UseBankQuery();
-
   const onSubmit = async (formValues) => {
-    withdraw(formValues);
+    formValues.user = session?.data?.user?.id;
+    console.log(formValues);
+    if (formValues.amount > seller?.data?.balance) {
+      toast({
+        variant: "destructive",
+        title: "Insufficient Balance",
+      });
+    } else {
+      seller?.data?.balance > 0 && withdraw(formValues);
+    }
   };
-  if (isSuccess) {
-    console.log(isSuccess);
 
-    router.push("/seller/payment");
-  }
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        className: " border-2 text-black bg-[#D4F4E7]",
+        description: data?.data?.message,
+      });
+    } else if (isError) {
+      toast({
+        variant: "destructive",
+        title: error?.response?.data?.message || "An error occurred",
+      });
+    }
+  }, [isSuccess, error, isError, data, toast]);
 
   return (
     <div>
@@ -64,7 +104,9 @@ const Withrawal = () => {
         <Card className="p-2 w-full">
           <CardTitle className="m-2 w-full flex flex-col justify-center items-center gap-2">
             <div>Balance</div>
-            <div> 1500 ETB</div>
+            <div>
+              {seller?.data?.balance === 0 ? "0" : seller?.data?.balance} ETB
+            </div>
           </CardTitle>
           <CardContent>
             <Form {...form}>
@@ -99,11 +141,17 @@ const Withrawal = () => {
                         <FormLabel>Choose Bank</FormLabel>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          defaultValue={seller?.data?.bankInfo} // Set the default selected value here
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select Bank" />
+                              <SelectValue
+                                placeholder={
+                                  banks?.data?.data?.find(
+                                    (b) => b.id === seller?.data?.bankInfo
+                                  )?.name || "Select Bank" // Placeholder when no bank is selected
+                                }
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -184,89 +232,19 @@ const Withrawal = () => {
             </Form>
           </CardContent>
         </Card>
-        <Card className="w-full flex flex-col items-center p-2">
+        <Card className="w-full h-[50%] flex flex-col items-center p-2 overflow-y-scroll">
           <div className="p-2 text-xl font-bold">Withdrawal History</div>
-          <div className="w-full flex p-2 hover:bg-slate-200 hover:dark:bg-mirage-500 cursor-pointer">
-            <div className="w-1/2">
-              <div>Tran-1990</div>
-              <div>April 1, 2014</div>
+          {transaction?.data?.map((tran) => (
+            <div className="w-full flex  justify-between items-center p-2 hover:bg-slate-200 hover:dark:bg-mirage-500 cursor-pointer">
+              <div className=" ">
+                <div>TRA-{tran?._id.slice(0, 4)}</div>
+                <div>{formatDate(tran?.createdAt)}</div>
+              </div>
+
+              <div>{tran?.name}</div>
+              <div className="">{tran?.amount} ETB</div>
             </div>
-            <div className="w-1/2 h-full flex items-center justify-between">
-              <div>3000 ETB</div>
-              <div className="underline">Receipt</div>
-            </div>
-          </div>
-          <div className="w-full flex p-2 hover:bg-slate-200 hover:dark:bg-mirage-500 cursor-pointer">
-            <div className="w-1/2">
-              <div>Tran-1990</div>
-              <div>April 1, 2014</div>
-            </div>
-            <div className="w-1/2 h-full flex items-center justify-between">
-              <div>3000 ETB</div>
-              <div className="underline">Receipt</div>
-            </div>
-          </div>
-          <div className="w-full flex p-2 hover:bg-slate-200 hover:dark:bg-mirage-500 cursor-pointer">
-            <div className="w-1/2">
-              <div>Tran-1990</div>
-              <div>April 1, 2014</div>
-            </div>
-            <div className="w-1/2 h-full flex items-center justify-between">
-              <div>3000 ETB</div>
-              <div className="underline">Receipt</div>
-            </div>
-          </div>
-          <div className="w-full flex p-2 hover:bg-slate-200 hover:dark:bg-mirage-500 cursor-pointer">
-            <div className="w-1/2">
-              <div>Tran-1990</div>
-              <div>April 1, 2014</div>
-            </div>
-            <div className="w-1/2 h-full flex items-center justify-between">
-              <div>3000 ETB</div>
-              <div className="underline">Receipt</div>
-            </div>
-          </div>
-          <div className="w-full flex p-2 hover:bg-slate-200 hover:dark:bg-mirage-500 cursor-pointer">
-            <div className="w-1/2">
-              <div>Tran-1990</div>
-              <div>April 1, 2014</div>
-            </div>
-            <div className="w-1/2 h-full flex items-center justify-between">
-              <div>3000 ETB</div>
-              <div className="underline">Receipt</div>
-            </div>
-          </div>
-          <div className="w-full flex p-2 hover:bg-slate-200 hover:dark:bg-mirage-500 cursor-pointer">
-            <div className="w-1/2">
-              <div>Tran-1990</div>
-              <div>April 1, 2014</div>
-            </div>
-            <div className="w-1/2 h-full flex items-center justify-between">
-              <div>3000 ETB</div>
-              <div className="underline">Receipt</div>
-            </div>
-          </div>
-          <div className="w-full flex p-2 hover:bg-slate-200 hover:dark:bg-mirage-500 cursor-pointer">
-            <div className="w-1/2">
-              <div>Tran-1990</div>
-              <div>April 1, 2014</div>
-            </div>
-            <div className="w-1/2 h-full flex items-center justify-between">
-              <div>3000 ETB</div>
-              <div className="underline">Receipt</div>
-            </div>
-          </div>
-          <div className="w-full flex p-2 hover:bg-slate-200 hover:dark:bg-mirage-500 cursor-pointer">
-            <div className="w-1/2">
-              <div>Tran-1990</div>
-              <div>April 1, 2014</div>
-            </div>
-            <div className="w-1/2 h-full flex items-center justify-between">
-              <div>3000 ETB</div>
-              <div className="underline">Receipt</div>
-            </div>
-          </div>
-          <div className="w-full flex p-2 ">See more</div>
+          ))}
         </Card>
       </div>
     </div>

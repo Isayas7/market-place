@@ -16,8 +16,13 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { z } from "zod";
+import { useState } from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 export default function SetPassword() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+
   const session = useSession();
   const router = useRouter();
 
@@ -48,60 +53,78 @@ export default function SetPassword() {
   };
 
   return (
-    <div className="flex flex-col   mt-[20%] items-center justify-center">
-      <Card className="w-full max-w-[400px] pt-4 align-middle ">
-        <CardContent>
+    <div className="flex justify-center items-center mt-20">
+      <Card className=" p-8 w-full max-w-md ">
+        <div className="w-full max-w-md space-y-8">
+          <div>
+            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+              Set New password
+            </h2>
+          </div>
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col space-y-2 "
-            >
-              <FormField
-                control={form.control}
-                name="new_password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>New Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="New password"
-                        {...field}
-                        className="w-full px-3 py-2 rounded-md border border-green-300 focus:ring-opacity-50"
-                        style={{ minWidth: "300px" }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="confirm_password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Confirm password"
-                        {...field}
-                        className="w-full px-3 py-2 rounded-md border border-green-300 focus:ring-opacity-50"
-                        style={{ minWidth: "300px" }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="w-full flex items-end justify-end">
-                <Button type="submit" className="max-w-fit">
-                  Set
-                </Button>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <div className=" md:min-w-[350px] flex flex-col gap-4">
+                <FormField
+                  control={form.control}
+                  name="new_password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="New password"
+                            {...field}
+                          />
+                          <span
+                            className="absolute inset-y-0 right-0 bottom-1 flex items-center pr-3 cursor-pointer"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                          </span>
+                        </div>
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="confirm_password"
+                  render={({ field }) => (
+                    <FormItem className="relative">
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={confirm ? "text" : "password"}
+                            placeholder="Confirm password"
+                            {...field}
+                          />
+                          <span
+                            className="absolute inset-y-0 right-0 bottom-1 flex items-center pr-3 cursor-pointer"
+                            onClick={() => setConfirm(!confirm)}
+                          >
+                            {confirm ? <EyeOffIcon /> : <EyeIcon />}
+                          </span>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
+
+              <Button
+                disabled={session.status === "loading"}
+                className="w-full text-xl py-4 "
+                type="submit"
+              >
+                Submit
+              </Button>
             </form>
           </Form>
-        </CardContent>
+        </div>
       </Card>
     </div>
   );

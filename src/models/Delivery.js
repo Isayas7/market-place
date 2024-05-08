@@ -2,28 +2,25 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
+// delete mongoose.connection.models["Delivery"];
+
 const deliverySchema = new Schema(
   {
     deliveryDate: {
       type: Date,
-      required: true,
     },
     deliveryCost: {
       type: Number,
       required: true,
     },
-    deliveryStatus: {
-      type: String,
-      required: true,
-    },
     order: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Order",
       required: true,
     },
-    product: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
+    deliveryPersonnel: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
   },

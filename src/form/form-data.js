@@ -6,13 +6,6 @@ export const StoreFrontCrationForm = [
     type: "text",
   },
   {
-    name: "address",
-    label: "Your Address",
-    placeholder: "address",
-    type: "text",
-  },
-
-  {
     name: "phoneNumber",
     label: "Phone Number",
     placeholder: "0987654321",
@@ -52,12 +45,7 @@ export const deliveryPersonnelsForm = [
     placeholder: "example@gmail.com",
     type: "email",
   },
-  {
-    name: "address",
-    label: "Your Address",
-    placeholder: "address",
-    type: "text",
-  },
+
   {
     name: "phoneNumber",
     label: "Phone Number",

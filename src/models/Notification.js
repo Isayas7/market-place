@@ -2,32 +2,28 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
+delete mongoose.connection.models["Notification"];
+
 const notificationSchema = new Schema(
   {
     notificationType: {
       type: String,
       required: true,
     },
-    notificationBody: {
-      type: String,
-      required: true,
-    },
+
     notificationStatus: {
       type: String,
+      enum: ["seen", "unseen"],
+      default: "unseen",
       required: true,
     },
-    notificationTitle: {
-      type: String,
-      required: true,
+    notificationCount: {
+      type: Number,
+      default: 0,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
-    },
-    delivery: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Delivery",
       required: true,
     },
   },

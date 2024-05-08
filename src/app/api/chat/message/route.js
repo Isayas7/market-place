@@ -1,16 +1,16 @@
+import Conversation from "@/models/Conversation";
 import Message from "@/models/Message";
 import connect from "@/utils/db";
 import { NextResponse } from "next/server";
 
 export const POST = async (request) => {
   const values = await request.json();
-
   await connect();
 
   const message = new Message(values);
   try {
     const savedMessage = await message.save();
-    console.log(savedMessage);
+
     return new NextResponse(savedMessage, { status: 201 });
   } catch (error) {
     console.log(error);

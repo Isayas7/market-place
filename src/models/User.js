@@ -32,6 +32,10 @@ const userSchema = new Schema(
     address: {
       type: String,
     },
+    location: {
+      type: [Number],
+      required: true,
+    },
     phoneNumber: {
       type: String,
     },
@@ -63,6 +67,10 @@ const userSchema = new Schema(
     status: {
       type: String,
       default: statusData.Active,
+    },
+    balance: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

@@ -1,3 +1,5 @@
+import Transaction from "@/models/Transaction";
+import User from "@/models/User";
 import { NextResponse } from "next/server";
 
 export const GET = async (request) => {
@@ -21,7 +23,6 @@ export const GET = async (request) => {
 
 export const POST = async (request) => {
   const values = await request.json();
-  console.log(values);
 
   const url = "https://api.chapa.co/v1/transfers";
 
@@ -36,7 +37,7 @@ export const POST = async (request) => {
     amount: values.amount,
     currency: "ETB",
     beneficiary_name: values.name,
-    reference: "3241342142sfdd",
+    reference: extractDigitsAfterDecimal(Math.random(14)),
     bank_code: values.bankinfo,
   };
   try {
@@ -49,17 +50,36 @@ export const POST = async (request) => {
     const responseData = await response.json();
 
     if (response.ok) {
+      // blance decrease from user
+      const user = await User.findById(values.user);
+      user.balance -= values.amount;
+      await user.save();
+
+      // register transaction
+      const transaction = await Transaction.create(values);
+
       return new NextResponse(JSON.stringify(responseData), {
         status: response.status,
       });
     } else {
-      console.error(responseData.message);
+      // console.log(response.status);
       return new NextResponse(JSON.stringify(responseData), {
         status: response.status,
       });
     }
   } catch (error) {
-    console.error("Unexpected error occurred:", error);
+    // console.log(error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 };
+
+function extractDigitsAfterDecimal(number) {
+  const strNumber = number.toString();
+  const decimalIndex = strNumber.indexOf(".");
+
+  if (decimalIndex !== -1) {
+    return strNumber.substring(decimalIndex + 1);
+  } else {
+    return "";
+  }
+}

@@ -6,17 +6,18 @@ export const GET = async (request, { params }) => {
   const { id } = params;
   try {
     await connect();
+    const delivery = await Delivery.findById(id).populate("order");
 
-    const delivery = await Delivery.findById(id);
     return new NextResponse(JSON.stringify(delivery), { status: 200 });
   } catch (error) {
+    console.log(error);
     return new NextResponse("Database Error", { status: 500 });
   }
 };
 
 export const PUT = async (request, { params }) => {
   const { id } = params;
-  const values = request.json();
+  const values = await request.json();
 
   const { ...other } = values;
 
@@ -36,24 +37,6 @@ export const PUT = async (request, { params }) => {
     return new NextResponse(JSON.stringify(updatedDelivery), {
       status: 200,
     });
-  } catch (error) {
-    return new NextResponse("Database Error", { status: 500 });
-  }
-};
-
-export const DELETE = async (request, { params }) => {
-  const { id } = params;
-  try {
-    await connect();
-
-    const delivery = await Delivery.findById(id);
-    if (!delivery) {
-      return new NextResponse("Delivery not found", { status: 404 });
-    }
-    delivery.isActive = false;
-    await delivery.save();
-
-    return new NextResponse(JSON.stringify(delivery), { status: 200 });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });
   }

@@ -48,6 +48,11 @@ export const roleData = {
   Personnel_Delivery: "Personnel-Delivery",
 };
 
+export const notificationType = {
+  message: "message",
+  approvalRequest: "approvalRequest",
+};
+
 export const statusData = {
   Active: "Active",
   Banned: "Banned",

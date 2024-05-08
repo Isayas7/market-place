@@ -17,8 +17,12 @@ import { signIn, useSession } from "next-auth/react";
 import { loginSchema } from "@/validationschema/user";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { useState } from "react";
 
 export default function LoginForm() {
+  const [showPassword, setShowPassword] = useState(false);
+
   const session = useSession();
   const router = useRouter();
   const form = useForm({
@@ -70,13 +74,22 @@ export default function LoginForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input
-                    className="py-4"
-                    type="password"
-                    placeholder="enter password"
-                    {...field}
-                  />
+                  <div className="relative">
+                    <Input
+                      className="py-4"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="enter password"
+                      {...field}
+                    />
+                    <span
+                      className="absolute right-0 bottom-2 flex items-center pr-3 cursor-pointer"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                    </span>
+                  </div>
                 </FormControl>
+
                 <FormMessage />
               </FormItem>
             )}

@@ -73,7 +73,7 @@ export const useUserQuery = () => {
 // get single user
 export const useSingleUserQuery = (id) => {
   return useQuery({
-    queryKey: ["user"],
+    queryKey: ["user", id],
     queryFn: async () => {
       const res = await axios.get(`http://localhost:3000/api/user/${id}`);
       return res;
@@ -92,7 +92,7 @@ export const useUserRegisterQuery = () => {
 };
 
 // update user
-export const useUserUpdateQuery = () => {
+export const useUserUpdateQuery = (id) => {
   const queryClient = useQueryClient();
   const search = useSearchParams();
   const queryString = new URLSearchParams(search).toString();
@@ -131,11 +131,27 @@ export const UseBankQuery = () => {
   });
 };
 
+
 // withdrawal post
-export const useWithdrawalQuery = () => {
+export const useMailerQuery = () => {
   return useMutation({
-    mutationFn: (transfer) => {
-      return axios.post("http://localhost:3000/api/bank", transfer);
+    mutationFn: (email) => {
+      return axios.post(
+        `http://localhost:3000/api/password/forgotpassword/mailer`,
+        email
+      );
+    },
+  });
+};
+
+// update user
+export const useChangePasswordQuery = () => {
+  return useMutation({
+    mutationFn: ({ passwordInfo, id }) => {
+      return axios.put(
+        `http://localhost:3000/api/password/changepassword/${id}`,
+        passwordInfo
+      );
     },
   });
 };

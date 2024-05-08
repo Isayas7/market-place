@@ -7,19 +7,21 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineSecurity } from "react-icons/md";
 
 import React, { useState } from "react";
-import PersonalInformation from "@/components/profile/personal-info";
 import Setting from "@/components/profile/setting";
 import Security from "@/components/profile/security";
+import dynamic from "next/dynamic";
+
+const PersonalInformation = dynamic(
+  () => import("@/components/profile/personal-info"),
+  {
+    ssr: false,
+  }
+);
 
 export default function Profile() {
   return (
     <div className="flex flex-col">
-      <ProfileHeader
-        name="Isayas Melkamu"
-        bio="Seller"
-        profilePicture="/profile.jpg"
-        backgroundImage="/dashboard.png"
-      />
+      <ProfileHeader bio="Seller" backgroundImage="/dashboard.png" />
       <div className="w-full flex ">
         <Tabs defaultValue="personal-info" className="w-full">
           <TabsList>

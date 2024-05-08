@@ -1,14 +1,5 @@
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 1024 * 1024 * 5;
-const ACCEPTED_IMAGE_MIME_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
-const ACCEPTED_IMAGE_TYPES = ["jpeg", "jpg", "png", "webp"];
-
 // registration validator
 export const registerSchema = z
   .object({
@@ -81,6 +72,10 @@ export const deliveryPersonnelSchema = z.object({
   accountNumber: z.string().min(2, {
     message: "Please enter a valid account number.",
   }),
+  location: z
+    .array(z.number())
+    .length(2)
+    .min(2, { message: "Please provide both latitude and longitude." }),
 });
 
 // delivery personnel information validator
@@ -111,6 +106,13 @@ export const storefrontSchema = z.object({
   accountNumber: z.string().min(2, {
     message: "Please enter a valid account number.",
   }),
+  // location: z.array(z.string()).min(2, {
+  //   message: "Please provide your or your store location.",
+  // }),
+  location: z
+    .array(z.number())
+    .length(2)
+    .min(2, { message: "Please provide both latitude and longitude." }),
 });
 
 // product information validator

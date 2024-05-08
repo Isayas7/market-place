@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   UseApproveQuery,
+  UseBankQuery,
   useSingleUserQuery,
   useUserUpdateQuery,
 } from "@/hooks/use-users-query";
@@ -21,19 +22,35 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import dynamic from "next/dynamic";
 
 const ViewUser = ({ params }) => {
   const { data: user, isFetching } = useSingleUserQuery(params.id);
 
-  const { mutate: approve, isSuccess, isLoading } = useUserUpdateQuery();
+  const {
+    mutate: approve,
+    isSuccess,
+    isLoading,
+  } = useUserUpdateQuery(user?.data?._id);
+  const { data: banks } = UseBankQuery();
 
   const handleUpdateUser = () => {
-    const { isActive, ...other } = user?.data;
+    const { isSeller, ...other } = user?.data;
 
-    const updateUser = { isActive: !isActive, ...other };
+    const updateUser = { isSeller: true, ...other };
 
     approve({ userInfo: updateUser, id: user?.data?._id });
   };
+
+  function getBankNameById(bankId) {
+    const bank = banks.data.data.find((b) => b.id === bankId);
+    return bank ? bank.name : "Bank not found";
+  }
+
+  const Map = dynamic(() => import("@/components/map/map"), {
+    ssr: false,
+  });
 
   return (
     <div>
@@ -103,28 +120,25 @@ const ViewUser = ({ params }) => {
               <hr />
               <div className="text-md my-4 flex">
                 <div className="w-1/2">Bank Info</div>
-                <div>{user?.data.bankInfo}</div>
+                <div>
+                  {banks &&
+                    banks?.data?.data?.find(
+                      (b) => b.id === user?.data?.bankInfo
+                    )?.name}
+                </div>
               </div>
               <hr />
               <div className="text-md my-4 flex">
                 <div className="w-1/2">Account Number</div>
                 <div>{user?.data.accountNumber}</div>
               </div>
-              <hr />
-              <div className="text-md my-4 flex">
-                <div className="w-1/2">Store Front</div>
-                <div>1 store</div>
-              </div>
+
               <hr />
               <div className="text-md my-4 flex">
                 <div className="w-1/2">Product</div>
                 <div>123 ads</div>
               </div>
-              <hr />
-              <div className="text-md my-4 flex">
-                <div className="w-1/2">Product Category</div>
-                <div>2 category</div>
-              </div>
+
               <hr />
             </div>
           </CardContent>
@@ -134,7 +148,7 @@ const ViewUser = ({ params }) => {
             <div className="">
               <div>Kebele Id</div>
               <Image
-                src={user?.data?.identificationCard?.url || "/nullid.jpg"}
+                src={user?.data?.identificationCard || "/nullid.jpg"}
                 className="w-full rounded-sm "
                 width={400}
                 height={200}
@@ -144,7 +158,7 @@ const ViewUser = ({ params }) => {
             <div className="">
               <div>National Id</div>
               <Image
-                src={user?.data?.nationalId?.url || "/nullid.jpg"}
+                src={user?.data?.nationalId || "/nullid.jpg"}
                 className="w-full rounded-sm "
                 width={500}
                 height={500}
@@ -153,16 +167,24 @@ const ViewUser = ({ params }) => {
             </div>
           </CardContent>
           <CardContent>
-            {user?.data?.isActive ? (
-              <Button onClick={handleUpdateUser}>Approved</Button>
+            {user?.data?.isSeller ? (
+              <div>Already Approved Seller</div>
             ) : (
-              <Button className="bg-destructive" onClick={handleUpdateUser}>
-                Approve
+              <Button
+                className="bg-destructive min-w-12"
+                onClick={handleUpdateUser}
+              >
+                {isLoading ? (
+                  <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
+                ) : (
+                  " Approve"
+                )}
               </Button>
             )}
           </CardContent>
         </Card>
       </div>
+      <Map coord={user?.data.location} />
     </div>
   );
 };

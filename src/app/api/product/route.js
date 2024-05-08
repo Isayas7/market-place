@@ -3,6 +3,7 @@ import { productSchema } from "@/validationschema/user";
 import connect from "@/utils/db";
 import { NextResponse } from "next/server";
 import ProductCategory from "@/models/ProductCategory";
+import User from "@/models/User";
 
 export const GET = async (request) => {
   const { searchParams } = new URL(request.url);

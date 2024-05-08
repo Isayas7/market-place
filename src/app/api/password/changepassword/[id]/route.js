@@ -22,7 +22,7 @@ export const PUT = async (request, { params }) => {
 
     if (passwordMatch) {
       const hashedPassword = await bcrypt.hash(new_password, 5);
-      // await User.findByIdAndUpdate(id, { password: hashedPassword });
+      await User.findByIdAndUpdate(id, { password: hashedPassword });
 
       return new NextResponse("Password updated successfully", { status: 200 });
     } else {

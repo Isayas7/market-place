@@ -13,11 +13,12 @@ import { AlignJustify } from "lucide-react";
 import List from "../list";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { PiWechatLogoDuotone } from "react-icons/pi";
-import { FaLuggageCart } from "react-icons/fa";
 import { FaCartPlus } from "react-icons/fa6";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/store/cart-store";
 import useStore from "@/store/use-store";
+import NavbarMenu from "./navbar-menu";
+import Notification from "../../notification/notification";
 
 const links = [
   {
@@ -31,6 +32,7 @@ const Navbar = () => {
   const currentUrl = usePathname();
   const session = useSession();
   const [open, setOpen] = useState(false);
+
   const myRef = useRef(null);
   const isDesktop = useMediaQuery("(min-width: 1280px)");
   const cartItems = useStore(useCart, (state) => state.cartItems);
@@ -65,7 +67,6 @@ const Navbar = () => {
   return (
     <div
       className={` py-1 sticky z-50 top-0 w-full  
-      
       border-b border-slate-900/10 dark:border-slate-300/10   bg-background
       ${currentUrl.includes("/dashboard") ? "hidden" : ""} `}
     >
@@ -117,10 +118,15 @@ const Navbar = () => {
             placeholder="Search Products... "
             className="rounded-md lg:w-[400px] "
           />
-          <div className="flex items-center space-x-4 lg:space-x-6  xl:space-x-8">
+          <div className="hidden lg:flex items-center space-x-4 lg:space-x-6  xl:space-x-8">
             {session.status === "authenticated" && (
               <Button variant="outline">
                 <Link href={"/storefront"}>Sell</Link>
+              </Button>
+            )}
+            {session.status === "authenticated" && (
+              <Button>
+                <Link href={"/seller"}>My Store</Link>
               </Button>
             )}
 
@@ -134,9 +140,11 @@ const Navbar = () => {
             )}
             {session.status === "authenticated" && (
               <Link href={"/chat"}>
-                <PiWechatLogoDuotone className="text-xl" />
+                <PiWechatLogoDuotone className="text-3xl text-jade" />
               </Link>
             )}
+            {session.status === "authenticated" && <Notification />}
+
             <Link href="/cart" className="relative">
               <FaCartPlus className="size-6" />
               <Badge className="absolute -top-2 -right-4 text-[10px] rounded-full">
@@ -147,8 +155,11 @@ const Navbar = () => {
             {session.status === "authenticated" && (
               <Link href={"/dashboard"}>Dashboard</Link>
             )}
-            <UserNav />
+            {session.status === "authenticated" && <UserNav />}
             <ModeToggle />
+          </div>
+          <div className="block lg:hidden">
+            <NavbarMenu />
           </div>
         </div>
       </div>

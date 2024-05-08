@@ -9,6 +9,7 @@ import Main from "@/components/home/main";
 import { getServerSession } from "next-auth";
 import { options } from "./api/auth/[...nextauth]/options";
 import { Toaster } from "@/components/ui/toaster";
+import SocketProvider from "@/components/socketprovider/socket-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({ subsets: ["latin"], weight: "200" });
@@ -21,6 +22,7 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const session = await getServerSession(options);
+  const socketurl = "ws://localhost:8900";
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -33,10 +35,12 @@ export default async function RootLayout({ children }) {
         >
           <QueryProvider>
             <AuthProvider session={session}>
-              <Navbar />
-              <Main children={children} />
-              <Toaster />
-              <Footer />
+              <SocketProvider url={socketurl}>
+                <Navbar />
+                <Main children={children} />
+                <Toaster />
+                <Footer />
+              </SocketProvider>
             </AuthProvider>
           </QueryProvider>
         </ThemeProvider>

@@ -1,17 +1,19 @@
 import React from "react";
 import Image from "next/image";
-const ProfileHeader = ({ name, bio, profilePicture, backgroundImage }) => {
+import { useSession } from "next-auth/react";
+const ProfileHeader = ({ bio, profilePicture }) => {
+  const session = useSession();
   return (
     <div className="relative p-1">
       <div className="absolute bottom-[0px] right-20 bg-white dark:bg-mirage p-4 rounded-sm">
         <Image
-          src={profilePicture}
-          alt={`${name}'s profile picture`}
+          src={session?.data?.user?.image}
+          alt={`${session?.data?.user?.name}'s profile picture`}
           width={80}
           height={80}
           className=" size-28 rounded-full object-cover z-50"
         />
-        {name}
+        {session?.data?.user?.name}
       </div>
       <div className="bg-jade  rounded-sm">
         <Image
