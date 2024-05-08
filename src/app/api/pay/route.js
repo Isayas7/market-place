@@ -25,7 +25,7 @@ export const POST = async (request) => {
     callback_url: CALLBACK_URL + TEXT_REF,
     return_url: RETURN_URL,
     meta: {
-      data: values.data,
+      items: values,
     },
   };
 
@@ -35,7 +35,6 @@ export const POST = async (request) => {
 
     return new NextResponse(checkoutUrl, { status: 200 });
   } catch (error) {
-    console.error("Error:", error);
     // Return a response indicating payment initiation failed
     return new NextResponse("Payment initiation failed", { status: 500 });
   }

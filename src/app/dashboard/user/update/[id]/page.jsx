@@ -1,6 +1,5 @@
 "use client";
 
-import UpdateDeliveryPersonnelForm from "@/components/dashboard/user/update-dp-form";
 import React from "react";
 import {
   Breadcrumb,
@@ -10,6 +9,14 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const UpdateDeliveryPersonnelForm = dynamic(
+  () => import("@/components/dashboard/user/update-dp-form"),
+  {
+    ssr: false,
+  }
+);
 
 const UpdateUser = ({ params }) => {
   return (

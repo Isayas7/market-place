@@ -29,11 +29,12 @@ export const useProductQuery = () => {
 // get single product
 export const UseSingleProductQuery = (id) => {
   return useQuery({
-    queryKey: ["single_product"],
+    queryKey: ["single_product", id],
     queryFn: async () => {
       const res = await axios.get(`http://localhost:3000/api/product/${id}`);
       return res;
     },
+    enabled: !!id,
   });
 };
 
@@ -89,6 +90,7 @@ export const useSimilarProducQuery = (query) => {
 
       return res;
     },
+    enabled: !!query,
   });
 };
 
@@ -123,7 +125,6 @@ export const useCurrentSellerAllProductQuery = (id) => {
 export const usePayQuery = () => {
   return useMutation({
     mutationFn: async (payment) => {
-      console.log(payment);
       const res = await axios.post("http://localhost:3000/api/pay", payment);
       return res;
     },

@@ -4,21 +4,31 @@ import Order from "@/models/Order";
 
 export const GET = async (request, { params }) => {
   const { id } = params;
+
   try {
     await connect();
 
-    const order = await Order.findById(id);
-    console.log(order);
+    const order = await Order.find({ _id: id })
+      .populate({
+        path: "items.productId",
+        select: "title productImage",
+      })
+      .populate({
+        path: "userId",
+        select: "firstName middleName",
+      })
+      .exec();
+
     return new NextResponse(JSON.stringify(order), { status: 200 });
   } catch (error) {
+    console.log(error);
     return new NextResponse("Database Error", { status: 500 });
   }
 };
 
 export const PUT = async (request, { params }) => {
   const { id } = params;
-  const values = request.json();
-
+  const values = await request.json();
   const { ...other } = values;
 
   try {
@@ -37,24 +47,6 @@ export const PUT = async (request, { params }) => {
     return new NextResponse(JSON.stringify(updatedOrder), {
       status: 200,
     });
-  } catch (error) {
-    return new NextResponse("Database Error", { status: 500 });
-  }
-};
-
-export const DELETE = async (request, { params }) => {
-  const { id } = params;
-  try {
-    await connect();
-
-    const order = await Order.findById(id);
-    if (!order) {
-      return new NextResponse("Order not found", { status: 404 });
-    }
-    order.isActive = false;
-    await order.save();
-
-    return new NextResponse(JSON.stringify(order), { status: 200 });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });
   }

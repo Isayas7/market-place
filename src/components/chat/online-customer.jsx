@@ -5,15 +5,18 @@ import { GiPlainCircle } from "react-icons/gi";
 const OnlineCustomer = ({ src, alt, name, onClick }) => {
   return (
     <div
-      className="flex flex-col items-center relative cursor-pointer"
+      className="flex flex-col gap-1 items-center cursor-pointer"
       onClick={onClick}
     >
-      <Avatar>
-        <AvatarImage src={src} alt={alt} />
-        <AvatarFallback>{alt}</AvatarFallback>
-      </Avatar>
-      <div className="mt-1">{name}</div>
-      <GiPlainCircle className="text-md text-green-400 absolute bottom-5 right-1" />
+      <div className=" relative">
+        <Avatar>
+          <AvatarImage src={src} alt={alt} />
+          <AvatarFallback>{alt}</AvatarFallback>
+        </Avatar>
+        <GiPlainCircle className="text-md text-green-400 absolute bottom-0 right-0" />
+      </div>
+
+      <div className=" text-xs">{name}</div>
     </div>
   );
 };

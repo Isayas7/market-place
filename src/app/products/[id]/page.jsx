@@ -8,6 +8,7 @@ import {
   useSimilarProducQuery,
 } from "@/hooks/use-product-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import ProductDetailSkeleton from "@/components/skeleton/product-detail";
 
 export default function SingleProduct({ params }) {
   const { data: product, isLoading } = UseSingleProductQuery(params.id);
@@ -16,15 +17,7 @@ export default function SingleProduct({ params }) {
   );
 
   if (isLoading) {
-    return (
-      <div className="flex flex-col space-y-3">
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-[250px]" />
-          <Skeleton className="h-4 w-[200px]" />
-        </div>
-      </div>
-    );
+    return <ProductDetailSkeleton />;
   }
   return (
     <>
@@ -38,7 +31,11 @@ export default function SingleProduct({ params }) {
             <ProductDesc descriptions={product?.data} />
           </div>
           <div className="w-full lg:w-[340px]  ">
-            <Price price={product?.data.price} />
+            <Price
+              price={product?.data.price}
+              seller={product?.data.user}
+              productId={product?.data._id}
+            />
           </div>
         </div>
       </div>

@@ -5,15 +5,26 @@ import { NextResponse } from "next/server";
 export const POST = async (request) => {
   const values = await request.json();
   const { senderId, receiverId } = values;
-
   await connect();
 
-  const conversation = new Conversation({
-    members: [senderId, receiverId],
-  });
   try {
-    const savedConversaton = await conversation.save();
-    return new NextResponse(savedConversaton, { status: 201 });
+    const existingConversation = await Conversation.findOne({
+      members: { $all: [senderId, receiverId] },
+    });
+
+    if (existingConversation) {
+      return new NextResponse(JSON.stringify(existingConversation), {
+        status: 200,
+      });
+    } else {
+      const newConversation = new Conversation({
+        members: [senderId, receiverId],
+      });
+      const savedConversation = await newConversation.save();
+      return new NextResponse(JSON.stringify(savedConversation), {
+        status: 201,
+      });
+    }
   } catch (error) {
     return new NextResponse(error, { status: 500 });
   }

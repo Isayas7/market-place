@@ -33,12 +33,58 @@ io.on("connection", (socket) => {
   });
 
   //   send AND get message
-  socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+  socket.on(
+    "sendMessage",
+    ({ senderId, receiverId, text, createdAt, image }) => {
+      const user = getUser(receiverId);
+
+      user &&
+        io.to(user.socketId).emit("getMessage", {
+          senderId,
+          text,
+          createdAt,
+          image,
+        });
+    }
+  );
+  //   send AND get notification
+  socket.on("sendMessageNotification", ({ receiverId, type, createdAt }) => {
     const user = getUser(receiverId);
     user &&
-      io.to(user.socketId).emit("getMessage", {
-        senderId,
-        text,
+      io.to(user.socketId).emit("getMessageNotification", {
+        receiverId,
+        type,
+        createdAt,
+      });
+  });
+  //   send AND get notification
+  socket.on("sendStoreApprovalRequest", ({ user, type, createdAt }) => {
+    io.emit("getStoreApprovalRequest", {
+      user,
+      type,
+      createdAt,
+    });
+  });
+
+  //   send AND get notification
+  socket.on("sendStoreApproved", ({ seller, type, createdAt }) => {
+    const user = getUser(seller);
+    user &&
+      io.to(user.socketId).emit("getStoreApproved", {
+        seller,
+        type,
+        createdAt,
+      });
+  });
+
+  //   send AND get notification
+  socket.on("sendOrderStatus", ({ buyer, type, createdAt }) => {
+    const user = getUser(buyer);
+    user &&
+      io.to(user.socketId).emit("getOrderStatus", {
+        buyer,
+        type,
+        createdAt,
       });
   });
 });

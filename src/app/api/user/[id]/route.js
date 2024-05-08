@@ -42,14 +42,11 @@ export const DELETE = async (request, { params }) => {
   try {
     await connect();
 
-    console.log("id", id);
-
     const user = await User.findById(id);
     if (!user) {
       return new NextResponse("User not found", { status: 404 });
     }
 
-    // change status property
     user.status =
       user.status === statusData.Active ? statusData.Banned : statusData.Active;
 

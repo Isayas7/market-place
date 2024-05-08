@@ -16,6 +16,14 @@ import { useRouter } from "next/navigation";
 import { roleSchema } from "@/validationschema/user";
 import { useSession } from "next-auth/react";
 import { useRoleRegisterQuery } from "@/hooks/use-role-query";
+import { roleData } from "@/utils/permission";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const RoleForm = () => {
   const router = useRouter();
@@ -32,6 +40,9 @@ const RoleForm = () => {
 
   const onSubmit = async (values) => {
     registerRole(values);
+    form.reset({
+      role: "",
+    });
   };
 
   return (
@@ -47,13 +58,23 @@ const RoleForm = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Role Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="p-3"
-                          placeholder="role name"
-                          {...field}
-                        />
-                      </FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Role" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {Object.keys(roleData).map((role, index) => (
+                            <SelectItem key={index} value={roleData[role]}>
+                              {roleData[role]}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

@@ -3,6 +3,7 @@ import connect from "@/utils/db";
 import Product from "@/models/Product";
 import ProductCategory from "@/models/ProductCategory";
 import { statusData } from "@/utils/permission";
+import User from "@/models/User";
 
 export const GET = async (request, { params }) => {
   const { id } = params;
@@ -14,6 +15,7 @@ export const GET = async (request, { params }) => {
     const categoryData = await ProductCategory.findById(
       product.categoryId.toString()
     );
+    const userData = await User.findById(product.user.toString());
 
     const totalStars = product?.ratings.reduce(
       (sum, rate) => sum + rate.star,
@@ -41,6 +43,8 @@ export const GET = async (request, { params }) => {
       starThree: percentages[3],
       starTwo: percentages[2],
       starOne: percentages[1],
+      address: userData.address,
+      location: userData.location,
       ...product._doc,
     };
 

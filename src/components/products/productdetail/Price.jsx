@@ -8,8 +8,44 @@ import {
   CardHeader,
   CardTitle,
 } from "../../ui/card";
+import { useCreateConversation, useSendMessage } from "@/hooks/use-chat-query";
+import { useSession } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
 
-export const Price = ({ price }) => {
+export const Price = ({ price, seller, productId }) => {
+  const session = useSession();
+  const router = useRouter();
+  const path = usePathname();
+
+  const {
+    mutateAsync: createConversation,
+    isSuccess,
+    isLoading,
+    data,
+  } = useCreateConversation();
+  const { mutate: sendMessage } = useSendMessage();
+
+  const handleStart = async () => {
+    if (session.status === "unauthenticated") {
+      localStorage.setItem("prevpath", path);
+      router.push("/login");
+    } else {
+      const conversation = {
+        senderId: session.data.user.id,
+        receiverId: seller,
+      };
+      const response = await createConversation(conversation);
+
+      const message = {
+        sender: session.data.user.id,
+        conversationId: response.data._id,
+        product: productId,
+      };
+      sendMessage(message);
+      router.push("/chat");
+    }
+  };
+
   return (
     <div className="flex  flex-col sm:flex-row md:flex-col  gap-6">
       <div className="flex flex-col gap-6 w-full sm:w-1/2 md:w-full">
@@ -44,7 +80,9 @@ export const Price = ({ price }) => {
           </div>
           <CardContent>
             <Button className="  w-full">Show contact</Button>
-            <Button className="  w-full mt-3  ">Start chat</Button>
+            <Button className="  w-full mt-3" onClick={handleStart}>
+              Start chat
+            </Button>
           </CardContent>
         </Card>
       </div>

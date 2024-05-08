@@ -1,14 +1,15 @@
 "use client";
-import { columns } from "@/components/dashboard/table/column/buyer-column";
+import { order_columns } from "@/components/dashboard/table/column/order-column";
 import { DataTable } from "@/components/dashboard/table/data_table";
 import { useOrderQuery } from "@/hooks/use-order-query";
 
 const Orders = () => {
   const { data: order_product, isLoading } = useOrderQuery();
+  console.log(order_product);
 
   return (
     <div>
-      <DataTable columns={columns} data={order_product?.data} />
+      <DataTable columns={order_columns} data={order_product?.data} />
     </div>
   );
 };

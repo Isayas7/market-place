@@ -7,8 +7,8 @@ import {
 import connect from "@/utils/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import Role from "@/models/Role";
 import { roleData } from "@/utils/permission";
+import Role from "@/models/Role";
 
 export const GET = async (request) => {
   const { searchParams } = new URL(request.url);
@@ -18,7 +18,7 @@ export const GET = async (request) => {
   searchParams.forEach((value, key) => {
     query[key] = value;
   });
-  const pageSize = 1;
+  const pageSize = 10;
   const currentPage = parseInt(query.page);
 
   try {
