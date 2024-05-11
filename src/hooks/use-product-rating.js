@@ -1,37 +1,42 @@
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-// create or update product rating
-export const useProductRatingCreate = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ rateInfo, id }) => {
-      return axios.post(`http://localhost:3000/api/rating/${id}`, rateInfo);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries("single_product");
-    },
-  });
-};
-
-export const UseProductReviewQuery = (id) => {
+export const UseProductReviewQuery = (productId) => {
   return useQuery({
-    queryKey: ["product_review", id],
+    queryKey: ["product_review", productId],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/api/review/${id}`);
+      const res = await axios.get(
+        `http://localhost:3000/api/review/${productId}`
+      );
       return res;
     },
+    enabled: !!productId,
   });
 };
 
-export const useProductReviewCreate = (id) => {
+export const useProductReviewCreate = (productId) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (reviewInfo) => {
       return axios.post(`http://localhost:3000/api/review`, reviewInfo);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["product_review", id]);
+      queryClient.invalidateQueries(["product_review", productId]);
     },
+    enabled: !!productId,
+  });
+};
+
+export const useProductReviewUpdateQuery = (productId) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ reviewInfo, id }) => {
+      return axios.put(`http://localhost:3000/api/review/${id}`, reviewInfo);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["product_review", productId]);
+    },
+    enabled: !!productId,
   });
 };

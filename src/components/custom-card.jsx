@@ -14,7 +14,6 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Card } from "./ui/card";
-import ReactStars from "react-rating-stars-component";
 import { Progress } from "@/components/ui/progress";
 
 import {

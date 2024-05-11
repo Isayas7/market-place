@@ -1,37 +1,25 @@
 "use client";
 
+import { product_columns } from "@/components/dashboard/table/column/product-columns";
 import { DataTable } from "@/components/dashboard/table/data_table";
-import {
-  UseCategoryQuery,
-  useAllCategoryDataQuery,
-} from "@/hooks/use-product-category-query";
-
-import { product_columns } from "@/components/dashboard/table/column/product-column";
+import { useAllCategoryDataQuery } from "@/hooks/use-product-category-query";
+import { useProductForAdminQuery } from "@/hooks/use-product-query";
 
 const Products = () => {
   const { data: category_data, isFetching } = useAllCategoryDataQuery();
-  const { data: product_category, isLoading } = UseCategoryQuery();
-
-  const allVariants = product_category?.data?.productCategories.flatMap(
-    (item) =>
-      item.variants.map((product) => ({
-        ...product,
-        categoryName: item.categoryName,
-        categoryId: item._id,
-      }))
-  );
+  const { data: product_data, isLoading } = useProductForAdminQuery();
 
   return (
     <div>
       <DataTable
         rendered="product"
         columns={product_columns}
-        data={allVariants}
+        data={product_data?.data?.productData}
         dataInfo={category_data?.data}
         isLoading={isLoading}
-        totalPage={product_category?.data?.totalPage}
-        currentPage={product_category?.data?.currentPage}
-        searchBy={"name"}
+        totalPage={product_data?.data?.totalPage}
+        currentPage={product_data?.data?.currentPage}
+        searchBy={"brand"}
       />
     </div>
   );

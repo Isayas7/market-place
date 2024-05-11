@@ -18,12 +18,13 @@ import { useRouter } from "next/navigation";
 import { categorySchema } from "@/validationschema/user";
 import {
   useBrandRegisterQuery,
-  useCategoryRegisterQuery,
+  useBrandUpdateQuery,
 } from "@/hooks/use-product-category-query";
 import { useSession } from "next-auth/react";
 import CustomSingleImageIpload from "@/components/single-image-uploader";
+import axios from "axios";
 
-const BrandForm = ({ searchParams }) => {
+const BrandUpdateForm = ({ variantId }) => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [textFields, setTextFields] = useState([{ id: 0, isDefault: true }]);
 
@@ -31,30 +32,26 @@ const BrandForm = ({ searchParams }) => {
 
   const form = useForm({
     // resolver: zodResolver(categorySchema),
-    defaultValues: {
-      variants: "",
-      brands: [
-        {
-          name: "",
-          image: "",
-        },
-      ],
+    defaultValues: async () => {
+      const variantData = await axios.get(
+        `http://localhost:3000/api/variant/${variantId}`
+      );
+
+      return {
+        _id: variantData?.data?.variantId,
+        brands: variantData?.data?.brands?.map((type) => ({
+          _id: type._id,
+          name: type.name,
+          image: type.image,
+        })),
+      };
     },
   });
 
-  const {
-    mutate: registerBrand,
-    isSuccess,
-    isLoading,
-  } = useBrandRegisterQuery();
+  const { mutate: updateBrand, isSuccess, isLoading } = useBrandUpdateQuery();
 
   const onSubmit = async (formValues) => {
-    const category = {
-      ...formValues,
-      variants: searchParams.variants,
-    };
-
-    registerBrand({ newBrand: category, id: searchParams.categoryName });
+    updateBrand({ updatedBrand: formValues, id: formValues._id });
   };
 
   if (isSuccess) {
@@ -169,4 +166,4 @@ const BrandForm = ({ searchParams }) => {
   );
 };
 
-export default BrandForm;
+export default BrandUpdateForm;

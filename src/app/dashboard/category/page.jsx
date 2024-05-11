@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/dashboard/table/data_table";
-import { category_columns } from "@/components/dashboard/table/column/category-column";
+import { category_columns } from "@/components/dashboard/table/column/category-columns";
 import {
   UseCategoryQuery,
   useAllCategoryDataQuery,

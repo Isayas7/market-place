@@ -9,6 +9,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "../data-table-column-header";
@@ -17,8 +27,10 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { statusData } from "@/utils/permission";
+import React, { useState } from "react";
+import { useVariantDeactivateQuery } from "@/hooks/use-product-category-query";
 
-export const product_columns = [
+export const variant_columns = [
   {
     id: "select",
     header: ({ table }) => (
@@ -77,12 +89,21 @@ export const product_columns = [
 
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
-        {row.original.brands?.map((brand, index) => (
+        {row?.original?.brands && (
           <>
-            <span key={index}>{brand?.name}</span>
-            <span className="border-r-[0.5px] h-4" />
+            {row.original.brands.length > 0 ? (
+              row.original.brands.slice(0, 3).map((brand, index) => (
+                <React.Fragment key={index}>
+                  <span>{brand.name}</span>
+                  {index < 2 && <span className="border-r-[0.5px] h-4" />}
+                </React.Fragment>
+              ))
+            ) : (
+              <span>&mdash;</span>
+            )}
+            {row.original.brands.length > 3 && <span>...</span>}
           </>
-        ))}
+        )}
       </div>
     ),
   },
@@ -112,9 +133,9 @@ export const product_columns = [
       return (
         <Link
           href={{
-            pathname: "product/new",
+            pathname: "variant/new",
             query: {
-              categoryName: row.original.categoryName,
+              variantName: row.original.variantName,
               variants: row.original.name,
             },
           }}
@@ -127,7 +148,18 @@ export const product_columns = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const category = row.original;
+      const [open, setOpen] = useState(false);
+
+      const variant = row.original;
+      const brandlength = variant?.brands.length;
+
+      const { status } = variant;
+
+      const {
+        mutate: deactivate,
+        isSuccess,
+        isLoading,
+      } = useVariantDeactivateQuery();
 
       return (
         <DropdownMenu>
@@ -140,20 +172,54 @@ export const product_columns = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-            <Link href={`category/view/${category._id}`}>
+            <Link
+              className={`${
+                brandlength < 1 && "opacity-50 pointer-events-none"
+              }`}
+              href={`variant/view/${variant._id}`}
+            >
               <DropdownMenuItem>View</DropdownMenuItem>
             </Link>
 
-            <Link href={`category/update/${category._id}`}>
+            <Link
+              className={`${
+                brandlength < 1 && "opacity-50 pointer-events-none"
+              }`}
+              href={`variant/update/${variant._id}`}
+            >
               <DropdownMenuItem>Update</DropdownMenuItem>
             </Link>
 
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(user.id)}
-            >
-              Deactivate
+            <DropdownMenuItem onClick={() => setOpen(true)}>
+              {status === statusData.Active ? "Deactivate" : "Activate"}
             </DropdownMenuItem>
           </DropdownMenuContent>
+          <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  {status === statusData.Active
+                    ? " Are you sure do you want to deactivate this user?"
+                    : " Are you sure do you want to activate this user?"}
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently deactivate
+                  this account and hide some data from our users.
+                  {status === statusData.Active
+                    ? "  This action cannot be undone. This will  deactivate" +
+                      "this account and hide some data from our users."
+                    : "  This action cannot be undone. This will  activate" +
+                      "this account and unhide some data to our users."}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => deactivate(variant._id)}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </DropdownMenu>
       );
     },

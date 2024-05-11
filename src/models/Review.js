@@ -18,6 +18,11 @@ const reviewSchema = new Schema(
       type: String,
       required: true,
     },
+    star: {
+      type: Number,
+      required: true,
+      // enum: [1, 2, 3, 4, 5],
+    },
   },
   { timestamps: true }
 );

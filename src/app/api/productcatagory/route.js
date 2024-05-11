@@ -9,7 +9,7 @@ export const GET = async (request) => {
     query[key] = value;
   });
 
-  const pageSize = 2;
+  const pageSize = 6;
   const currentPage = parseInt(query.page);
 
   try {
@@ -19,32 +19,18 @@ export const GET = async (request) => {
 
       const count = await ProductCategory.find(query).countDocuments();
 
-      if (count > currentPage) {
-        const productCategories = await ProductCategory.find(query)
-          .limit(pageSize)
-          .skip((currentPage - 1) * pageSize);
+      const productCategories = await ProductCategory.find(query)
+        .limit(pageSize)
+        .skip((currentPage - 1) * pageSize);
 
-        const totalPage = Math.ceil(count / pageSize);
+      const totalPage = Math.ceil(count / pageSize);
 
-        return new NextResponse(
-          JSON.stringify({ productCategories, totalPage, currentPage }),
-          {
-            status: 200,
-          }
-        );
-      } else {
-        const productCategories = await ProductCategory.find(query).limit(
-          pageSize
-        );
-        const totalPage = Math.ceil(count / pageSize);
-
-        return new NextResponse(
-          JSON.stringify({ productCategories, totalPage, currentPage }),
-          {
-            status: 200,
-          }
-        );
-      }
+      return new NextResponse(
+        JSON.stringify({ productCategories, totalPage, currentPage }),
+        {
+          status: 200,
+        }
+      );
     } else {
       const productCategories = await ProductCategory.find(query);
 

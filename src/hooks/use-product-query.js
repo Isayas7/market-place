@@ -3,6 +3,31 @@ import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
+// get All product data with out filter
+export const useAllProductDataQuery = () => {
+  const search = useSearchParams();
+  const params = new URLSearchParams(search);
+
+  const decodedParams = {};
+  params.forEach((value, key) => {
+    decodedParams[key] = decodeURIComponent(value);
+  });
+
+  return useQuery({
+    queryKey: [
+      "product_data",
+      decodedParams.categoryName,
+      decodedParams.variants,
+    ],
+    queryFn: async () => {
+      const res = await axios.get(
+        `http://localhost:3000/api/product?categoryName=${decodedParams.categoryName}&variants=${decodedParams.variants}`
+      );
+      return res;
+    },
+  });
+};
+
 // get all product
 export const useProductQuery = () => {
   const search = useSearchParams();
@@ -24,6 +49,67 @@ export const useProductQuery = () => {
       return res;
     },
   });
+};
+
+// get all product for admin
+export const useProductForAdminQuery = () => {
+  const search = useSearchParams();
+  const params = new URLSearchParams(search);
+
+  let query = {};
+  params.forEach((value, key) => {
+    query[key] = decodeURIComponent(value);
+  });
+
+  query.page = !query.page ? 1 : query.page;
+
+  const increment = parseInt(query.page) + 1;
+  const decrement = parseInt(query.page) - 1;
+
+  const queryClient = useQueryClient();
+  const queryString = new URLSearchParams(query).toString();
+  const response = useQuery({
+    queryKey: ["products_for_admin", queryString],
+    queryFn: async () => {
+      const res = await axios.get(
+        `http://localhost:3000/api/productforadmin?${queryString}`
+      );
+
+      return res;
+    },
+  });
+
+  query.page = increment;
+  const incrementQueryString = new URLSearchParams(query).toString();
+  response?.data?.data &&
+  response?.data?.data?.totalPage > response.data.data.currentPage
+    ? queryClient.prefetchQuery({
+        queryKey: ["products_for_admin", incrementQueryString],
+        queryFn: async () => {
+          const res = await axios.get(
+            `http://localhost:3000/api/productforadmin?${incrementQueryString}`
+          );
+
+          return res;
+        },
+      })
+    : "";
+
+  query.page = decrement;
+  const decrementQueryString = new URLSearchParams(query).toString();
+  response?.data?.data && response?.data?.data?.currentPage - 1 > 0
+    ? queryClient.prefetchQuery({
+        queryKey: ["products_for_admin", decrementQueryString],
+        queryFn: async () => {
+          const res = await axios.get(
+            `http://localhost:3000/api/productforadmin?${decrementQueryString}`
+          );
+
+          return res;
+        },
+      })
+    : "";
+  return response;
 };
 
 // get single product

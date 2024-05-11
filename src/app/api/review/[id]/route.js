@@ -16,15 +16,10 @@ export const GET = async (request, { params }) => {
       const reviewsData = await Promise.all(
         reviews.map(async (review) => {
           const userData = await User.findById(review.userId.toString());
-          const productData = await Product.findById(params.id);
-          const alreadyRateUser = productData.ratings.find(
-            (rate) => rate.postedBy.toString() === review.userId.toString()
-          );
           return {
             profileImage: userData.profileImage,
             firstName: userData.firstName,
             middleName: userData.middleName,
-            star: alreadyRateUser.star,
             ...review._doc,
           };
         })
@@ -41,5 +36,30 @@ export const GET = async (request, { params }) => {
     return new NextResponse(JSON.stringify([]), { status: 200 });
   } catch (error) {
     return new NextResponse("Database Error", error, { status: 500 });
+  }
+};
+
+export const PUT = async (request, { params }) => {
+  const { id } = params;
+  const values = await request.json();
+
+  try {
+    await connect();
+
+    const updatedReview = await Review.findOneAndUpdate(
+      { _id: id },
+      { $set: values },
+      { new: true }
+    );
+
+    if (!updatedReview) {
+      return new NextResponse("Review not found", { status: 404 });
+    }
+
+    return new NextResponse(JSON.stringify(updatedReview), {
+      status: 200,
+    });
+  } catch (error) {
+    return new NextResponse("Database Error", { status: 500 });
   }
 };
