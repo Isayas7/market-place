@@ -3,6 +3,7 @@ import connect from "@/utils/db";
 import Product from "@/models/Product";
 import ProductCategory from "@/models/ProductCategory";
 import { statusData } from "@/utils/permission";
+import Review from "@/models/Review";
 
 export const GET = async (request, { params }) => {
   const { id } = params;
@@ -15,13 +16,17 @@ export const GET = async (request, { params }) => {
       product.categoryId.toString()
     );
 
-    const totalStars = product?.ratings.reduce(
-      (sum, rate) => sum + rate.star,
-      0
-    );
-    const averageStar = totalStars / product?.ratings?.length;
+    const reviewData = await Review.find({ productId: id });
 
-    const countByStar = product?.ratings.reduce((acc, cur) => {
+    // const totalStars2 = reviewData?.map((review) =>
+    //   review.reduce((sum, rate) => sum + rate.star, 0)
+    // );
+
+    const totalStars = reviewData?.reduce((sum, rate) => sum + rate.star, 0);
+
+    const averageStar = totalStars / reviewData?.length;
+
+    const countByStar = reviewData?.reduce((acc, cur) => {
       const star = cur.star;
       acc[star] = (acc[star] || 0) + 1;
       return acc;
@@ -30,17 +35,17 @@ export const GET = async (request, { params }) => {
     // Calculate the percentage of each unique star rating
     const percentages = {};
     for (const star in countByStar) {
-      percentages[star] = (countByStar[star] / product?.ratings?.length) * 100;
+      percentages[star] = (
+        (countByStar[star] / reviewData?.length) *
+        100
+      ).toFixed(0);
     }
 
     const productData = {
       categoryName: categoryData.categoryName,
       averageStar: averageStar,
-      starFive: percentages[5],
-      starFour: percentages[4],
-      starThree: percentages[3],
-      starTwo: percentages[2],
-      starOne: percentages[1],
+      ratingCount: reviewData?.length,
+      ratingPercentages: percentages,
       ...product._doc,
     };
 

@@ -167,7 +167,7 @@ export function DataTable({
             </>
           )}
 
-          {rendered !== "role" && (
+          {rendered !== "role" && rendered !== "product" && (
             <>
               <SellectForFilter
                 clear={clear}

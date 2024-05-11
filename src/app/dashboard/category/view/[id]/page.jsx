@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { UseSingleCategoryQuery } from "@/hooks/use-product-category-query";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 
 const ViewCategory = ({ params }) => {
   const { data: single_category, isLoading } = UseSingleCategoryQuery(
@@ -40,7 +40,7 @@ const ViewCategory = ({ params }) => {
       </div>
       <div className="mt-4 grid  grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-8">
         <div className="flex flex-col gap-4">
-          <Card className=" text-jade text-2xl font-semibold p-4 bg-swansdown">
+          <Card className=" text-jade text-2xl font-semibold p-4">
             {single_category?.data?.categoryName}
           </Card>
 
@@ -57,8 +57,8 @@ const ViewCategory = ({ params }) => {
             <div className="text-primary">Products</div>
             {single_category?.data?.variants?.map((product) => (
               <div key={product.name} className="flex w-full justify-between">
-                <div> {product.name}</div>
-                <div>123</div>
+                <div> {product?.name}</div>
+                <div>{product?.count}</div>
               </div>
             ))}
           </Card>
@@ -69,6 +69,7 @@ const ViewCategory = ({ params }) => {
               key={product.name}
               className="cursor-pointer rounded-sm overflow-hidden"
             >
+              <div className="p-2 bg-jade">{product?.name}</div>
               <Image
                 src={product?.image || "/nullid.jpg"}
                 className={

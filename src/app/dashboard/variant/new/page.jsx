@@ -11,11 +11,11 @@ import {
 import Link from "next/link";
 import BrandForm from "@/components/dashboard/product/brand-form";
 
-const NewUser = ({ searchParams }) => {
+const NewBrand = ({ searchParams }) => {
   return (
     <div>
       <div className="mb-2">
-        <div className="text-xl my-2 font-bold "> Create Category</div>
+        <div className="text-xl my-2 font-bold "> Add Brand</div>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -23,7 +23,7 @@ const NewUser = ({ searchParams }) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <Link href="/dashboard/product">Product</Link>
+              <Link href="/dashboard/variant">Variant</Link>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -37,4 +37,4 @@ const NewUser = ({ searchParams }) => {
   );
 };
 
-export default NewUser;
+export default NewBrand;

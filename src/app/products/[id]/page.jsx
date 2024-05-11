@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SingleProduct({ params }) {
   const { data: product, isLoading } = UseSingleProductQuery(params.id);
+
   const { data: similarProduct, isLoading: isFetching } = useSimilarProducQuery(
     product?.data?.variants
   );

@@ -1,5 +1,5 @@
 "use client";
-import { columns } from "@/components/dashboard/table/column/buyer-column";
+import { columns } from "@/components/dashboard/table/column/buyer-columns";
 import { DataTable } from "@/components/dashboard/table/data_table";
 import { useOrderQuery } from "@/hooks/use-order-query";
 

@@ -31,8 +31,8 @@ export const menuUtems = [
     icon: <FaStore />,
   },
   {
-    title: "Brand",
-    path: "/dashboard/brand",
+    title: "Variant",
+    path: "/dashboard/variant",
     icon: <MdProductionQuantityLimits />,
   },
   {

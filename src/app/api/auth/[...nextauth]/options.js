@@ -113,8 +113,8 @@ export const options = {
 
         if (!userExist) {
           const name = profile?.name.split(" ");
-          const firstName = name[0];
-          const middleName = name[1];
+          const firstName = name[0] ? name[0] : "";
+          const middleName = name[1] ? name[1] : "";
 
           const myrole = await Role.findOne({ role: roleData.Buyer });
 

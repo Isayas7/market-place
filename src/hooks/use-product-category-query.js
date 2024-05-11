@@ -128,18 +128,103 @@ export const useCategoryDeactivateQuery = () => {
   });
 };
 
+// get All varients category
+export const UseVariantsQuery = () => {
+  const search = useSearchParams();
+  const params = new URLSearchParams(search);
+
+  let query = {};
+  params.forEach((value, key) => {
+    query[key] = value;
+  });
+
+  query.page = !query.page ? 1 : query.page;
+
+  const increment = parseInt(query.page) + 1;
+  const decrement = parseInt(query.page) - 1;
+
+  const queryClient = useQueryClient();
+  const queryString = new URLSearchParams(query).toString();
+  const response = useQuery({
+    queryKey: ["product_variant", queryString],
+    queryFn: async () => {
+      const res = await axios.get(
+        `http://localhost:3000/api/variant?${queryString}`
+      );
+      return res;
+    },
+  });
+
+  query.page = increment;
+  const incrementQueryString = new URLSearchParams(query).toString();
+  response?.data?.data &&
+  response?.data?.data?.totalPage > response.data.data.currentPage
+    ? queryClient.prefetchQuery({
+        queryKey: ["product_variant", incrementQueryString],
+        queryFn: async () => {
+          const res = await axios.get(
+            `http://localhost:3000/api/variant?${incrementQueryString}`
+          );
+          return res;
+        },
+      })
+    : "";
+
+  query.page = decrement;
+  const decrementQueryString = new URLSearchParams(query).toString();
+  response?.data?.data && response?.data?.data?.currentPage - 1 > 0
+    ? queryClient.prefetchQuery({
+        queryKey: ["product_variant", decrementQueryString],
+        queryFn: async () => {
+          const res = await axios.get(
+            `http://localhost:3000/api/variant?${decrementQueryString}`
+          );
+          return res;
+        },
+      })
+    : "";
+  return response;
+};
+
+/// get single variant of the category
+export const UseSingleVariantQuery = (id) => {
+  return useQuery({
+    queryKey: ["single_variant"],
+    queryFn: async () => {
+      const res = await axios.get(`http://localhost:3000/api/variant/${id}`);
+      return res;
+    },
+  });
+};
+
 // Add Brands to productNames of the Category
 export const useBrandRegisterQuery = () => {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ newBrand, id }) => {
-      return axios.post(
-        `http://localhost:3000/api/productcatagory/${id}`,
-        newBrand
-      );
+      return axios.post(`http://localhost:3000/api/variant/${id}`, newBrand);
+    },
+  });
+};
+
+// Add Brands to productNames of the Category
+export const useBrandUpdateQuery = () => {
+  return useMutation({
+    mutationFn: ({ updatedBrand, id }) => {
+      return axios.put(`http://localhost:3000/api/variant/${id}`, updatedBrand);
+    },
+  });
+};
+
+export const useVariantDeactivateQuery = () => {
+  const queryClient = useQueryClient();
+  const search = useSearchParams();
+  const queryString = new URLSearchParams(search).toString();
+  return useMutation({
+    mutationFn: (id) => {
+      return axios.delete(`http://localhost:3000/api/variant/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries("single_category");
+      queryClient.invalidateQueries(["product_variant", queryString]);
     },
   });
 };

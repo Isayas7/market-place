@@ -2,42 +2,33 @@ import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import ProductCategory from "@/models/ProductCategory";
 import { statusData } from "@/utils/permission";
+import Product from "@/models/Product";
 
 export const GET = async (request, { params }) => {
   const { id } = params;
   try {
     await connect();
     const productcategory = await ProductCategory.findById(id);
-    return new NextResponse(JSON.stringify(productcategory), { status: 200 });
-  } catch (error) {
-    return new NextResponse("Database Error", { status: 500 });
-  }
-};
-
-export const POST = async (request, { params }) => {
-  const values = await request.json();
-  const { variants, brands } = values;
-
-  try {
-    const productCategory = await ProductCategory.findOne({
-      categoryName: params.id,
-    });
-
-    const product = productCategory.variants.find(
-      (prod) => prod.name === variants
+    const productData = await Promise.all(
+      productcategory.variants.map(async (variant) => {
+        const product = await Product.find({ variants: variant.name });
+        const count = product.length;
+        return {
+          count: count,
+          ...variant._doc,
+        };
+      })
     );
 
-    const updatedBrands = [...product.brands, ...brands];
+    const category = {
+      ...productcategory._doc,
+      variants: productData,
+    };
 
-    product.brands = updatedBrands;
+    console.log("category", category);
 
-    await productCategory.save();
-
-    return new NextResponse("Brand of product Created Successfully", {
-      status: 201,
-    });
+    return new NextResponse(JSON.stringify(category), { status: 200 });
   } catch (error) {
-    console.error(error);
     return new NextResponse("Database Error", { status: 500 });
   }
 };

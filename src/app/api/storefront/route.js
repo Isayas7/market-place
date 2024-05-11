@@ -1,5 +1,4 @@
 import Role from "@/models/Role";
-import StoreFront from "@/models/Storefront";
 import User from "@/models/User";
 import { uploadImage } from "@/utils/cloudinary";
 import connect from "@/utils/db";
@@ -58,8 +57,6 @@ export const POST = async (request) => {
     console.log("User not found with email:", email);
     return new NextResponse("User not found", { status: 404 });
   }
-
-  console.log(user);
 
   const newStorefront = new StoreFront({ location, user: user._id });
 

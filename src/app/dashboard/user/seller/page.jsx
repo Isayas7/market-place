@@ -1,5 +1,5 @@
 "use client";
-import { seller_column } from "@/components/dashboard/table/column/seller-column";
+import { seller_column } from "@/components/dashboard/table/column/seller-columns";
 import { DataTable } from "@/components/dashboard/table/data_table";
 import { useUserQuery } from "@/hooks/use-users-query";
 

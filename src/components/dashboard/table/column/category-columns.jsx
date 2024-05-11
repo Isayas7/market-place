@@ -24,7 +24,7 @@ import { DataTableColumnHeader } from "../data-table-column-header";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { statusData } from "@/utils/permission";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useCategoryDeactivateQuery } from "@/hooks/use-product-category-query";
 import Link from "next/link";
 
@@ -76,12 +76,13 @@ export const category_columns = [
 
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
-        {row.original.variants?.map((product, index) => (
-          <>
-            <span key={index}>{product.name}</span>
-            <span className="border-r-[0.5px] h-4" />
-          </>
+        {row.original.variants?.slice(0, 3).map((product, index) => (
+          <React.Fragment key={index}>
+            <span>{product.name}</span>
+            {index < 2 && <span className="border-r-[0.5px] h-4" />}
+          </React.Fragment>
         ))}
+        {row.original.variants?.length > 3 && <span>...</span>}
       </div>
     ),
   },

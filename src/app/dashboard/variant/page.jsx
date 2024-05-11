@@ -1,31 +1,29 @@
 "use client";
 
+import { variant_columns } from "@/components/dashboard/table/column/variant-columns";
 import { DataTable } from "@/components/dashboard/table/data_table";
 import {
-  UseCategoryQuery,
+  UseVariantsQuery,
   useAllCategoryDataQuery,
 } from "@/hooks/use-product-category-query";
 
-import { product_columns } from "@/components/dashboard/table/column/product-column";
-
 const Products = () => {
   const { data: category_data, isFetching } = useAllCategoryDataQuery();
-  const { data: product_category, isLoading } = UseCategoryQuery();
+  const { data: product_category, isLoading } = UseVariantsQuery();
 
-  const allVariants = product_category?.data?.productCategories.flatMap(
-    (item) =>
-      item.variants.map((product) => ({
-        ...product,
-        categoryName: item.categoryName,
-        categoryId: item._id,
-      }))
-  );
+  const allVariants = product_category?.data?.productCategories.map((item) => ({
+    ...item.variants,
+    categoryName: item.categoryName,
+    categoryId: item._id,
+  }));
+
+  console.log(allVariants);
 
   return (
     <div>
       <DataTable
         rendered="product"
-        columns={product_columns}
+        columns={variant_columns}
         data={allVariants}
         dataInfo={category_data?.data}
         isLoading={isLoading}
