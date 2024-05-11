@@ -12,16 +12,18 @@ const orderSchema = new Schema(
       default: orderStatus.Pending,
       required: true,
     },
-    confirmation: {
-      type: String,
-      enum: ["NotDelivered", "Delivered"],
-      default: orderStatus.Pending,
-      required: true,
-    },
-    userId: {
+    buyerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+    },
+    deliveryPersonnelId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    deliveryDate: {
+      type: Date,
     },
     totalPrice: {
       type: String,
@@ -73,10 +75,10 @@ const orderSchema = new Schema(
         type: Number,
         required: true,
       },
-    },
-    receiverLocation: {
-      type: [Number],
-      required: true,
+      location: {
+        type: [Number],
+        required: true,
+      },
     },
   },
   { timestamps: true }

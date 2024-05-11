@@ -3,7 +3,6 @@ import connect from "@/utils/db";
 import Order from "@/models/Order";
 import User from "@/models/User";
 import Product from "@/models/Product";
-import Delivery from "@/models/Delivery";
 
 export const PUT = async (request, { params }) => {
   const { id } = params;
@@ -21,14 +20,14 @@ export const PUT = async (request, { params }) => {
     }
 
     // deliveryPersonnel balance
-    const delivery = await Delivery.find({ order: values?._id });
-    const deliveryPerson = await User.findById(delivery[0]?.deliveryPersonnel);
+    const deliveryPerson = await User.findById(values.deliveryPersonnelId);
     deliveryPerson.balance += parseFloat(values?.shippingPrice);
     await deliveryPerson.save();
 
+    const { ...other } = values;
     const updatedOrder = await Order.findOneAndUpdate(
       { _id: id },
-      { confirmation: "Delivered" },
+      { $set: other },
       { new: true }
     );
 

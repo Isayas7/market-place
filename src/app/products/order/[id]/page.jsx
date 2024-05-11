@@ -20,7 +20,7 @@ import {
   EyeIcon,
 } from "lucide-react";
 import {
-  useDeliveryConfirmation,
+  useConfirmDeliveryQuery,
   useSingleOrderQuery,
 } from "@/hooks/use-order-query";
 import formatDate from "@/utils/formatDate";
@@ -38,22 +38,27 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { useSocket } from "@/components/socketprovider/socket-provider";
+import { useSession } from "next-auth/react";
 
 const OrderDetail = ({ params }) => {
   const [open, setOpen] = useState(false);
-
+  const session = useSession();
   const socket = useSocket();
 
   const { data: order, isLoading } = useSingleOrderQuery(params.id);
-  const orderData = order?.data[0];
 
-  const { mutate: confirmDelivery } = useDeliveryConfirmation(orderData?._id);
+  const { mutate: confirmDelivery } = useConfirmDeliveryQuery(params.id);
 
   const handleConfiramtion = () => {
-    confirmDelivery({ orderInfo: orderData, id: orderData?._id });
+    const { orderStatus, ...other } = order?.data;
+    const orderInfo = { orderStatus: "Delivered", ...other };
+    confirmDelivery({
+      orderInfo,
+      id: order?.data?._id,
+    });
 
     socket?.emit("sendOrderStatus", {
-      seller: orderData.order?.userId,
+      seller: order?.data.order?.buyerId,
       type: "OrderStatus",
       createdAt: Date.now(),
     });
@@ -95,14 +100,14 @@ const OrderDetail = ({ params }) => {
               <span className="sr-only">Back</span>
             </Button>
             <h1 className="font-semibold text-lg md:text-xl flex gap-1 text-jade">
-              {"#" + orderData?._id}
+              {"#" + order?.data?._id.slice(0, 4)}
               <span className="font-normal hidden md:block text-gray-500 dark:text-gray-400">
-                {orderData?.userId.firstName +
+                {order?.data?.buyerId?.firstName +
                   " " +
-                  orderData?.userId.middleName}
+                  order?.data?.buyerId?.middleName}
               </span>
               <span className="font-normal  hidden md:block text-gray-500 dark:text-gray-400">
-                on {formatDate(orderData?.createdAt)}
+                on {formatDate(order?.data?.createdAt)}
               </span>
             </h1>
             <div className="ml-auto flex items-center gap-2">
@@ -127,13 +132,13 @@ const OrderDetail = ({ params }) => {
                     <div className="flex items-center">
                       <div>Order #</div>
                       <div className="ml-auto font-medium">
-                        {"#" + orderData?._id}
+                        {"#" + order?.data?._id}
                       </div>
                     </div>
                     <div className="flex items-center">
                       <div>Order Date</div>
                       <div className="ml-auto font-medium">
-                        {formatDate(orderData?.createdAt)}
+                        {formatDate(order?.data?.createdAt)}
                       </div>
                     </div>
                   </div>
@@ -141,42 +146,42 @@ const OrderDetail = ({ params }) => {
                   <div className="grid gap-2">
                     <div className="font-medium">Shipping Address</div>
                     <div>
-                      {orderData?.receiverInformation?.fullName}
+                      {order?.data?.receiverInformation?.fullName}
                       <br />
-                      {orderData?.receiverInformation?.phoneNumber}
+                      {order?.data?.receiverInformation?.phoneNumber}
                       <br />
-                      {orderData?.receiverInformation?.address}
+                      {order?.data?.receiverInformation?.address}
                     </div>
                   </div>
                   <Separator />
                   <div className="flex justify-between gap-2">
                     <div>
                       <div className="font-medium">Delivery Code</div>
-                      <div>{orderData?.receiverInformation?.secretCode}</div>
+                      <div>{order?.data?.receiverInformation?.secretCode}</div>
                     </div>
                     <div>
                       <div className="font-medium">Status</div>
-                      <div>Order Status: {" " + orderData?.orderStatus}</div>
+                      <div>Order Status: {" " + order?.data?.orderStatus}</div>
                     </div>
                   </div>
                   <Separator />
                   <div className="flex items-center">
                     <div className="font-medium">Items Price</div>
                     <div className="ml-auto text-2xl font-bold text-jade">
-                      {orderData?.totalPrice + " ETB"}
+                      {order?.data?.totalPrice + " ETB"}
                     </div>
                   </div>
                   <div className="flex items-center">
                     <div className="font-medium">Shipping Price</div>
                     <div className="ml-auto text-2xl font-bold text-jade">
-                      {orderData?.shippingPrice + " ETB"}
+                      {order?.data?.shippingPrice + " ETB"}
                     </div>
                   </div>
                   <div className="flex items-center">
                     <div className="font-medium">Total</div>
                     <div className="ml-auto text-2xl font-bold text-jade">
-                      {parseFloat(orderData?.totalPrice) +
-                        parseFloat(orderData?.shippingPrice)}{" "}
+                      {parseFloat(order?.data?.totalPrice) +
+                        parseFloat(order?.data?.shippingPrice)}{" "}
                       ETB
                     </div>
                   </div>
@@ -201,7 +206,7 @@ const OrderDetail = ({ params }) => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {orderData?.items.map((item) => (
+                      {order?.data?.items.map((item) => (
                         <TableRow>
                           <TableCell className="hidden md:table-cell">
                             <Image
@@ -253,14 +258,14 @@ const OrderDetail = ({ params }) => {
                     <div>Tracking Number</div>
                     <div className="ml-auto font-medium">
                       <Link className="text-blue-600 underline" href="#">
-                        {"#" + orderData?._id}
+                        {"#" + order?.data?._id}
                       </Link>
                     </div>
                   </div>
                   <div className="flex items-center">
                     <div>Estimated Delivery</div>
                     <div className="ml-auto font-medium">
-                      {formatDate(orderData?.createdAt)}
+                      {formatDate(order?.data?.createdAt)}
                     </div>
                   </div>
                 </CardContent>
@@ -279,8 +284,14 @@ const OrderDetail = ({ params }) => {
                   <div className="flex items-center">
                     <div>Confirm</div>
                     <div className="ml-auto font-medium">
-                      <Button size="sm" onClick={() => setOpen(true)}>
-                        Mark as Delivered
+                      <Button
+                        size="sm"
+                        disabled={order?.data.orderStatus === "Delivered"}
+                        onClick={() => setOpen(true)}
+                      >
+                        {order?.data.orderStatus === "Delivered"
+                          ? "Marked as Delivered"
+                          : "Mark as Delivered"}
                       </Button>
                     </div>
                   </div>

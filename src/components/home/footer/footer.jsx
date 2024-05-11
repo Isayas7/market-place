@@ -3,10 +3,9 @@ import { FlagIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { FaInstagram, FaYoutube, FaTwitter, FaFacebook } from "react-icons/fa";
-import Link from "next/link";
 
 const Footer = () => {
+  const currentUrl = usePathname();
   return (
     <div
       className={`container mx-auto transition-all duration-300 px-4 border-t border-slate-900/10 dark:border-slate-300/10 flex items-center justify-center ${

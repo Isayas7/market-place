@@ -21,6 +21,7 @@ import { Input } from "../ui/input";
 import { Card } from "../ui/card";
 import { Separator } from "../ui/separator";
 import { Label } from "../ui/label";
+import { useDiscountQuery } from "@/hooks/use-product-query";
 
 const Message = ({
   currentConversation,
@@ -48,6 +49,8 @@ const Message = ({
     isLoading,
   } = useDeleteMessageQuery(currentConversation);
 
+  const { mutate: makeDiscount } = useDiscountQuery();
+
   // Scroll to the end of messages when chat or currentConversation changes
   useEffect(() => {
     scrollToBottom();
@@ -69,6 +72,7 @@ const Message = ({
   if (sentMessage) {
     !chat.includes(sentMessage) && chat.push(sentMessage);
   }
+
   return (
     <>
       {chatLoading ? (
@@ -180,6 +184,15 @@ const Message = ({
                                   </Button>
                                   <Button
                                     onClick={() => {
+                                      makeDiscount({
+                                        discountInfo: {
+                                          amount,
+                                          user: conversation.sender,
+                                          expireDate: date,
+                                        },
+                                        id: conversation.product,
+                                      });
+
                                       setIsOpen(false);
                                     }}
                                   >

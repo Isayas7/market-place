@@ -46,28 +46,10 @@ export function UserNav() {
             <Link href={"/profile"}>Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link
-              href={{
-                pathname: "/products/order",
-                query: {
-                  userId: session?.data?.user?.id,
-                },
-              }}
-            >
-              Order
-            </Link>
+            <Link href="/products/order">Order</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link
-              href={{
-                pathname: "/delivery",
-                query: {
-                  deliveryPersonnel: session?.data?.user?.id,
-                },
-              }}
-            >
-              Delivery
-            </Link>
+            <Link href="/delivery">Delivery</Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="border-b dark:border-gray-600 border-dashed" />

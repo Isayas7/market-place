@@ -45,18 +45,13 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import { useRouter } from "next/navigation";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function Payment() {
   const myPayouts = useStore(usePayoutStore, (state) => state);
   const { mutate: pay, isSuccess, isLoading, data } = usePayQuery();
   const session = useSession();
   const router = useRouter();
-
-  const [myAddress, setMyAddress] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [secretCode, setSecretCode] = useState("");
-  const [warning, setWarning] = useState(false);
 
   let totalPrice = 0;
   let totalshippingPrice = 0;
@@ -67,23 +62,13 @@ export default function Payment() {
   });
 
   const handleCheckout = () => {
-    if (!myAddress || !fullName || !phoneNumber || !secretCode) {
-      setWarning(true);
-    } else {
-      const paymentInformation = {
-        payouts: myPayouts.payouts,
-        amount: totalPrice + totalshippingPrice,
-        receiverInformation: {
-          fullName: fullName,
-          phoneNumber: phoneNumber,
-          address: myAddress,
-          secretCode: secretCode,
-        },
-        userInfo: session.data.user,
-      };
+    const paymentInformation = {
+      payouts: myPayouts.payouts,
+      amount: totalPrice + totalshippingPrice,
+      userInfo: session.data.user,
+    };
 
-      pay(paymentInformation);
-    }
+    pay(paymentInformation);
   };
 
   if (isSuccess) {
@@ -148,106 +133,6 @@ export default function Payment() {
                 </Table>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Receiver Detail</CardTitle>
-                <CardDescription>
-                  Enter receiver details properly
-                </CardDescription>
-              </CardHeader>
-              <CardContent className=" flex flex-col sm:flex-row w-full gap-2">
-                <div className="w-full ">
-                  <div className="space-y-2">
-                    <Label>Receiver full Name</Label>
-                    <Input
-                      type="text"
-                      className={cn(
-                        !fullName && warning && "border-2 border-red-500"
-                      )}
-                      onChange={(e) => setFullName(e.target.value)}
-                      placeholder="Full Name"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Receiver Phone Number</Label>
-                    <Input
-                      type="tel"
-                      className={cn(
-                        !phoneNumber && warning && "border-2 border-red-500"
-                      )}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      placeholder="Phone Number"
-                    />
-                  </div>
-                </div>
-
-                <div className="w-full">
-                  <div className="space-y-2">
-                    <Label>Receiver Address</Label>
-                    <div className="space-y-2 w-full">
-                      <Popover className="w-full">
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            className={cn(
-                              "justify-between w-full ",
-                              !myAddress && "text-muted-foreground",
-                              warning && !myAddress && "border-2 border-red-500"
-                            )}
-                          >
-                            {myAddress ? myAddress : "Select address"}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className=" p-0 h-64 w-full ">
-                          <Command>
-                            <CommandInput placeholder="Search language..." />
-                            <CommandEmpty>No address found.</CommandEmpty>
-                            <CommandGroup className="overflow-y-scroll">
-                              {address.map((add, index) => (
-                                <CommandItem
-                                  value={add.city}
-                                  key={index}
-                                  onSelect={() => {
-                                    setMyAddress(add.city);
-                                    setWarning(false);
-                                  }}
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      add.city === myAddress
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                  {add.city}
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Secret code</Label>
-                    <Input
-                      type="number"
-                      className={cn(
-                        !secretCode && warning && "border-2 border-red-500"
-                      )}
-                      onChange={(e) => setSecretCode(e.target.value)}
-                      placeholder="Secret Code"
-                    />
-                    <div className="text-xs">
-                      The receiver must know while receiving the items
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
         <div className="flex flex-col gap-8">
@@ -276,7 +161,11 @@ export default function Payment() {
             <CardFooter>
               <Link href={"payment"} className="w-full">
                 <Button className="w-full" onClick={handleCheckout}>
-                  Proceed checkout
+                  {isLoading ? (
+                    <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
+                  ) : (
+                    " Proceed checkout"
+                  )}
                 </Button>
               </Link>
             </CardFooter>

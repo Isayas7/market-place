@@ -3,7 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useOrderQuery, useSingleOrderQuery } from "@/hooks/use-order-query";
-import { useProductQuery } from "@/hooks/use-product-query";
+import {
+  UseSingleProductQuery,
+  useProductQuery,
+} from "@/hooks/use-product-query";
 import { useSingleUserQuery } from "@/hooks/use-users-query";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
@@ -14,13 +17,13 @@ const Location = dynamic(() => import("@/components/map/location"), {
   ssr: false,
 });
 
-const SellerLocation = () => {
+const SellerLocation = ({ params }) => {
   const session = useSession();
 
-  const { data: product } = useProductQuery();
+  const { data: product } = UseSingleProductQuery(params?.id);
   const { data: user } = useSingleUserQuery(session?.data?.user?.id);
 
-  const { data: seller } = useSingleUserQuery(product?.data[0]?.user);
+  const { data: seller } = useSingleUserQuery(product?.data?.user);
 
   if (!user || !seller || !product) {
     return (

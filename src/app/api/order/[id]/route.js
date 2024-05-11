@@ -8,13 +8,13 @@ export const GET = async (request, { params }) => {
   try {
     await connect();
 
-    const order = await Order.find({ _id: id })
+    const order = await Order.findById(id)
       .populate({
         path: "items.productId",
         select: "title productImage",
       })
       .populate({
-        path: "userId",
+        path: "buyerId",
         select: "firstName middleName",
       })
       .exec();

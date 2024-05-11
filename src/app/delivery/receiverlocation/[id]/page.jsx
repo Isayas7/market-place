@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useOrderQuery, useSingleOrderQuery } from "@/hooks/use-order-query";
+import { useSingleOrderQuery } from "@/hooks/use-order-query";
 import { useSingleUserQuery } from "@/hooks/use-users-query";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
@@ -12,10 +12,10 @@ const Location = dynamic(() => import("@/components/map/location"), {
   ssr: false,
 });
 
-const ReceiverLocation = () => {
+const ReceiverLocation = ({ params }) => {
   const session = useSession();
 
-  const { data: order } = useOrderQuery();
+  const { data: order } = useSingleOrderQuery(params?.id);
   const { data: user } = useSingleUserQuery(session?.data?.user?.id);
   if (!user || !order) {
     return (
@@ -30,13 +30,13 @@ const ReceiverLocation = () => {
           <div>
             <h1 className="text-2xl font-bold">Receiver Location</h1>
 
-            <Button>{order?.data[0]?.receiverInformation.address}</Button>
+            <Button>{order?.data?.receiverInformation?.address}</Button>
           </div>
           <div className="flex flex-col">
             <h1 className="text-2xl font-bold">
               Receiver Location from Your Default Location
             </h1>
-            <Button>{order?.data[0]?.shippingPrice / 5} KM</Button>
+            <Button>{order?.data?.shippingPrice / 5} KM</Button>
             Red circle is your default address
           </div>
         </div>
@@ -44,7 +44,7 @@ const ReceiverLocation = () => {
       {order && user && (
         <Location
           userOneLocation={user?.data?.location}
-          userTwoLocation={order?.data[0]?.receiverLocation}
+          userTwoLocation={order?.data?.receiverInformation?.location}
           popMessage={"Receiver Location"}
         />
       )}

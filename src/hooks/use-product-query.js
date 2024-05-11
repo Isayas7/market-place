@@ -130,3 +130,14 @@ export const usePayQuery = () => {
     },
   });
 };
+
+export const useDiscountQuery = () => {
+  return useMutation({
+    mutationFn: ({ discountInfo, id }) => {
+      return axios.put(
+        `http://localhost:3000/api/product/discount/${id}`,
+        discountInfo
+      );
+    },
+  });
+};

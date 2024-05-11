@@ -12,7 +12,6 @@ import {
 import {
   useDeliveryQuery,
   useDeliveryUpdateQuery,
-  useOrderUpdateQuery,
 } from "@/hooks/use-order-query";
 import { EyeIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -23,7 +22,6 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import formatDate from "@/utils/formatDate";
 import { useSocket } from "@/components/socketprovider/socket-provider";
-import orderStatus from "@/utils/permission";
 
 export default function Delivery() {
   const [open, setOpen] = useState(false);
@@ -33,19 +31,19 @@ export default function Delivery() {
   const router = useRouter();
   const socket = useSocket();
 
-  const { data: deliveries } = useDeliveryQuery();
-  const { mutate: update, isSuccess, isLoading } = useDeliveryUpdateQuery();
-  const { mutate: updateOrder } = useOrderUpdateQuery();
+  const { data: orders } = useDeliveryQuery(session?.data?.user?.id);
+  const { mutate: updateDelivery } = useDeliveryUpdateQuery(
+    session?.data?.user?.id
+  );
 
-  const handleViewDeliveryClick = (deliveryId) => {
-    router.push(`delivery/${deliveryId}`);
+  const handleViewDeliveryClick = (orderId) => {
+    router.push(`delivery/${orderId}`);
   };
 
-  const handleSetDate = (updatedInfo, id, userId, orderInfo, orderId) => {
-    update({ deliveryInfo: updatedInfo, id });
-    updateOrder({ orderInfo, id: orderId });
+  const handleSetDate = (buyerId, orderInfo, orderId) => {
+    updateDelivery({ orderInfo, id: orderId });
     socket?.emit("sendOrderStatus", {
-      buyer: userId,
+      buyer: buyerId,
       type: "OrderStatus",
       createdAt: Date.now(),
     });
@@ -77,38 +75,34 @@ export default function Delivery() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {deliveries?.data.map((delivery, index) => (
+                {orders?.data.map((order, index) => (
                   <TableRow key={index}>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <div>
                           <p className="font-medium">
-                            {delivery?.order.receiverInformation.fullName}
+                            {order?.receiverInformation.fullName}
                           </p>
                           <p className="text-gray-500 dark:text-gray-400 text-sm">
-                            {delivery?.order.receiverInformation.phoneNumber}
+                            {order?.receiverInformation.phoneNumber}
                           </p>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell>
-                      {delivery?.order.receiverInformation.secretCode}
+                      {order?.receiverInformation.secretCode}
                     </TableCell>
+                    <TableCell>{order?.receiverInformation.address}</TableCell>
+                    <TableCell>{order?.shippingPrice / 5} KM</TableCell>
+                    <TableCell>{order?.shippingPrice} ETB</TableCell>
                     <TableCell>
-                      {delivery?.order.receiverInformation.address}
-                    </TableCell>
-                    <TableCell>
-                      {delivery?.order.shippingPrice / 5} KM
-                    </TableCell>
-                    <TableCell>{delivery?.order.shippingPrice} ETB</TableCell>
-                    <TableCell>
-                      {delivery?.deliveryDate
-                        ? formatDate(delivery?.deliveryDate)
+                      {order?.deliveryDate
+                        ? formatDate(order?.deliveryDate)
                         : "Not Setted"}
                     </TableCell>
                     <TableCell className="text-right">
                       <Badge
-                        onClick={() => handleViewDeliveryClick(delivery._id)}
+                        onClick={() => handleViewDeliveryClick(order._id)}
                         className="cursor-pointer"
                       >
                         <EyeIcon />
@@ -116,19 +110,19 @@ export default function Delivery() {
                     </TableCell>
                     <TableCell className="text-right">
                       <Button className="bg-secondary">
-                        {delivery?.order.orderStatus}
+                        {order?.orderStatus}
                       </Button>
                     </TableCell>
 
                     <TableCell className="text-right">
                       <Button
                         variant="outline"
-                        disabled={delivery?.order?.orderStatus === "Delivered"}
+                        disabled={order?.orderStatus === "Delivered"}
                         onClick={() => setOpen(true)}
                       >
-                        {delivery?.order?.orderStatus === "Delivered"
+                        {order?.orderStatus === "Delivered"
                           ? "Cannot Rescheduled"
-                          : delivery?.deliveryDate
+                          : order?.deliveryDate
                           ? "Change Schedule"
                           : "Schedule"}
                       </Button>
@@ -157,28 +151,17 @@ export default function Delivery() {
                             </Button>
                             <Button
                               onClick={() => {
-                                const {
-                                  deliveryDate,
-                                  deliveryStatus,
-                                  ...other
-                                } = delivery;
-                                const updatedInfo = {
+                                const { orderStatus, deliveryDate, ...other } =
+                                  order;
+                                const orderInfo = {
+                                  orderStatus: "Shipping",
                                   deliveryDate: date,
                                   ...other,
                                 };
-                                const { orderStatus, ...others } =
-                                  delivery.order;
-
-                                const orderInfo = {
-                                  orderStatus: "Shipping",
-                                  ...others,
-                                };
                                 handleSetDate(
-                                  updatedInfo,
-                                  delivery._id,
-                                  delivery.order.userId,
+                                  order.buyerId,
                                   orderInfo,
-                                  delivery.order._id
+                                  order?._id
                                 );
                                 setOpen(false);
                               }}

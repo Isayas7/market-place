@@ -60,6 +60,27 @@ export const deliveryPersonnelsForm = [
   },
 ];
 
+export const shippingInformation = [
+  {
+    name: "fullName",
+    label: "Full Name",
+    placeholder: "Full Name",
+    type: "text",
+  },
+  {
+    name: "phoneNumber",
+    label: "Phone Number",
+    placeholder: "Phone Number",
+    type: "tel",
+  },
+  {
+    name: "secretCode",
+    label: "Secret Code",
+    placeholder: "Secret Code",
+    type: "text",
+  },
+];
+
 export const ProductForm = [
   {
     name: "title",

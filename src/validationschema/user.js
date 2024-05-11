@@ -72,10 +72,9 @@ export const deliveryPersonnelSchema = z.object({
   accountNumber: z.string().min(2, {
     message: "Please enter a valid account number.",
   }),
-  location: z
-    .array(z.number())
-    .length(2)
-    .min(2, { message: "Please provide both latitude and longitude." }),
+  location: z.array(z.number()).min(2, {
+    message: "Please provide delivery personnel location.",
+  }),
 });
 
 // delivery personnel information validator
@@ -106,13 +105,9 @@ export const storefrontSchema = z.object({
   accountNumber: z.string().min(2, {
     message: "Please enter a valid account number.",
   }),
-  // location: z.array(z.string()).min(2, {
-  //   message: "Please provide your or your store location.",
-  // }),
-  location: z
-    .array(z.number())
-    .length(2)
-    .min(2, { message: "Please provide both latitude and longitude." }),
+  location: z.array(z.number()).min(2, {
+    message: "Please provide your location.",
+  }),
 });
 
 // product information validator
@@ -203,5 +198,24 @@ export const wathdrawalform = z.object({
   }),
   remark: z.string().min(2, {
     message: "Remark required",
+  }),
+});
+//withdrawal form validation
+export const shippingSchema = z.object({
+  fullName: z.string().min(2, {
+    message: "account holder name required",
+  }),
+  phoneNumber: z.string().min(2, {
+    message: "bank infromation required",
+  }),
+  address: z.string().min(2, {
+    message: "account number required",
+  }),
+  secretCode: z.string().min(2, {
+    message: "amount required in ETB",
+  }),
+
+  location: z.array(z.number()).min(2, {
+    message: "Please provide your location.",
   }),
 });

@@ -64,6 +64,16 @@ const productSchema = new Schema(
         },
       },
     ],
+    discount: [
+      {
+        amount: Number,
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        expireDate: Date,
+      },
+    ],
   },
   { timestamps: true }
 );

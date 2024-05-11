@@ -1,4 +1,3 @@
-import Delivery from "@/models/Delivery";
 import Order from "@/models/Order";
 import Role from "@/models/Role";
 import User from "@/models/User";
@@ -64,29 +63,19 @@ export const POST = async (request) => {
 
       // Create the order
       const newOrder = new Order({
-        userId: values.items.userInfo.id,
+        buyerId: values.items.userInfo.id,
         totalPrice: order.totalPrice,
         shippingPrice: order.shippingPrice,
         items: order.items,
-        receiverInformation: values.items.receiverInformation,
-        receiverLocation: order.receiverLocation,
-        deliveryStatus: deliveryPersonnel ? "assigned" : "notAssigned",
+        receiverInformation: order.receiverInformation,
+        deliveryPersonnelId: closestDeliveryPerson._id,
       });
-      await newOrder.save();
 
-      if (deliveryPersonnel) {
-        // Store the assigned delivery
-        const newDelivery = new Delivery({
-          deliveryCost: order.shippingPrice,
-          deliveryStatus: "Pending",
-          order: newOrder._id,
-          deliveryPersonnel: closestDeliveryPerson._id,
-        });
-        await newDelivery.save();
-      }
+      await newOrder.save();
     }
     return new NextResponse("Orders processed successfully", { status: 200 });
   } catch (error) {
+    console.log(error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 };
