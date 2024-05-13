@@ -344,12 +344,14 @@ export default function CheckoutForm() {
                     Location:
                     <div
                       className={`font-medium ${
-                        form.getValues("location")
+                        form.getValues("location").length !== 0
                           ? "text-jade"
                           : "text-red-500"
                       }`}
                     >
-                      {form.getValues("location") ? "Selected" : "Not Selceted"}
+                      {form.getValues("location").length !== 0
+                        ? "Selected"
+                        : "Not Selceted"}
                     </div>
                   </div>
                 </div>

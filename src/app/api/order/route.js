@@ -137,6 +137,10 @@ export const POST = async (request) => {
         deliveryPersonnelId: closestDeliveryPerson._id,
       });
 
+      for (const item of order.items) {
+        console.log(item);
+      }
+
       await newOrder.save();
     }
     return new NextResponse("Orders processed successfully", { status: 200 });
