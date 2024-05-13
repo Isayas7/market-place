@@ -38,8 +38,11 @@ import { MdAutoGraph } from "react-icons/md";
 import { BsGraphDownArrow } from "react-icons/bs";
 import { VscGraphLine } from "react-icons/vsc";
 import { useTheme } from "next-themes";
+import { useSession } from "next-auth/react";
 
 const Dashboard = () => {
+  const session = useSession();
+
   return (
     <div className="">
       <div className="flex w-full  gap-6 flex-col xl:flex-row  ">
@@ -51,7 +54,7 @@ const Dashboard = () => {
                 Welcome back 👋
               </h1>
               <h1 className=" dark:text-black text-2xl font-semibold">
-                Isayas Melkamu
+                {session?.data?.user?.name}
               </h1>
             </div>
             <p className="text-jade">

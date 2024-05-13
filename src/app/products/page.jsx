@@ -24,13 +24,13 @@ import {
   SelectContent,
   Select,
 } from "@/components/ui/select";
-import { ChevronDownIcon, LayoutGridIcon, ListIcon } from "lucide-react";
+import ProductListSkeleton from "@/components/skeleton/product-list";
 
 const Variants = ({ searchParams }) => {
   const [sortBy, setSortBy] = useState("Newest");
   const { data: categorydata } = useAllCategoryDataQuery();
   const { data: variants, isLoading } = useProductQuery();
-  const { data: allVariantData } = useAllProductDataQuery();
+  const { data: allVariantData, isLoading: loading } = useAllProductDataQuery();
   const router = useRouter();
   const pathname = usePathname();
   const search = useSearchParams();
@@ -38,6 +38,7 @@ const Variants = ({ searchParams }) => {
   let currentBrands;
   let uniqueColors = new Set();
   let uniqueSizes = new Set();
+  const params = new URLSearchParams(search.toString());
 
   if (categorydata?.data) {
     categorydata?.data?.find((category) =>
@@ -76,104 +77,121 @@ const Variants = ({ searchParams }) => {
           currentCategory={searchParams.categoryName}
           currentVariants={searchParams.variants}
         />
-
-        <Card className=" p-6 rounded-lg shadow-lg">
-          <div className="flex flex-col items-start justify-between mb-6">
-            <h2 className="text-2xl font-bold">Filters</h2>
-            <Button className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 self-end">
-              <XIcon className="w-5 h-5" />
-              <span className="sr-only">Clear Filters</span>
-            </Button>
+        {loading ? (
+          <div className="flex items-center justify-center h-1/2">
+            <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
           </div>
-          <div className="grid grid-cols-1 gap-6">
-            <div>
-              <h3 className="text-lg font-medium mb-2">Price</h3>
-              <Slider
-                className="w-full "
-                defaultValue={[100, 500]}
-                onValueChange={(value) => {
-                  const params = new URLSearchParams(search.toString());
-                  params.set("minPrice", value[0]);
-                  params.set("maxPrice", value[1]);
-
-                  router.push(pathname + "?" + params.toString());
+        ) : (
+          <Card className=" p-6 rounded-lg shadow-lg">
+            <div className="flex flex-col items-start justify-between mb-6">
+              <h2 className="text-2xl font-bold">Filters</h2>
+              <Button
+                className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 self-end"
+                onClick={() => {
+                  router.replace(
+                    `${pathname}?categoryName=${params.get(
+                      "categoryName"
+                    )}&variants=${params.get("variants")}`
+                  );
                 }}
-                max={10000}
-                min={0}
-                step={10}
-              />
-              <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
-                <span>$0</span>
-                <span>$500</span>
-              </div>
+              >
+                <XIcon className="w-5 h-5" />
+                <span className="sr-only">Clear Filters</span>
+              </Button>
             </div>
-            {search.get("variants") !== null && (
+            <div className="grid grid-cols-1 gap-6">
               <div>
-                <h3 className="text-lg font-medium mb-2">Color</h3>
-                <RadioGroup>
-                  {Array.from(uniqueColors).map((color, index) => (
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem
-                        value={color}
-                        id={color}
-                        key={index}
-                        className=""
-                        onClick={() =>
-                          router.push(
-                            pathname + "?" + createQueryString("color", color)
-                          )
-                        }
-                      />
-                      <Label htmlFor={color}>{color}</Label>
-                    </div>
-                  ))}
-                </RadioGroup>
+                <h3 className="text-lg font-medium mb-2">Price</h3>
+                <Slider
+                  className="w-full "
+                  defaultValue={[100, 10000]}
+                  onValueChange={(value) => {
+                    params.set("minPrice", value[0]);
+                    params.set("maxPrice", value[1]);
+
+                    router.push(pathname + "?" + params.toString());
+                  }}
+                  max={10000}
+                  min={0}
+                  step={10}
+                />
+                <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
+                  <span>
+                    {params.get("minPrice") ? params.get("minPrice") : 0} ETB
+                  </span>
+                  <span>
+                    {params.get("maxPrice") ? params.get("maxPrice") : 10000}{" "}
+                    ETB
+                  </span>
+                </div>
               </div>
-            )}
-            {search.get("variants") !== null && (
-              <div>
-                <h3 className="text-lg font-medium mb-2">Size</h3>
-                <div className="flex flex-wrap gap-2">
+              {search.get("variants") !== null && (
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Color</h3>
                   <RadioGroup>
-                    {Array.from(uniqueSizes).map((size, index) => (
+                    {Array.from(uniqueColors).map((color, index) => (
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem
-                          value={size}
-                          id={size}
+                          value={color}
+                          id={color}
                           key={index}
                           className=""
                           onClick={() =>
                             router.push(
-                              pathname + "?" + createQueryString("size", size)
+                              pathname + "?" + createQueryString("color", color)
                             )
                           }
                         />
-                        <Label htmlFor={size}>{size}</Label>
+                        <Label htmlFor={color}>{color}</Label>
                       </div>
                     ))}
                   </RadioGroup>
                 </div>
-              </div>
-            )}
-          </div>
-        </Card>
+              )}
+              {search.get("variants") !== null && (
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Size</h3>
+                  <div className="flex flex-wrap gap-2">
+                    <RadioGroup>
+                      {Array.from(uniqueSizes).map((size, index) => (
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem
+                            value={size}
+                            id={size}
+                            key={index}
+                            className=""
+                            onClick={() =>
+                              router.push(
+                                pathname + "?" + createQueryString("size", size)
+                              )
+                            }
+                          />
+                          <Label htmlFor={size}>{size}</Label>
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </div>
+                </div>
+              )}
+            </div>
+          </Card>
+        )}
       </div>
 
       <div className=" w-full lg:ml-auto  xl:w-[70%]">
         {currentBrands?.length > 0 && (
-          <div className="bg-swansdown dark:bg-headercolor-default rounded-md  ">
+          <div className="bg-jade rounded-md  ">
             <div className="container mx-auto flex flex-wrap items-center gap-8  py-2 mb-2 ">
               {currentBrands?.map((brand) => (
-                <Link
-                  href={{
-                    pathname: "/products",
-                    query: {
-                      categoryName: searchParams.categoryName,
-                      variants: searchParams.variants,
-                      brand: brand.name,
-                    },
-                  }}
-                  className="flex flex-col items-center space-y-1 hover:bg-slate-600 py-3 px-5 hover:rounded-md"
+                <Button
+                  className={`flex flex-col items-center space-y-1 bg-none hover:bg-jade-200 py-3 px-5 hover:rounded-md size-20 ${
+                    params.get("brand") === brand.name ? "bg-jade-200" : ""
+                  }`}
+                  onClick={() =>
+                    router.push(
+                      pathname + "?" + createQueryString("brand", brand.name)
+                    )
+                  }
                 >
                   <Image
                     src={brand.image}
@@ -182,21 +200,14 @@ const Variants = ({ searchParams }) => {
                     height={330}
                     className="aspect-square size-10 rounded-md  "
                   />
-                  <span>{brand.name}</span>
-                </Link>
+                  <span className="text-white">{brand.name}</span>
+                </Button>
               ))}
             </div>
           </div>
         )}
         <div className="w-full flex justify-between py-3">
-          <div className="flex items-center gap-2">
-            <Button className="rounded-md" size="icon" variant="outline">
-              <LayoutGridIcon className="h-5 w-5" />
-            </Button>
-            <Button className="rounded-md" size="icon" variant="outline">
-              <ListIcon className="h-5 w-5" />
-            </Button>
-          </div>
+          <div className="flex items-center gap-2"></div>
           <div className="flex gap-3 items-center">
             <h3 className="text-lg font-semibold text-nowrap">Sort By:</h3>
             <Select
@@ -218,6 +229,10 @@ const Variants = ({ searchParams }) => {
         {isLoading ? (
           <div className="flex items-center justify-center h-1/2">
             <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
+          </div>
+        ) : variants?.data.length < 1 ? (
+          <div className="flex items-center justify-center h-1/2">
+            There is no product currently
           </div>
         ) : (
           <div className="grid  grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-5">

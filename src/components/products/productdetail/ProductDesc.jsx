@@ -21,6 +21,7 @@ import { useSession } from "next-auth/react";
 import formatDate from "@/utils/formatDate";
 
 export const ProductDesc = ({ descriptions }) => {
+  console.log("descriptions", descriptions);
   const session = useSession();
 
   const pathname = usePathname();
@@ -34,21 +35,21 @@ export const ProductDesc = ({ descriptions }) => {
   const cart = useStore(useCart, (state) => state);
 
   const isEligible = isCurrentUserEligibleForDiscount(
-    descriptions.discount,
+    descriptions?.discount,
     session?.data?.user?.id
   );
 
   // to get discount
   const discount = isEligible
-    ? descriptions.discount.find(
+    ? descriptions?.discount?.find(
         (discount) =>
           discount.userId === session?.data?.user?.id &&
-          new Date(discount.expireDate) > new Date() // Check if the discount is still valid
-      )?.amount || 0 // Use optional chaining and nullish coalescing to handle cases where there are no discounts or none are currently valid
+          new Date(discount.expireDate) > new Date()
+      )?.amount || 0
     : 0;
   const promotionalDiscount =
-    new Date(descriptions.promotion.expireDate) > new Date()
-      ? descriptions.promotion.amount
+    new Date(descriptions?.promotion?.expireDate) > new Date()
+      ? descriptions?.promotion?.amount
       : 0;
 
   return (
@@ -192,18 +193,18 @@ export const ProductDesc = ({ descriptions }) => {
           <div className="text-lg font-medium text-gray-500  dark:text-gray-400">
             Bundle List Price:
             <span className="line-through">
-              {descriptions.price - promotionalDiscount} ETB
+              {descriptions?.price - promotionalDiscount} ETB
             </span>
           </div>
           <p>
-            Deal Price: {descriptions.price - promotionalDiscount - discount}
+            Deal Price: {descriptions?.price - promotionalDiscount - discount}
             ETB
           </p>
           <p>
             You Save: {discount} ETB
             {"(" +
               calculateDiscountPercentage(
-                descriptions.price - promotionalDiscount,
+                descriptions?.price - promotionalDiscount,
                 discount
               ).toFixed(0) +
               "%)"}
@@ -244,7 +245,7 @@ export const ProductDesc = ({ descriptions }) => {
 };
 
 function isCurrentUserEligibleForDiscount(discounts, currentUser) {
-  return discounts.some(
+  return discounts?.some(
     (discount) =>
       discount.userId === currentUser &&
       new Date(discount.expireDate) > new Date()

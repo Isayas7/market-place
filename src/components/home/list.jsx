@@ -8,44 +8,51 @@ import {
 } from "@/components/ui/accordion";
 import Link from "next/link";
 import { useAllCategoryDataQuery } from "@/hooks/use-product-category-query";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const List = ({ handleClick }) => {
   const { data: product_category, isLoading } = useAllCategoryDataQuery();
 
   return (
     <>
-      {product_category?.data?.map((category, index) => (
-        <Accordion key={index} type="single" collapsible>
-          <AccordionItem value={category.categoryName}>
-            <div className="py-2">
-              <AccordionTrigger className="hover:bg-hovered py-3 px-2 rounded-md hover:no-underline">
-                {category.categoryName}
-              </AccordionTrigger>
-            </div>
+      {isLoading ? (
+        <div className="flex items-center justify-center h-1/2">
+          <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
+        </div>
+      ) : (
+        product_category?.data?.map((category, index) => (
+          <Accordion key={index} type="single" collapsible>
+            <AccordionItem value={category?.categoryName}>
+              <div className="py-2">
+                <AccordionTrigger className="hover:bg-hovered py-3 px-2 rounded-md hover:no-underline">
+                  {category.categoryName}
+                </AccordionTrigger>
+              </div>
 
-            {category.variants?.map((cat, index) => (
-              <AccordionContent
-                key={index}
-                className="hover:bg-hovered px-2 w-full rounded-md flex items-center  text-palesky"
-              >
-                <Link
-                  className="w-full"
-                  href={{
-                    pathname: "/products",
-                    query: {
-                      categoryName: category.categoryName,
-                      variants: cat.name,
-                    },
-                  }}
-                  onClick={handleClick}
+              {category.variants?.map((cat, index) => (
+                <AccordionContent
+                  key={index}
+                  className="hover:bg-hovered px-2 w-full rounded-md flex items-center  text-palesky"
                 >
-                  {cat.name}
-                </Link>
-              </AccordionContent>
-            ))}
-          </AccordionItem>
-        </Accordion>
-      ))}
+                  <Link
+                    className="w-full"
+                    href={{
+                      pathname: "/products",
+                      query: {
+                        categoryName: category.categoryName,
+                        variants: cat.name,
+                      },
+                    }}
+                    onClick={handleClick}
+                  >
+                    {cat.name}
+                  </Link>
+                </AccordionContent>
+              ))}
+            </AccordionItem>
+          </Accordion>
+        ))
+      )}
     </>
   );
 };

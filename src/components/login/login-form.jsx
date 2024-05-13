@@ -19,9 +19,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const session = useSession();
   const router = useRouter();
@@ -32,7 +34,7 @@ export default function LoginForm() {
       password: "",
     },
   });
-
+  console.log(session.status);
   return (
     <Form {...form}>
       <form
@@ -103,11 +105,16 @@ export default function LoginForm() {
         </div>
 
         <Button
-          disabled={session.status === "loading"}
           className="w-full text-xl py-4 "
           type="submit"
+          onClick={() => setLoading(!loading)}
+          disabled={loading}
         >
-          {session.status === "loading" ? "Loading" : "Login"}
+          {loading ? (
+            <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
+          ) : (
+            "Login"
+          )}
         </Button>
       </form>
     </Form>

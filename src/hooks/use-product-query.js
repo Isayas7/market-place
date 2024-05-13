@@ -39,7 +39,7 @@ export const useProductQuery = () => {
   });
 
   const queryString = new URLSearchParams(decodedParams).toString();
-  console.log(queryString);
+
   return useQuery({
     queryKey: ["products", queryString],
     queryFn: async () => {

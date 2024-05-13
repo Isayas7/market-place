@@ -193,7 +193,7 @@ export const wathdrawalform = z.object({
   accountNumber: z.string().min(2, {
     message: "account number required",
   }),
-  amount: z.string().min(2, {
+  amount: z.string().min(1, {
     message: "amount required in ETB",
   }),
   remark: z.string().min(2, {

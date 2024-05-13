@@ -20,7 +20,6 @@ export default withAuth(
   function middleware(req) {
     const currentUser = req?.nextauth?.token;
     const pathname = req?.nextUrl?.pathname;
-    console.log("req", req);
     // console.log("pathname", pathname);
     // console.log("currentUser", currentUser);
 
@@ -33,7 +32,11 @@ export default withAuth(
       return NextResponse.redirect(new URL("/unauthorized", req.url));
     }
 
-    if (pathname.includes("/seller") && !hasSellerRole(currentUser)) {
+    if (
+      pathname.includes("/seller") &&
+      !hasSellerRole(currentUser) &&
+      !pathname.includes("/dashboard")
+    ) {
       return NextResponse.redirect(new URL("/unauthorized", req.url));
     }
 
@@ -87,6 +90,5 @@ export const config = {
     "/products/order",
     "/chat",
     "/checkout",
-    "/api/:path*",
   ],
 };

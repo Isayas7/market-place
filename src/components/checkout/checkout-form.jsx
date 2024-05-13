@@ -68,9 +68,11 @@ import MarkerShadow from "../../../node_modules/leaflet/dist/images/marker-shado
 import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { shippingSchema } from "@/validationschema/user";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function CheckoutForm() {
   const [coord, setCoord] = useState([8.9914, 38.7693]);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const myorders = useStore(useOrderStore, (state) => state);
@@ -340,19 +342,29 @@ export default function CheckoutForm() {
                   <Separator />
                   <div className={`font-medium flex `}>
                     Location:
-                    {/* <div
-                    className={`font-medium ${
-                      location ? "text-jade" : "text-red-500"
-                    }`}
-                  >
-                    {location ? "Selected" : "Not Selceted"}
-                  </div> */}
+                    <div
+                      className={`font-medium ${
+                        form.getValues("location")
+                          ? "text-jade"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {form.getValues("location") ? "Selected" : "Not Selceted"}
+                    </div>
                   </div>
                 </div>
               </CardContent>
               <CardFooter>
-                <Button type="submit" className="w-full">
-                  Next
+                <Button
+                  onClick={() => setLoading(!loading)}
+                  type="submit"
+                  className="w-full"
+                >
+                  {loading ? (
+                    <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
+                  ) : (
+                    "Next"
+                  )}
                 </Button>
               </CardFooter>
             </Card>
@@ -382,13 +394,13 @@ function deg2rad(deg) {
 }
 
 function calculateTotalPriceWithShipping(orders, receiverInformation) {
-  const userLocation = receiverInformation.location;
+  const userLocation = receiverInformation?.location;
   orders.forEach((order) => {
     let totalDistance = 0;
     let smallestDistance = Infinity;
 
     order.items.forEach((item, index) => {
-      const itemLocation = item.location;
+      const itemLocation = item?.location;
       const distanceToItem = calculateDistance(
         userLocation[0],
         userLocation[1],
@@ -400,7 +412,7 @@ function calculateTotalPriceWithShipping(orders, receiverInformation) {
         : smallestDistance;
 
       if (index > 0) {
-        const previousItemLocation = order.items[index - 1].location;
+        const previousItemLocation = order?.items[index - 1].location;
         const distanceBetweenItems = calculateDistance(
           previousItemLocation[0],
           previousItemLocation[1],

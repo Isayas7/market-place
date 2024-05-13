@@ -5,7 +5,6 @@ import {
   CardContent,
   Card,
   CardFooter,
-  CardDescription,
 } from "@/components/ui/card";
 
 import { Separator } from "@/components/ui/separator";
@@ -22,28 +21,11 @@ import {
 import React, { useState } from "react";
 import { useStore } from "zustand";
 import Link from "next/link";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+
 import { usePayoutStore } from "@/store/payout-store";
-import { Badge, CircleIcon } from "lucide-react";
 import { usePayQuery } from "@/hooks/use-product-query";
 import { useSession } from "next-auth/react";
 
-import { Check, ChevronsUpDown } from "lucide-react";
-import { address } from "@/utils/constant";
-import { cn } from "@/lib/utils";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
 import { useRouter } from "next/navigation";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
@@ -72,7 +54,8 @@ export default function Payment() {
   };
 
   if (isSuccess) {
-    router.push(data.data);
+    console.log(data?.data);
+    router.push(data?.data);
   }
 
   return (
@@ -161,7 +144,7 @@ export default function Payment() {
             <CardFooter>
               <Link href={"payment"} className="w-full">
                 <Button className="w-full" onClick={handleCheckout}>
-                  {isLoading ? (
+                  {isLoading || isSuccess ? (
                     <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
                   ) : (
                     " Proceed checkout"
