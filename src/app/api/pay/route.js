@@ -10,7 +10,6 @@ const config = {
 
 export const POST = async (request) => {
   const values = await request.json();
-  console.log(values);
 
   const CALLBACK_URL = "http://localhost:3000/api/pay/";
   const RETURN_URL = `http://localhost:3000/receipt/${values?.payouts?.length}`;

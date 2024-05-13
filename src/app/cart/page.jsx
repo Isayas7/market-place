@@ -11,6 +11,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { useOrderStore } from "@/store/order-store";
+import { useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Cart = () => {
   const { toast } = useToast();
@@ -21,6 +23,8 @@ const Cart = () => {
 
   const cart = useStore(useCart, (state) => state);
   const setOrderData = useStore(useOrderStore, (state) => state);
+
+  const [loading, setLoading] = useState(false);
 
   // Initialize orders array
   const orders = [];
@@ -125,7 +129,7 @@ const Cart = () => {
                     {cartItem.size && (
                       <p className="text-base">{cartItem.size}</p>
                     )}
-                    <p className="text-base">${cartItem.item.price}</p>
+                    <p className="text-base">{cartItem.item.price} ETB</p>
                   </div>
                 </div>
                 <div className="flex gap-10 ">
@@ -167,13 +171,20 @@ const Cart = () => {
         </p>
         <div className="flex justify-between text-body-semibold">
           <span>Total Amount</span>
-          <span>$ {totalPriceAllCategories}</span>
+          <span> {totalPriceAllCategories} ETB</span>
         </div>
         <Button
           className="text-lg hover:bg-primary/20"
-          onClick={handleCheckout}
+          onClick={() => {
+            setLoading(!loading);
+            handleCheckout();
+          }}
         >
-          Checkout
+          {loading ? (
+            <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
+          ) : (
+            "Checkout"
+          )}
         </Button>
       </Card>
     </div>

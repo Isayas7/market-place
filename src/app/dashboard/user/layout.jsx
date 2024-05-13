@@ -8,7 +8,6 @@ import { usePathname } from "next/navigation";
 
 const Users = ({ children }) => {
   const path = usePathname();
-  console.log(path.includes("user/seller"));
   return (
     <div>
       <div className="w-full flex justify-between">

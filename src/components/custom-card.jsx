@@ -4,8 +4,10 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Card } from "./ui/card";
 import ReactStars from "react-rating-stars-component";
+import { usePathname } from "next/navigation";
 
 export const CustomCard = ({ product, aspectRatio, className, ...props }) => {
+  const path = usePathname();
   return (
     <Link href={`/products/${product._id}`}>
       <Card
@@ -40,17 +42,38 @@ export const CustomCard = ({ product, aspectRatio, className, ...props }) => {
               </div>
             )}
           <h3 className="font-medium leading-none">{product.title}</h3>
-          <p className="text-xs text-muted-foreground">{product.price}</p>
-          <div className="flex items-center gap-3">
-            <ReactStars
-              count={5}
-              value={product?.averageStar}
-              edit={false}
-              size={24}
-              activeColor="#ffd700"
-            />
-            <span>{product?.averageStar} out of 5</span>
-          </div>
+          {product?.promotion?.amount &&
+          new Date(product?.promotion?.expireDate) > new Date() ? (
+            <>
+              <div className="flex items-center gap-2">
+                <div className="text-2xl font-bold">
+                  {product?.price - product?.promotion?.amount} ETB
+                </div>
+                <div className="text-lg font-medium text-gray-500 line-through dark:text-gray-400">
+                  {product?.price} ETB
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="text-2xl font-bold">{product?.price} ETB</div>
+          )}
+          {!path.includes("/chat") && (
+            <div className="flex items-center gap-3">
+              <ReactStars
+                count={5}
+                value={product?.averageStar}
+                edit={false}
+                size={24}
+                activeColor="#ffd700"
+                halfIcon={true}
+              />
+              <span>
+                {product?.averageStar
+                  ? product?.averageStar + " out of 5"
+                  : "not rated"}
+              </span>
+            </div>
+          )}
         </div>
       </Card>
     </Link>
