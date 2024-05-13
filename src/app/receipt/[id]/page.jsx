@@ -6,11 +6,18 @@ import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import { DownloadIcon, PrinterIcon } from "lucide-react";
 import { useOrderStore } from "@/store/order-store";
 import { usePayoutStore } from "@/store/payout-store";
+import { useSession } from "next-auth/react";
+import { useBuyerOrderQuery } from "@/hooks/use-order-query";
+import formatDate from "@/utils/formatDate";
+import Image from "next/image";
 
-const Reciept = () => {
+const Reciept = ({ params }) => {
+  const session = useSession();
+
+  const { data: orders } = useBuyerOrderQuery(session?.data?.user?.id);
+
   const cart = useStore(useCart, (state) => state.clearCart);
   const order = useStore(useOrderStore, (state) => state.clearOrders);
   const payout = useStore(usePayoutStore, (state) => state.clearPayouts);
@@ -21,98 +28,83 @@ const Reciept = () => {
     payout;
   }, []);
 
+  const recentOrders =
+    orders && orders.data && Array.isArray(orders.data)
+      ? orders.data.slice(0, params?.id)
+      : [];
+
+  // Initialize variables to store total shipping price and total order price
+  let totalShippingPrice = 0;
+  let totalOrderPrice = 0;
+
+  // Iterate through each order and accumulate shipping prices and total prices
+  recentOrders?.forEach((order) => {
+    totalShippingPrice += parseFloat(order.shippingPrice);
+    totalOrderPrice += parseFloat(order.totalPrice);
+  });
+
   return (
     <div className="flex justify-center items-center">
       <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Order Receipt
+          <h1 className="text-2xl text-center font-bold text-gray-900 dark:text-gray-100 w-full">
+            Orders Processed successfully
           </h1>
-          <div className="flex items-center gap-2">
-            <Button size="icon" variant="outline">
-              <DownloadIcon className="h-4 w-4" />
-              <span className="sr-only">Download Receipt</span>
-            </Button>
-            <Button size="icon" variant="outline">
-              <PrinterIcon className="h-4 w-4" />
-              <span className="sr-only">Print Receipt</span>
-            </Button>
-          </div>
         </div>
         <div className="border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
           <div className="flex items-center justify-between">
-            <p className="text-gray-500 dark:text-gray-400">Order #3210</p>
             <p className="text-gray-500 dark:text-gray-400">
-              Placed on June 23, 2022
+              {params.id} order is Processed
             </p>
+            <p className="text-gray-500 dark:text-gray-400">Placed on</p>
           </div>
         </div>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <img
-                alt="Product Image"
-                className="rounded-md"
-                height={64}
-                src="/placeholder.svg"
-                style={{
-                  aspectRatio: "64/64",
-                  objectFit: "cover",
-                }}
-                width={64}
-              />
+              <p className="font-medium text-gray-900 dark:text-gray-100">
+                Order
+              </p>
+            </div>
+            <div>Status</div>
+            <div>Price</div>
+          </div>
+          {recentOrders?.map((item, index) => (
+            <div key={index} className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <p className="font-medium text-gray-900 dark:text-gray-100">
+                  ORD #{index}
+                </p>
+              </div>
+              <div>{item?.orderStatus}</div>
               <div>
                 <p className="font-medium text-gray-900 dark:text-gray-100">
-                  Glimmer Lamps
+                  Total Price: {item?.totalPrice} ETB
                 </p>
-                <p className="text-gray-500 dark:text-gray-400">Quantity: 2</p>
+                <p className="text-gray-500 dark:text-gray-400">
+                  Shipping Price: {item?.totalPrice} ETB
+                </p>
               </div>
             </div>
-            <p className="font-medium text-gray-900 dark:text-gray-100">
-              $120.00
-            </p>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <img
-                alt="Product Image"
-                className="rounded-md"
-                height={64}
-                src="/placeholder.svg"
-                style={{
-                  aspectRatio: "64/64",
-                  objectFit: "cover",
-                }}
-                width={64}
-              />
-              <div>
-                <p className="font-medium text-gray-900 dark:text-gray-100">
-                  Aqua Filters
-                </p>
-                <p className="text-gray-500 dark:text-gray-400">Quantity: 3</p>
-              </div>
-            </div>
-            <p className="font-medium text-gray-900 dark:text-gray-100">
-              $49.00
-            </p>
-          </div>
+          ))}
+
           <Separator />
           <div className="flex items-center justify-between">
-            <p className="text-gray-500 dark:text-gray-400">Subtotal</p>
+            <p className="text-gray-500 dark:text-gray-400">Shipping Price</p>
             <p className="font-medium text-gray-900 dark:text-gray-100">
-              $169.00
+              {totalShippingPrice} ETB
             </p>
           </div>
           <div className="flex items-center justify-between">
-            <p className="text-gray-500 dark:text-gray-400">Discount</p>
+            <p className="text-gray-500 dark:text-gray-400">Items Price</p>
             <p className="font-medium text-gray-900 dark:text-gray-100">
-              -$19.00
+              {totalOrderPrice} ETB
             </p>
           </div>
           <div className="flex items-center justify-between">
             <p className="text-gray-500 dark:text-gray-400">Total</p>
             <p className="font-medium text-gray-900 dark:text-gray-100">
-              $150.00
+              {totalOrderPrice + totalShippingPrice}ETB
             </p>
           </div>
           <div className="flex items-center justify-between">
@@ -123,7 +115,7 @@ const Reciept = () => {
           </div>
         </div>
         <div className="mt-2">
-          <Link href="products/order">
+          <Link href="/products/order">
             <Button className="w-full">Back to Order</Button>
           </Link>
         </div>

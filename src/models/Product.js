@@ -61,6 +61,14 @@ const productSchema = new Schema(
         expireDate: Date,
       },
     ],
+    promotion: {
+      amount: {
+        type: Number,
+      },
+      expireDate: {
+        type: Date,
+      },
+    },
   },
   { timestamps: true }
 );

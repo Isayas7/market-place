@@ -32,7 +32,7 @@ import { useRouter } from "next/navigation";
 import CustomMultiImageIpload from "@/components/multi-image-uploader";
 import {
   UseCategoryQuery,
-  useCategoryDataQuery,
+  useAllCategoryDataQuery,
 } from "@/hooks/use-product-category-query";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -73,7 +73,7 @@ const UpdateProductForm = ({ productId }) => {
     isSuccess,
     isLoading,
   } = useProductUpdateQuery();
-  const { data: categoryData } = useCategoryDataQuery();
+  const { data: categoryData } = useAllCategoryDataQuery();
 
   const selectedCategoryApi = categoryData?.data?.find(
     (category) => category._id === selectedCategory

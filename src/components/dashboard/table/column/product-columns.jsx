@@ -4,6 +4,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "../data-table-column-header";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+<<<<<<< HEAD
+=======
+import React, { useState } from "react";
+>>>>>>> h
 
 export const product_columns = [
   {

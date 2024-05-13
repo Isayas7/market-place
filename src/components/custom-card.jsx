@@ -28,7 +28,17 @@ export const CustomCard = ({ product, aspectRatio, className, ...props }) => {
           />
         </div>
 
-        <div className="space-y-1 text-sm px-2 py-1">
+        <div className="space-y-1 text-sm px-2 py-1 ">
+          {product?.promotion?.amount &&
+            new Date(product.promotion.expireDate) > new Date() && (
+              <div className="absolute top-3 left-3 rounded-full bg-red-500 px-3 py-1 text-xs font-medium text-white">
+                {calculateDiscountPercentage(
+                  product.price,
+                  product.promotion.amount
+                ).toFixed(0)}
+                %
+              </div>
+            )}
           <h3 className="font-medium leading-none">{product.title}</h3>
           <p className="text-xs text-muted-foreground">{product.price}</p>
           <div className="flex items-center gap-3">
@@ -46,3 +56,7 @@ export const CustomCard = ({ product, aspectRatio, className, ...props }) => {
     </Link>
   );
 };
+
+function calculateDiscountPercentage(originalPrice, discountAmount) {
+  return (discountAmount / originalPrice) * 100;
+}

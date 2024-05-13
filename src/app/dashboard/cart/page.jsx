@@ -26,15 +26,15 @@ const Cart = () => {
   const orders = [];
 
   // Iterate through the cart items
-  cart?.cartItems.forEach((cartItem) => {
+  cart?.cartItems.forEach((cartItem, index) => {
     const item = cartItem.item;
-    const address = item.address;
+    const address = item.seller.address;
     const quantity = cartItem.quantity;
     const price = item.price;
     const totalPrice = quantity * price;
     // Check if the order already exists in orders
     const existingOrderIndex = orders.findIndex(
-      (order) => order.address === address
+      (order) => order?.address === address
     );
 
     // If the order already exists, update its details
@@ -47,7 +47,7 @@ const Cart = () => {
         price: price,
         color: item.color,
         size: item.size,
-        location: item.location,
+        location: item.seller.location,
         productId: item._id,
       });
     } else {
@@ -63,7 +63,7 @@ const Cart = () => {
             price: price,
             color: item.color,
             size: item.size,
-            location: item.location,
+            location: item.seller.location,
             productId: item._id,
           },
         ],

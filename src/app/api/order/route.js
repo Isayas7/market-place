@@ -12,17 +12,83 @@ export const GET = async (request) => {
     query[key] = value;
   });
 
+  const pageSize = 6;
+  const currentPage = parseInt(query.page);
+
   try {
     await connect();
+    if (query.page) {
+      delete query.page;
 
-    const order = await Order.find(query)
-      .populate({
-        path: "items.productId",
-        select: "title image",
-      })
-      .exec();
+      const count = await Order.find(query)
+        .populate({
+          path: "items.productId",
+          select: "title image",
+        })
+        .populate({
+          path: "buyerId",
+          select: "firstName middleName email",
+        })
+        .populate({
+          path: "deliveryPersonnelId",
+          select: "firstName middleName email",
+        })
+        .sort({
+          createdAt: -1,
+        })
+        .exec()
+        .countDocuments();
 
-    return new NextResponse(JSON.stringify(order), { status: 200 });
+      const order = await Order.find(query)
+        .populate({
+          path: "items.productId",
+          select: "title image",
+        })
+        .populate({
+          path: "buyerId",
+          select: "firstName middleName email",
+        })
+        .populate({
+          path: "deliveryPersonnelId",
+          select: "firstName middleName email",
+        })
+        .sort({
+          createdAt: -1,
+        })
+        .exec()
+        .limit(pageSize)
+        .skip((currentPage - 1) * pageSize);
+
+      const totalPage = Math.ceil(count / pageSize);
+
+      // console.log(order);
+      return new NextResponse(
+        JSON.stringify({ order, totalPage, currentPage }),
+        {
+          status: 200,
+        }
+      );
+    } else {
+      const order = await Order.find(query)
+        .populate({
+          path: "items.productId",
+          select: "title image",
+        })
+        .populate({
+          path: "buyerId",
+          select: "firstName middleName email",
+        })
+        .populate({
+          path: "deliveryPersonnelId",
+          select: "firstName middleName email",
+        })
+        .sort({
+          createdAt: -1,
+        })
+        .exec();
+
+      return new NextResponse(JSON.stringify(order), { status: 200 });
+    }
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });
   }

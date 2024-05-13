@@ -8,7 +8,14 @@ const Orders = () => {
 
   return (
     <div>
-      <DataTable columns={order_columns} data={order_product?.data} />
+      <DataTable
+        columns={order_columns}
+        data={order_product?.data}
+        rendered="order"
+        totalPage={order_product?.data?.totalPage}
+        currentPage={order_product?.data?.currentPage}
+        searchBy="_id"
+      />
     </div>
   );
 };

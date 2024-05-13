@@ -29,7 +29,7 @@ export default function ForgotPassword() {
     }),
   });
 
-  const { mutate: sendEmail, isSuccess, isLoading } = useMailerQuery();
+  const { mutate: sendEmail, isSuccess, isLoading, error } = useMailerQuery();
   const form = useForm({
     resolver: zodResolver(emailSchema),
     defaultValues: {
@@ -38,6 +38,12 @@ export default function ForgotPassword() {
   });
 
   const onSubmit = (values) => {
+    const expirationTime = new Date().getTime() + 5 * 60 * 1000;
+    localStorage.setItem(
+      "otpEmail",
+      JSON.stringify({ email: values.email, expires: expirationTime })
+    );
+
     sendEmail(values);
   };
   if (isSuccess) {
@@ -77,7 +83,11 @@ export default function ForgotPassword() {
                   )}
                 />
               </div>
-
+              {error && (
+                <div className="text-red-500 w-full text-center">
+                  {error?.response.data}
+                </div>
+              )}
               <Button
                 disabled={isLoading === "loading"}
                 className="w-full text-xl py-4 "

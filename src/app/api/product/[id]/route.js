@@ -44,6 +44,7 @@ export const GET = async (request, { params }) => {
       averageStar: averageStar,
       ratingCount: reviewData?.length,
       ratingPercentages: percentages,
+      seller: userData,
       ...product._doc,
     };
 

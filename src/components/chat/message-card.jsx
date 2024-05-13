@@ -84,7 +84,7 @@ const Message = ({
           {chat?.map((conversation, index) => (
             <div
               key={index}
-              className={`flex flex-col w-full  ${
+              className={`flex  w-full flex-col-reverse  ${
                 conversation.sender === session?.data.user.id ? "items-end" : ""
               }`}
             >
@@ -103,7 +103,7 @@ const Message = ({
                 <ContextMenu>
                   <ContextMenuTrigger>
                     <div
-                      className={` flex flex-col   rounded-md relative  text-black ${
+                      className={` flex flex-col-reverse   rounded-md relative  text-black ${
                         conversation.sender === session?.data.user.id
                           ? "bg-swansdown"
                           : "bg-message dark:bg-message-200 text-black dark:text-white "
@@ -153,7 +153,6 @@ const Message = ({
                                 <Separator />
                                 Amount
                                 <Input
-                                  className="border-none focus:outline-none  p-2 border-b-2"
                                   placeholder="Discount amount"
                                   autoComplete="off"
                                   type="number"
@@ -164,7 +163,6 @@ const Message = ({
                                 />
                                 Expire Date
                                 <Input
-                                  className="border-none focus:outline-none  p-2 border-b-2"
                                   placeholder="Expire Date"
                                   autoComplete="off"
                                   type="date"
@@ -187,10 +185,10 @@ const Message = ({
                                       makeDiscount({
                                         discountInfo: {
                                           amount,
-                                          user: conversation.sender,
-                                          expireDate: date,
+                                          userId: conversation.sender,
+                                          expireDate: expireDate,
                                         },
-                                        id: conversation.product,
+                                        id: conversation.product._id,
                                       });
 
                                       setIsOpen(false);

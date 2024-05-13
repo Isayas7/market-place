@@ -22,8 +22,15 @@ export const useWithdrawalQuery = (id) => {
 //get all orders
 export const useOrderQuery = () => {
   const search = useSearchParams();
-  const queryString = new URLSearchParams(search).toString();
+  const params = new URLSearchParams(search);
 
+  let query = {};
+  params.forEach((value, key) => {
+    query[key] = value;
+  });
+
+  query.page = !query.page ? 1 : query.page;
+  const queryString = new URLSearchParams(query).toString();
   return useQuery({
     queryKey: ["orders", queryString],
     queryFn: async () => {
@@ -107,6 +114,22 @@ export const useSellerOrderQuery = (sellerId) => {
       return res;
     },
     enabled: !!sellerId,
+  });
+};
+
+//get all orders of buyers
+export const useSellerSingleOrderQuery = () => {
+  const search = useSearchParams();
+  const queryString = new URLSearchParams(search).toString();
+
+  return useQuery({
+    queryKey: ["sellersingleorder"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `http://localhost:3000/api/order/sellerorder/orderdetail?${queryString}`
+      );
+      return res;
+    },
   });
 };
 

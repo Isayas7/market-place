@@ -167,17 +167,19 @@ export function DataTable({
             </>
           )}
 
-          {rendered !== "role" && rendered !== "product" && (
-            <>
-              <SellectForFilter
-                clear={clear}
-                setClear={setClear}
-                rendered="all"
-                filter="Status"
-                dataInfo={dataInfo}
-              />
-            </>
-          )}
+          {rendered !== "role" &&
+            rendered !== "product" &&
+            rendered !== "order" && (
+              <>
+                <SellectForFilter
+                  clear={clear}
+                  setClear={setClear}
+                  rendered="all"
+                  filter="Status"
+                  dataInfo={dataInfo}
+                />
+              </>
+            )}
 
           <RenderResetButton />
         </div>
