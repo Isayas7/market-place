@@ -11,6 +11,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { useOrderStore } from "@/store/order-store";
+import { useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Cart = () => {
   const { toast } = useToast();
@@ -22,15 +24,17 @@ const Cart = () => {
   const cart = useStore(useCart, (state) => state);
   const setOrderData = useStore(useOrderStore, (state) => state);
 
+  const [loading, setLoading] = useState(false);
+
   // Initialize orders array
   const orders = [];
 
   // Iterate through the cart items
-  cart?.cartItems?.forEach((cartItem, index) => {
-    const item = cartItem?.item;
-    const address = item?.seller?.address;
-    const quantity = cartItem?.quantity;
-    const price = item?.price;
+  cart?.cartItems.forEach((cartItem, index) => {
+    const item = cartItem.item;
+    const address = item.seller.address;
+    const quantity = cartItem.quantity;
+    const price = item.price;
     const totalPrice = quantity * price;
     // Check if the order already exists in orders
     const existingOrderIndex = orders.findIndex(
@@ -42,13 +46,13 @@ const Cart = () => {
       orders[existingOrderIndex].totalPrice += totalPrice;
       orders[existingOrderIndex].quantityPrice += quantity;
       orders[existingOrderIndex].items.push({
-        title: item?.title,
+        title: item.title,
         quantity: quantity,
         price: price,
-        color: item?.color,
-        size: item?.size,
-        location: item?.seller?.location,
-        productId: item?._id,
+        color: item.color,
+        size: item.size,
+        location: item.seller.location,
+        productId: item._id,
       });
     } else {
       // If the order doesn't exist, create a new order
@@ -58,13 +62,13 @@ const Cart = () => {
         address: address,
         items: [
           {
-            title: item?.title,
+            title: item.title,
             quantity: quantity,
             price: price,
-            color: item?.color,
-            size: item?.size,
-            location: item?.seller?.location,
-            productId: item?._id,
+            color: item.color,
+            size: item.size,
+            location: item.seller.location,
+            productId: item._id,
           },
         ],
       });
@@ -74,11 +78,11 @@ const Cart = () => {
   let totalPriceAllCategories = 0;
 
   orders.forEach((order) => {
-    totalPriceAllCategories += order?.totalPrice;
+    totalPriceAllCategories += order.totalPrice;
   });
 
   const handleCheckout = () => {
-    if (cart?.cartItems?.length === 0) {
+    if (cart.cartItems.length === 0) {
       toast({
         variant: "destructive",
         title: "Uh oh! Cart went wrong.",
@@ -171,9 +175,16 @@ const Cart = () => {
         </div>
         <Button
           className="text-lg hover:bg-primary/20"
-          onClick={handleCheckout}
+          onClick={() => {
+            setLoading(!loading);
+            handleCheckout();
+          }}
         >
-          Checkout
+          {loading ? (
+            <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
+          ) : (
+            "Checkout"
+          )}
         </Button>
       </Card>
     </div>
