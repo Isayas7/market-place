@@ -48,7 +48,7 @@ const Footer = () => {
                 <Link className="text-sm hover:underline" href="#">
                   Support
                 </Link>
-                <Link className="text-sm hover:underline" href="#">
+                <Link className="text-sm hover:underline" href="/feedback">
                   Feedback
                 </Link>
               </nav>

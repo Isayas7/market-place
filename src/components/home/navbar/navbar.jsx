@@ -55,6 +55,10 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    if (currentUrl.includes("dashboard")) {
+      setLoading(false);
+    }
+
     isDesktop && currentUrl === "/"
       ? (document.body.style.overflow = "auto")
       : open
@@ -157,8 +161,8 @@ const Navbar = () => {
               hasAdminRole(session?.data?.user) && (
                 <Link href={"/dashboard"} onClick={() => setLoading(!loading)}>
                   {loading ? (
-                    <div className="flex items-center justify-center h-1/2">
-                      <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
+                    <div className="flex items-center justify-center">
+                      <AiOutlineLoading3Quarters className="text-2xl text-jade animate-spin" />
                     </div>
                   ) : (
                     "Dashboard"

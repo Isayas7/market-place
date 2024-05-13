@@ -31,15 +31,22 @@ import { ResponsivePie } from "@nivo/pie";
 import { ResponsiveLine } from "@nivo/line";
 
 import { Badge } from "@/components/ui/badge";
-import { CircleIcon, Link } from "lucide-react";
+import { CircleIcon } from "lucide-react";
 
 import { VscGraph } from "react-icons/vsc";
 import { MdAutoGraph } from "react-icons/md";
 import { BsGraphDownArrow } from "react-icons/bs";
 import { VscGraphLine } from "react-icons/vsc";
 import { useTheme } from "next-themes";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { UseTransactionChartQuery } from "@/hooks/use-chart-query";
 
 const Dashboard = () => {
+  const session = useSession();
+
+  const { data: transaction } = UseTransactionChartQuery();
+
   return (
     <div className="">
       <div className="flex w-full  gap-6 flex-col xl:flex-row  ">
@@ -51,16 +58,18 @@ const Dashboard = () => {
                 Welcome back 👋
               </h1>
               <h1 className=" dark:text-black text-2xl font-semibold">
-                Isayas Melkamu
+                {session?.data?.user.name}
               </h1>
             </div>
             <p className="text-jade">
-              If you are going to use a passage of Lorem Ipsum, you need to be
-              sure there isn't anything.
+              Manage products, orders, and customers easily. Gain insights with
+              analytics. Grow your business effortlessly.
             </p>
-            <Button className="bg-jade hover:bg-jadeh text-white font-medium w-min ">
-              Go now
-            </Button>
+            <Link href="/">
+              <Button className="bg-jade hover:bg-jadeh text-white font-medium w-min ">
+                Go now
+              </Button>
+            </Link>
           </div>
           <div className=" xl:aspect-[9/6]">
             <Image
@@ -118,7 +127,9 @@ const Dashboard = () => {
               <MdAutoGraph className="text-lg text-jade" />
               +2.6%
             </CardDescription>
-            <CardTitle className="font-bold text-4xl">18,765</CardTitle>
+            <CardTitle className="font-bold text-4xl">
+              {transaction?.data} ETB
+            </CardTitle>
           </CardContent>
           <VscGraph className="text-6xl text-jade" />
         </Card>
@@ -316,7 +327,6 @@ const Dashboard = () => {
 
 function BarChart(props) {
   const theme = useTheme();
-  console.log(theme);
   return (
     <div {...props}>
       <ResponsiveBar

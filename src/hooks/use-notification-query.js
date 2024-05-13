@@ -41,3 +41,13 @@ export const useNotificationUpdateQuery = () => {
     },
   });
 };
+
+// feedback
+export const useFeedbackQuery = () => {
+  return useMutation({
+    mutationFn: (feedback) => {
+      console.log(feedback);
+      return axios.post(`http://localhost:3000/api/feedback/`, feedback);
+    },
+  });
+};

@@ -33,10 +33,7 @@ const connect = async () => {
         console.log("create role", error);
         return new NextResponse("Database Error", { status: 500 });
       }
-    } else {
-      console.log("Admin role already exists");
     }
-
     const user = await User.findOne({
       email: admin.email,
     });
@@ -59,8 +56,6 @@ const connect = async () => {
         console.log("create admin", error);
         return new NextResponse("Database Error", { status: 500 });
       }
-    } else {
-      console.log("Admin user already exists");
     }
   } catch (error) {
     console.log("connect to mongodb failed", error);

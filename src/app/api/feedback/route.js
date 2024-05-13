@@ -15,11 +15,11 @@ export const GET = async (request) => {
 };
 export const POST = async (request) => {
   const values = await request.json();
-  const { body, user } = values;
+  const { feedback, id } = values;
 
   const newFeedback = new Feedback({
-    body,
-    user,
+    body: feedback,
+    user: id,
   });
 
   try {
