@@ -7,7 +7,6 @@ import {
   UseSingleProductQuery,
   useSimilarProducQuery,
 } from "@/hooks/use-product-query";
-import { Skeleton } from "@/components/ui/skeleton";
 import ProductDetailSkeleton from "@/components/skeleton/product-detail";
 
 export default function SingleProduct({ params }) {
@@ -34,8 +33,9 @@ export default function SingleProduct({ params }) {
           <div className="w-full lg:w-[340px]  ">
             <Price
               price={product?.data.price}
-              seller={product?.data.user}
+              seller={product?.data.seller}
               productId={product?.data._id}
+              promotion={product?.data?.promotion}
             />
           </div>
         </div>

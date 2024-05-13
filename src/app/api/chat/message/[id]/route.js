@@ -10,7 +10,7 @@ export const GET = async (request, { params }) => {
   try {
     const message = await Message.find({ conversationId: id }).populate(
       "product",
-      "productImage title"
+      "productImage title price"
     );
     return new NextResponse(JSON.stringify(message), { status: 200 });
   } catch (error) {

@@ -131,7 +131,6 @@ export const UseBankQuery = () => {
   });
 };
 
-
 // withdrawal post
 export const useMailerQuery = () => {
   return useMutation({
@@ -139,6 +138,31 @@ export const useMailerQuery = () => {
       return axios.post(
         `http://localhost:3000/api/password/forgotpassword/mailer`,
         email
+      );
+    },
+  });
+};
+
+// withdrawal post
+export const useOTPQuery = (email) => {
+  return useQuery({
+    queryKey: ["otp"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `http://localhost:3000/api/password/forgotpassword/otp/${email}`
+      );
+      return res;
+    },
+    enabled: !!email,
+  });
+};
+// withdrawal post
+export const useSetNewPasswordQuery = () => {
+  return useMutation({
+    mutationFn: (values) => {
+      return axios.post(
+        `http://localhost:3000/api/password/forgotpassword/otp/${values.email}`,
+        values
       );
     },
   });

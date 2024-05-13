@@ -2,13 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import LoginForm from "@/components/login/login-form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardDescription } from "@/components/ui/card";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";

@@ -17,8 +17,12 @@ import { Progress } from "@/components/ui/progress";
 import { IoChevronForwardSharp } from "react-icons/io5";
 import ReactStars from "react-rating-stars-component";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import formatDate from "@/utils/formatDate";
 
 export const ProductDesc = ({ descriptions }) => {
+  const session = useSession();
+
   const pathname = usePathname();
   const pathArray = pathname.split("/");
   const lastPath = pathArray[pathArray.length - 1];
@@ -28,6 +32,24 @@ export const ProductDesc = ({ descriptions }) => {
   const [selectedSize, setSelectedSize] = useState();
 
   const cart = useStore(useCart, (state) => state);
+
+  const isEligible = isCurrentUserEligibleForDiscount(
+    descriptions.discount,
+    session?.data?.user?.id
+  );
+
+  // to get discount
+  const discount = isEligible
+    ? descriptions.discount.find(
+        (discount) =>
+          discount.userId === session?.data?.user?.id &&
+          new Date(discount.expireDate) > new Date() // Check if the discount is still valid
+      )?.amount || 0 // Use optional chaining and nullish coalescing to handle cases where there are no discounts or none are currently valid
+    : 0;
+  const promotionalDiscount =
+    new Date(descriptions.promotion.expireDate) > new Date()
+      ? descriptions.promotion.amount
+      : 0;
 
   return (
     <div className=" flex flex-col">
@@ -162,6 +184,32 @@ export const ProductDesc = ({ descriptions }) => {
       <Separator className="my-2" />
       <p className="font-bold text-xl">Description</p>
       <p className="text-lg">{descriptions?.description}</p>
+      {isEligible && (
+        <>
+          <Separator className="my-2" />
+          <Button className="w-fit bg-red-500">Limited time deal</Button>
+
+          <div className="text-lg font-medium text-gray-500  dark:text-gray-400">
+            Bundle List Price:
+            <span className="line-through">
+              {descriptions.price - promotionalDiscount} ETB
+            </span>
+          </div>
+          <p>
+            Deal Price: {descriptions.price - promotionalDiscount - discount}
+            ETB
+          </p>
+          <p>
+            You Save: {discount} ETB
+            {"(" +
+              calculateDiscountPercentage(
+                descriptions.price - promotionalDiscount,
+                discount
+              ).toFixed(0) +
+              "%)"}
+          </p>
+        </>
+      )}
       <Separator className="my-2" />
       <div className="flex gap-5 items-center my-2">
         <Button
@@ -177,17 +225,31 @@ export const ProductDesc = ({ descriptions }) => {
         </Button>
       </div>
       <Button
-        onClick={() =>
+        onClick={() => {
+          const { price, ...others } = descriptions;
+          const lastPrice = descriptions.price - promotionalDiscount - discount;
+          const cartDescription = { price: lastPrice, ...others };
           cart.addItem({
-            item: descriptions,
+            item: cartDescription,
             quantity,
             color: selectedColor,
             size: selectedSize,
-          })
-        }
+          });
+        }}
       >
         Add to cart
       </Button>
     </div>
   );
 };
+
+function isCurrentUserEligibleForDiscount(discounts, currentUser) {
+  return discounts.some(
+    (discount) =>
+      discount.userId === currentUser &&
+      new Date(discount.expireDate) > new Date()
+  );
+}
+function calculateDiscountPercentage(originalPrice, discountAmount) {
+  return (discountAmount / originalPrice) * 100;
+}

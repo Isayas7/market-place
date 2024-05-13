@@ -10,18 +10,20 @@ export const POST = async (request) => {
 
   try {
     await connect();
-    const exist = await checkEmailExistence(values.email);
-    if (!exist) {
-      return new NextResponse("Invalid  email", { status: 400 });
-    }
+    // const exist = await checkEmailExistence(values.email);
+    // if (!exist) {
+    //   return new NextResponse("Invalid email", { status: 400 });
+    // }
 
-    const user = await User.find({ email: values.email });
+    const user = await User.findOne({ email: values.email });
 
-    if (user.length === 0) {
+    if (!user) {
       return new NextResponse("Email not not found", { status: 400 });
     }
+    user.otp = "123456";
+    await user.save();
 
-    exist && user.length !== 0 && sendEmail(values.email, "123456");
+    user && sendEmail(values.email, "123456");
 
     return new NextResponse("Email sent on your email", { status: 200 });
   } catch (error) {

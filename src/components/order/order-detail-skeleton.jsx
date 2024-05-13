@@ -30,7 +30,7 @@ export default function OrderDetailSkeleton() {
         <Skeleton className="h-12 w-12 rounded-full" />
         <div className="space-y-2">
           <Skeleton className="h-4 w-[250px]" />
-          <Skeleton className="h-4 w-[200px]" />
+          <Skeleton className="h-4 w-full" />
         </div>
       </div>
       <div className="grid md:grid-cols-6 gap-6 mt-6">
@@ -38,66 +38,66 @@ export default function OrderDetailSkeleton() {
           <Card>
             <CardHeader>
               <CardTitle>
-                <Skeleton className="h-4 w-[150px]" />
+                <Skeleton className="h-4 w-3/4" />
               </CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="flex items-center">
                 <div>
-                  <Skeleton className="h-4 w-[100px]" />
+                  <Skeleton className="h-4 w-1/2" />
                 </div>
                 <div className="ml-auto">
-                  <Skeleton className="h-4 w-[80px]" />
+                  <Skeleton className="h-4 w-1/3" />
                 </div>
               </div>
               <div className="flex items-center">
                 <div>
-                  <Skeleton className="h-4 w-[100px]" />
+                  <Skeleton className="h-4 w-1/2" />
                 </div>
                 <div className="ml-auto">
-                  <Skeleton className="h-4 w-[80px]" />
+                  <Skeleton className="h-4 w-1/3" />
                 </div>
               </div>
               <Separator />
               <div className="flex items-center font-medium">
                 <div>
-                  <Skeleton className="h-4 w-[100px]" />
+                  <Skeleton className="h-4 w-1/2" />
                 </div>
                 <div className="ml-auto">
-                  <Skeleton className="h-4 w-[80px]" />
+                  <Skeleton className="h-4 w-1/3" />
                 </div>
               </div>
             </CardContent>
             <CardFooter className="flex items-center gap-2">
               <Button size="sm">
-                <Skeleton className="h-4 w-[100px]" />
+                <Skeleton className="h-4 w-1/2" />
               </Button>
               <Button size="sm" variant="outline">
-                <Skeleton className="h-4 w-[100px]" />
+                <Skeleton className="h-4 w-1/2" />
               </Button>
             </CardFooter>
           </Card>
           <Card>
             <CardHeader>
               <CardTitle>
-                <Skeleton className="h-4 w-[150px]" />
+                <Skeleton className="h-4 w-3/4" />
               </CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-[80px] hidden md:table-cell">
-                      <Skeleton className="h-4 w-[80px]" />
+                    <TableHead className="w-1/3 hidden md:table-cell">
+                      <Skeleton className="h-4 w-1/3" />
                     </TableHead>
-                    <TableHead className="max-w-[150px]">
-                      <Skeleton className="h-4 w-[150px]" />
-                    </TableHead>
-                    <TableHead>
-                      <Skeleton className="h-4 w-[80px]" />
+                    <TableHead className="max-w-3/4">
+                      <Skeleton className="h-4 w-3/4" />
                     </TableHead>
                     <TableHead>
-                      <Skeleton className="h-4 w-[80px]" />
+                      <Skeleton className="h-4 w-1/3" />
+                    </TableHead>
+                    <TableHead>
+                      <Skeleton className="h-4 w-1/3" />
                     </TableHead>
                     <TableHead />
                   </TableRow>
@@ -108,13 +108,13 @@ export default function OrderDetailSkeleton() {
                       <Skeleton className="h-16 w-16 rounded" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className="h-4 w-[150px]" />
+                      <Skeleton className="h-4 w-3/4" />
                     </TableCell>
                     <TableCell>
                       <Skeleton className="h-4 w-[50px]" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className="h-4 w-[80px]" />
+                      <Skeleton className="h-4 w-1/3" />
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
                       <Button size="icon" variant="outline">
@@ -133,16 +133,16 @@ export default function OrderDetailSkeleton() {
             <div>
               <CardHeader className="flex flex-row items-center space-y-0">
                 <CardTitle>
-                  <Skeleton className="h-4 w-[150px]" />
+                  <Skeleton className="h-4 w-3/4" />
                 </CardTitle>
                 <Button className="ml-auto" variant="secondary">
-                  <Skeleton className="h-4 w-[80px]" />
+                  <Skeleton className="h-4 w-1/3" />
                 </Button>
               </CardHeader>
               <CardContent className="text-sm">
                 <div className="grid gap-1">
-                  <Skeleton className="h-4 w-[200px]" />
-                  <Skeleton className="h-4 w-[150px]" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
                 </div>
               </CardContent>
             </div>
@@ -150,13 +150,13 @@ export default function OrderDetailSkeleton() {
             <div>
               <CardHeader>
                 <CardTitle>
-                  <Skeleton className="h-4 w-[150px]" />
+                  <Skeleton className="h-4 w-3/4" />
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-sm">
                 <div className="grid gap-1">
-                  <Skeleton className="h-4 w-[200px]" />
-                  <Skeleton className="h-4 w-[150px]" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
                 </div>
               </CardContent>
             </div>
@@ -164,22 +164,22 @@ export default function OrderDetailSkeleton() {
             <div>
               <CardHeader>
                 <CardTitle>
-                  <Skeleton className="h-4 w-[150px]" />
+                  <Skeleton className="h-4 w-3/4" />
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-sm">
-                <Skeleton className="h-4 w-[300px]" />
+                <Skeleton className="h-4 w-fit" />
               </CardContent>
             </div>
             <Separator />
             <div>
               <CardHeader>
                 <CardTitle>
-                  <Skeleton className="h-4 w-[150px]" />
+                  <Skeleton className="h-4 w-3/4" />
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-sm">
-                <Skeleton className="h-4 w-[300px]" />
+                <Skeleton className="h-4 w-fit" />
               </CardContent>
             </div>
           </Card>

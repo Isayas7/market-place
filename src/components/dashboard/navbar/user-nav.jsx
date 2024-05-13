@@ -51,6 +51,9 @@ export function UserNav() {
           <DropdownMenuItem>
             <Link href="/delivery">Delivery</Link>
           </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href="/deliverypersonnel/balance">Balance</Link>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="border-b dark:border-gray-600 border-dashed" />
         <DropdownMenuItem

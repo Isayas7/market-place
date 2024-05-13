@@ -27,7 +27,7 @@ export default function RegistrationForm() {
 
   const router = useRouter();
 
-  const { mutate: register, isSuccess } = useUserRegisterQuery();
+  const { mutate: register, isSuccess, data, error } = useUserRegisterQuery();
 
   const form = useForm({
     resolver: zodResolver(registerSchema),
@@ -50,6 +50,8 @@ export default function RegistrationForm() {
   } else {
     console.log("Error");
   }
+
+  console.log(error);
 
   return (
     <Form {...form}>
@@ -164,7 +166,11 @@ export default function RegistrationForm() {
             )}
           />
         </div>
-
+        {error && (
+          <div className="text-red-500 w-full text-center">
+            {error?.response.data}
+          </div>
+        )}
         <Button className="w-full text-xl px-6" type="submit">
           Submit
         </Button>

@@ -148,7 +148,7 @@ const Chat = () => {
       >
         <CustomerCard
           name={session?.data?.user?.name}
-          message={"customer.status"}
+          message={session?.data?.user?.email}
           time={"customer.amount"}
         />
         <Input placeholder={"Search contacts"} className="max-w-sm" />

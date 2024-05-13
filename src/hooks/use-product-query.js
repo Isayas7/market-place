@@ -39,6 +39,7 @@ export const useProductQuery = () => {
   });
 
   const queryString = new URLSearchParams(decodedParams).toString();
+  console.log(queryString);
   return useQuery({
     queryKey: ["products", queryString],
     queryFn: async () => {
@@ -224,6 +225,23 @@ export const useDiscountQuery = () => {
         `http://localhost:3000/api/product/discount/${id}`,
         discountInfo
       );
+    },
+  });
+};
+
+export const usePromotionQuery = (query) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ promotionInfo, id }) => {
+      return axios.put(
+        `http://localhost:3000/api/product/promotion/${id}`,
+        promotionInfo
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["SimilarProduct", query]);
+      queryClient.invalidateQueries(["products", ""]);
     },
   });
 };

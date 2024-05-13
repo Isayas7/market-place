@@ -85,12 +85,18 @@ export const POST = async (request) => {
 
   await connect();
 
+  const userExist = await User.findOne({ email: values.email });
+  if (userExist) {
+    return new NextResponse("Email already Exist!", { status: 500 });
+  }
+
   const hashedPassword = await bcrypt.hash(password, 5);
   const myrole = await Role.findOne({ role: role });
 
   if (!!myrole === true) {
     const newUser = new User({
       password: hashedPassword,
+
       role: myrole._id,
       ...other,
     });
@@ -102,5 +108,5 @@ export const POST = async (request) => {
       console.log("error", error);
       return new NextResponse("something went wrong!", { status: 500 });
     }
-  } else return new NextResponse("role does not exist!", { status: 500 });
+  } else return new NextResponse("Role does not exist!", { status: 500 });
 };

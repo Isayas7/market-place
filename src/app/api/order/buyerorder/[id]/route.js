@@ -17,6 +17,9 @@ export const GET = async (request, { params }) => {
         path: "buyerId",
         select: "firstName middleName",
       })
+      .sort({
+        createdAt: -1,
+      })
       .exec();
 
     return new NextResponse(JSON.stringify(order), { status: 200 });

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import {
@@ -11,8 +11,10 @@ import {
 import { useCreateConversation, useSendMessage } from "@/hooks/use-chat-query";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
+import { Contact, PhoneIcon } from "lucide-react";
 
-export const Price = ({ price, seller, productId }) => {
+export const Price = ({ price, seller, productId, promotion }) => {
+  const [contact, setContact] = useState("Show Contact");
   const session = useSession();
   const router = useRouter();
   const path = usePathname();
@@ -32,7 +34,7 @@ export const Price = ({ price, seller, productId }) => {
     } else {
       const conversation = {
         senderId: session.data.user.id,
-        receiverId: seller,
+        receiverId: seller._id,
       };
       const response = await createConversation(conversation);
 
@@ -51,7 +53,23 @@ export const Price = ({ price, seller, productId }) => {
       <div className="flex flex-col gap-6 w-full sm:w-1/2 md:w-full">
         <Card>
           <CardHeader>
-            <CardTitle>ETB {price}</CardTitle>
+            <CardTitle>
+              {promotion?.amount &&
+              new Date(promotion.expireDate) > new Date() ? (
+                <>
+                  <div className="flex flex-col  gap-2">
+                    <div className="text-lg font-medium text-gray-500 line-through dark:text-gray-400">
+                      {price} ETB
+                    </div>
+                    <div className="text-2xl font-bold">
+                      {price - promotion.amount} ETB
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="text-2xl font-bold">{price} ETB</div>
+              )}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <Button className="  w-full  text-base  ">Request call back</Button>
@@ -72,14 +90,24 @@ export const Price = ({ price, seller, productId }) => {
                   </Avatar>
                 </Button>
                 <div>
-                  <CardTitle>John Doe</CardTitle>
-                  <CardDescription>Active on</CardDescription>
+                  <CardTitle classname="flex flex-col gap-1">
+                    <div> {seller?.firstName + " " + seller?.middleName}</div>
+                  </CardTitle>
+                  <CardDescription>
+                    <div>{seller?.address}</div>
+                  </CardDescription>
                 </div>
               </div>
             </CardHeader>
           </div>
           <CardContent>
-            <Button className="  w-full">Show contact</Button>
+            <Button
+              className=" flex justify-center items-center gap-2 w-full"
+              onClick={() => setContact(seller.phoneNumber)}
+            >
+              <PhoneIcon />
+              <div> {contact}</div>
+            </Button>
             <Button className="  w-full mt-3" onClick={handleStart}>
               Start chat
             </Button>
@@ -92,10 +120,13 @@ export const Price = ({ price, seller, productId }) => {
             <CardTitle>Safety tips</CardTitle>
           </CardHeader>
           <CardContent>
-            <li className="text-[15px]">Lorem ipsum dolor sit amet.</li>
-            <li className="text-[15px]">Lorem ipsum dolor sit amet.</li>
-            <li className="text-[15px]">Lorem ipsum dolor sit amet.</li>
-            <li className="text-[15px]">Lorem ipsum dolor sit amet.</li>
+            <div className="xs">
+              Avoid paying in advance, even for delivery. <br />
+              Meet with the seller at a safe public place <br />
+              Inspect the item and ensure it's exactly what you want <br />
+              Make sure that the packed item is the one you've inspected <br />
+              Only pay if you're satisfied
+            </div>
           </CardContent>
         </Card>
       </div>

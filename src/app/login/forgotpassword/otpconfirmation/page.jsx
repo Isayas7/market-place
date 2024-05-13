@@ -8,12 +8,24 @@ import {
 } from "@/components/ui/input-otp";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useOTPQuery } from "@/hooks/use-users-query";
 
 export default function ForgotPassword() {
   const router = useRouter();
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
+
+  const [myData, setMyData] = useState("");
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("otpEmail");
+    if (storedData) {
+      setMyData(JSON.parse(storedData));
+    }
+  }, []);
+
+  const { data: myotp } = useOTPQuery(myData?.email);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +33,7 @@ export default function ForgotPassword() {
       setError("OTP must be 6 characters");
       return;
     }
-    if (otp === "123456") {
+    if (otp === myotp?.data?.otp) {
       router.push("otpconfirmation/setpassword");
     } else {
       setError("Invalid OTP");

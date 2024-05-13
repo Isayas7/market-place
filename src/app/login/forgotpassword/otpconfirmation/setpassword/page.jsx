@@ -16,15 +16,26 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { z } from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { useSetNewPasswordQuery } from "@/hooks/use-users-query";
 
 export default function SetPassword() {
   const [showPassword, setShowPassword] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const [myData, setMyData] = useState("");
 
   const session = useSession();
   const router = useRouter();
+
+  const { mutate: setPassword, isSuccess } = useSetNewPasswordQuery();
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("otpEmail");
+    if (storedData) {
+      setMyData(JSON.parse(storedData));
+    }
+  }, []);
 
   const newPassword = z
     .object({
@@ -49,8 +60,12 @@ export default function SetPassword() {
   });
 
   const onSubmit = (values) => {
-    router.push("login");
+    values.email = myData?.email;
+    setPassword(values);
   };
+  if (isSuccess) {
+    router.push("/login");
+  }
 
   return (
     <div className="flex justify-center items-center mt-20">

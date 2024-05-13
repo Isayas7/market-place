@@ -54,24 +54,42 @@ export const order_columns = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Buyer Full Name" />
     ),
+    cell: ({ row }) => {
+      return (
+        row.original.buyerId.firstName + " " + row.original.buyerId.middleName
+      );
+    },
   },
   {
     accessorKey: "email",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Email" />
     ),
+    cell: ({ row }) => {
+      return row.original.buyerId.email;
+    },
   },
   {
     accessorKey: "address",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Address" />
+      <DataTableColumnHeader column={column} title="Receiver Address" />
     ),
+    cell: ({ row }) => {
+      return row?.original?.receiverInformation.address;
+    },
   },
   {
     accessorKey: "deliveryPersonnel",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Assgned Delivery" />
     ),
+    cell: ({ row }) => {
+      return (
+        row.original?.deliveryPersonnelId?.firstName +
+        " " +
+        row.original?.deliveryPersonnelId?.lastName
+      );
+    },
   },
   {
     accessorKey: "recieverAddress",
