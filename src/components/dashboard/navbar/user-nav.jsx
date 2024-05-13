@@ -65,6 +65,11 @@ export function UserNav() {
               <Link href="/delivery">Delivery</Link>
             </DropdownMenuItem>
           )}
+          {hasPDRole(session?.data?.user) && (
+            <DropdownMenuItem>
+              <Link href="/deliverypersonnel/balance">Balance</Link>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="border-b dark:border-gray-600 border-dashed" />
         <DropdownMenuItem

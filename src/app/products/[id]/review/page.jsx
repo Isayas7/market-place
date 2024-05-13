@@ -30,6 +30,7 @@ import { useForm } from "react-hook-form";
 import ReactStars from "react-rating-stars-component";
 import { Separator } from "@/components/ui/separator";
 import ReviewUpdateForm from "@/components/products/review-update-form";
+import ProductDetailSkeleton from "@/components/skeleton/product-detail";
 
 const Review = () => {
   const [openForm, setOpenForm] = useState(false);
@@ -37,7 +38,12 @@ const Review = () => {
   const pathname = usePathname();
   const id = pathname.split("/")[2];
   const { data: product, isLoading } = UseSingleProductQuery(id);
-  const { mutate: reveiwProduct, data, isSuccess } = useProductReviewCreate(id);
+  const {
+    mutate: reveiwProduct,
+    data,
+    isSuccess,
+    isLoading: isUpdating,
+  } = useProductReviewCreate(id);
   const { data: reveiwProductData } = UseProductReviewQuery(id);
   const { toast } = useToast();
 
@@ -76,7 +82,9 @@ const Review = () => {
   const containsUserId = (data, userId) => {
     return data?.some((item) => item.userId === userId);
   };
-
+  if (isLoading) {
+    return <ProductDetailSkeleton />;
+  }
   return (
     <>
       <div className="flex flex-col md:flex-row gap-10  ">

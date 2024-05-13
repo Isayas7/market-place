@@ -77,6 +77,7 @@ const PersonalInformation = () => {
     isSuccess,
     isLoading,
     isError,
+    data,
   } = useUserUpdateQuery();
   const { data: banks } = UseBankQuery();
 
@@ -85,7 +86,13 @@ const PersonalInformation = () => {
     defaultValues: async () => {
       const user = await axios.get(`http://localhost:3000/api/user/${userId}`);
       setSelectedBank(user?.data?.bankInfo);
-      setCoord(user?.data?.location);
+
+      if (user?.data?.location && user?.data?.location?.length > 0) {
+        setCoord(user?.data?.location);
+      } else {
+        const defaultCoordinates = [8.9914, 38.7693];
+        setCoord(defaultCoordinates);
+      }
       return {
         _id: user?.data._id,
         profileImage: user?.data?.profileImage,
@@ -110,7 +117,7 @@ const PersonalInformation = () => {
     if (isSuccess) {
       toast({
         className: " border-2 text-black bg-[#D4F4E7]",
-        description: data?.message,
+        description: "Your Information updated successfully",
       });
       form.reset({
         current_password: "",
@@ -232,14 +239,14 @@ const PersonalInformation = () => {
                               !field.value && "text-muted-foreground"
                             )}
                           >
-                            {field.value ? field.value : "Select language"}
+                            {field.value ? field.value : "Select address"}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="p-0 h-64 ">
                         <Command>
-                          <CommandInput placeholder="Search language..." />
+                          <CommandInput placeholder="Search Address..." />
                           <CommandEmpty>No address found.</CommandEmpty>
                           <CommandGroup className="overflow-y-scroll">
                             {address.map((add, index) => (

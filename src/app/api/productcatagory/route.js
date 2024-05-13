@@ -24,14 +24,11 @@ export const GET = async (request) => {
         .limit(pageSize)
         .skip((currentPage - 1) * pageSize);
 
-      console.log("productCategories", productCategoryData);
-
       const totalPage = Math.ceil(count / pageSize);
 
       const productCategories = await Promise.all(
         productCategoryData.map(async (category) => {
           const userData = await User.findById(category.user.toString());
-          console.log("userData", userData);
 
           return {
             creator: userData.firstName,

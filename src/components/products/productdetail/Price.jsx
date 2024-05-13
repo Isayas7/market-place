@@ -11,7 +11,7 @@ import {
 import { useCreateConversation, useSendMessage } from "@/hooks/use-chat-query";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import { Contact, PhoneIcon } from "lucide-react";
+import { PhoneIcon } from "lucide-react";
 
 export const Price = ({ price, seller, productId, promotion }) => {
   const [contact, setContact] = useState("Show Contact");
@@ -103,7 +103,10 @@ export const Price = ({ price, seller, productId, promotion }) => {
           <CardContent>
             <Button
               className=" flex justify-center items-center gap-2 w-full"
-              onClick={() => setContact(seller.phoneNumber)}
+              onClick={() => {
+                setContact(seller?.phoneNumber);
+                console.log("seller?.phoneNumber", seller?.phoneNumber);
+              }}
             >
               <PhoneIcon />
               <div> {contact}</div>
@@ -120,12 +123,21 @@ export const Price = ({ price, seller, productId, promotion }) => {
             <CardTitle>Safety tips</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="xs">
-              Avoid paying in advance, even for delivery. <br />
-              Meet with the seller at a safe public place <br />
-              Inspect the item and ensure it's exactly what you want <br />
-              Make sure that the packed item is the one you've inspected <br />
-              Only pay if you're satisfied
+            <div className=" text-xs">
+              <li>
+                Avoid paying in advance, even for delivery. <br />
+              </li>
+              <li>
+                Meet with the seller at a safe public place <br />
+              </li>
+              <li>
+                Inspect the item and ensure it's exactly what you want <br />
+              </li>
+              <li>
+                Make sure that the packed item is the one you've inspected{" "}
+                <br />
+              </li>
+              <li> Only pay if you're satisfied</li>
             </div>
           </CardContent>
         </Card>

@@ -2,7 +2,7 @@
 
 import { useCart } from "@/store/cart-store";
 import useStore from "@/store/use-store";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
@@ -11,12 +11,16 @@ import { usePayoutStore } from "@/store/payout-store";
 import { useSession } from "next-auth/react";
 import { useBuyerOrderQuery } from "@/hooks/use-order-query";
 import formatDate from "@/utils/formatDate";
-import Image from "next/image";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Reciept = ({ params }) => {
+  const [loading, setLoading] = useState(false);
+
   const session = useSession();
 
-  const { data: orders } = useBuyerOrderQuery(session?.data?.user?.id);
+  const { data: orders, isLoading } = useBuyerOrderQuery(
+    session?.data?.user?.id
+  );
 
   const cart = useStore(useCart, (state) => state.clearCart);
   const order = useStore(useOrderStore, (state) => state.clearOrders);
@@ -42,7 +46,13 @@ const Reciept = ({ params }) => {
     totalShippingPrice += parseFloat(order.shippingPrice);
     totalOrderPrice += parseFloat(order.totalPrice);
   });
-
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-1/2">
+        <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
+      </div>
+    );
+  }
   return (
     <div className="flex justify-center items-center">
       <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
@@ -56,7 +66,9 @@ const Reciept = ({ params }) => {
             <p className="text-gray-500 dark:text-gray-400">
               {params.id} order is Processed
             </p>
-            <p className="text-gray-500 dark:text-gray-400">Placed on</p>
+            <p className="text-gray-500 dark:text-gray-400">
+              Placed on {formatDate(recentOrders[0]?.createdAt)}
+            </p>
           </div>
         </div>
         <div className="space-y-4">
@@ -79,10 +91,10 @@ const Reciept = ({ params }) => {
               <div>{item?.orderStatus}</div>
               <div>
                 <p className="font-medium text-gray-900 dark:text-gray-100">
-                  Total Price: {item?.totalPrice} ETB
+                  Products Price: {item?.totalPrice} ETB
                 </p>
                 <p className="text-gray-500 dark:text-gray-400">
-                  Shipping Price: {item?.totalPrice} ETB
+                  Shipping Price: {item?.shippingPrice} ETB
                 </p>
               </div>
             </div>
@@ -90,19 +102,25 @@ const Reciept = ({ params }) => {
 
           <Separator />
           <div className="flex items-center justify-between">
-            <p className="text-gray-500 dark:text-gray-400">Shipping Price</p>
+            <p className="text-gray-500 dark:text-gray-400">
+              Total Shipping Price
+            </p>
             <p className="font-medium text-gray-900 dark:text-gray-100">
               {totalShippingPrice} ETB
             </p>
           </div>
           <div className="flex items-center justify-between">
-            <p className="text-gray-500 dark:text-gray-400">Items Price</p>
+            <p className="text-gray-500 dark:text-gray-400">
+              Toatal Products Price
+            </p>
             <p className="font-medium text-gray-900 dark:text-gray-100">
               {totalOrderPrice} ETB
             </p>
           </div>
           <div className="flex items-center justify-between">
-            <p className="text-gray-500 dark:text-gray-400">Total</p>
+            <p className="text-gray-500 dark:text-gray-400">
+              Total Payout Price
+            </p>
             <p className="font-medium text-gray-900 dark:text-gray-100">
               {totalOrderPrice + totalShippingPrice}ETB
             </p>
@@ -116,7 +134,18 @@ const Reciept = ({ params }) => {
         </div>
         <div className="mt-2">
           <Link href="/products/order">
-            <Button className="w-full">Back to Order</Button>
+            <Button
+              className="w-full"
+              onClick={() => {
+                setLoading(!loading);
+              }}
+            >
+              {loading ? (
+                <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
+              ) : (
+                "Back to Order"
+              )}
+            </Button>
           </Link>
         </div>
       </div>

@@ -7,7 +7,7 @@ const CategoryList = ({ category, currentCategory, currentVariants }) => {
   return (
     <Card>
       <div className="  bg-primary text-card-foreground text-xl font-semibold text-white rounded-t-md  p-4 mb-2">
-        <CardTitle className="text-card-foreground"> Categories</CardTitle>
+        <CardTitle className=""> Categories</CardTitle>
       </div>
       <Link
         href={{

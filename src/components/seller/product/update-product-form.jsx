@@ -92,7 +92,9 @@ const UpdateProductForm = ({ productId }) => {
   if (isSuccess) {
     router.push("/seller/product");
   }
-  const { data: product_category } = UseCategoryQuery();
+  const { data: product_category } = useAllCategoryDataQuery();
+
+  console.log(product_category);
 
   return (
     <Form {...form}>
@@ -141,7 +143,7 @@ const UpdateProductForm = ({ productId }) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {product_category?.data.map((option) => (
+                        {product_category?.data?.map((option) => (
                           <SelectItem key={option._id} value={option._id}>
                             {option.categoryName}
                           </SelectItem>

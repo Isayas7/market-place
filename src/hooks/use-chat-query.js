@@ -45,7 +45,6 @@ export const UseChatQuery = (id) => {
   return useQuery({
     queryKey: ["chat", id],
     queryFn: async () => {
-      console.log(id);
       const res = await axios.get(
         `http://localhost:3000/api/chat/message/${id}`
       );

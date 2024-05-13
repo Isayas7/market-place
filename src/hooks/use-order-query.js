@@ -86,7 +86,7 @@ export const useBuyerOrderQuery = (buyerId) => {
 };
 
 //confirm Delivery
-export const useConfirmDeliveryQuery = (id) => {
+export const useConfirmDeliveryQuery = (orderId) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -97,9 +97,9 @@ export const useConfirmDeliveryQuery = (id) => {
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["order", id]);
+      queryClient.invalidateQueries(["order", orderId]);
     },
-    enabled: !!id,
+    enabled: !!orderId,
   });
 };
 
@@ -156,6 +156,7 @@ export const useSingleOrderQuery = (id) => {
       const res = await axios.get(`http://localhost:3000/api/order/${id}`);
       return res;
     },
+    enabled: !!id,
   });
 };
 

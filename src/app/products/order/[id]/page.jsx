@@ -17,6 +17,7 @@ import {
   ArrowLeftIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  CircleIcon,
   EyeIcon,
 } from "lucide-react";
 import {
@@ -39,15 +40,20 @@ import {
 import { useState } from "react";
 import { useSocket } from "@/components/socketprovider/socket-provider";
 import { useSession } from "next-auth/react";
+import { Badge } from "@/components/ui/badge";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const OrderDetail = ({ params }) => {
   const [open, setOpen] = useState(false);
+  const [myloading, setMyLoading] = useState(false);
+
   const session = useSession();
   const socket = useSocket();
 
   const { data: order, isLoading } = useSingleOrderQuery(params.id);
 
-  const { mutate: confirmDelivery } = useConfirmDeliveryQuery(params.id);
+  const { mutate: confirmDelivery, isLoading: loading } =
+    useConfirmDeliveryQuery(params.id);
 
   const handleConfiramtion = () => {
     const { orderStatus, ...other } = order?.data;
@@ -88,7 +94,7 @@ const OrderDetail = ({ params }) => {
     );
   }
 
-  return !order ? (
+  return isLoading ? (
     <OrderDetailSkeleton />
   ) : (
     <div className="grid min-h-screen w-full overflow-hidden ">
@@ -144,7 +150,7 @@ const OrderDetail = ({ params }) => {
                   </div>
                   <Separator />
                   <div className="grid gap-2">
-                    <div className="font-medium">Shipping Address</div>
+                    <div className="font-medium">Shipping Information</div>
                     <div>
                       {order?.data?.receiverInformation?.fullName}
                       <br />
@@ -161,24 +167,43 @@ const OrderDetail = ({ params }) => {
                     </div>
                     <div>
                       <div className="font-medium">Status</div>
-                      <div>Order Status: {" " + order?.data?.orderStatus}</div>
+                      <div>
+                        Order Status:{" "}
+                        {order?.data?.orderStatus === "Pending" ? (
+                          <Badge
+                            className="border-yellow-600 bg-white dark:bg-gray-950"
+                            variant="outline"
+                          >
+                            <CircleIcon className="h-3 w-3 -translate-x-1 animate-pulse fill-yellow-300 text-yellow-300" />
+                            {order?.data?.orderStatus}
+                          </Badge>
+                        ) : (
+                          <Badge
+                            className="border-jade bg-white dark:bg-gray-950"
+                            variant="outline"
+                          >
+                            <CircleIcon className="h-3 w-3 -translate-x-1 animate-pulse fill-green-300 text-green-300" />
+                            {order?.data?.orderStatus}
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <Separator />
                   <div className="flex items-center">
-                    <div className="font-medium">Items Price</div>
+                    <div className="font-medium">Total Products Price</div>
                     <div className="ml-auto text-2xl font-bold text-jade">
                       {order?.data?.totalPrice + " ETB"}
                     </div>
                   </div>
                   <div className="flex items-center">
-                    <div className="font-medium">Shipping Price</div>
+                    <div className="font-medium">Total Shipping Price</div>
                     <div className="ml-auto text-2xl font-bold text-jade">
                       {order?.data?.shippingPrice + " ETB"}
                     </div>
                   </div>
                   <div className="flex items-center">
-                    <div className="font-medium">Total</div>
+                    <div className="font-medium">Total Price</div>
                     <div className="ml-auto text-2xl font-bold text-jade">
                       {parseFloat(order?.data?.totalPrice) +
                         parseFloat(order?.data?.shippingPrice)}{" "}
@@ -189,7 +214,7 @@ const OrderDetail = ({ params }) => {
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-jade">Items Ordered</CardTitle>
+                  <CardTitle className="text-jade">Products Ordered</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Table>
@@ -227,9 +252,15 @@ const OrderDetail = ({ params }) => {
                           </TableCell>
                           <TableCell className="hidden md:table-cell">
                             <Link href={`/products/${item.productId._id}`}>
-                              <Button size="icon">
-                                <EyeIcon className="h-4 w-4" />
-                                <span className="sr-only">View</span>
+                              <Button
+                                size="icon"
+                                onClick={() => setMyLoading(!myloading)}
+                              >
+                                {myloading ? (
+                                  <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
+                                ) : (
+                                  <EyeIcon className="h-4 w-4" />
+                                )}
                               </Button>
                             </Link>
                           </TableCell>
@@ -250,18 +281,9 @@ const OrderDetail = ({ params }) => {
                 <CardContent className="grid gap-4">
                   <div className="flex items-center">
                     <div>Shipping Method</div>
-                    <div className="ml-auto font-medium">
-                      Seller Ownining Delivery
-                    </div>
+                    <div className="ml-auto font-medium">Standard Delivery</div>
                   </div>
-                  <div className="flex items-center">
-                    <div>Tracking Number</div>
-                    <div className="ml-auto font-medium">
-                      <Link className="text-blue-600 underline" href="#">
-                        {"#" + order?.data?._id}
-                      </Link>
-                    </div>
-                  </div>
+
                   <div className="flex items-center">
                     <div>Estimated Delivery</div>
                     <div className="ml-auto font-medium">
@@ -273,7 +295,7 @@ const OrderDetail = ({ params }) => {
               <Card>
                 <CardHeader>
                   <CardTitle className="text-jade">
-                    Payment and Delivery Information
+                    Payment and Delivery Status
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="grid gap-4">
@@ -289,9 +311,13 @@ const OrderDetail = ({ params }) => {
                         disabled={order?.data.orderStatus === "Delivered"}
                         onClick={() => setOpen(true)}
                       >
-                        {order?.data.orderStatus === "Delivered"
-                          ? "Marked as Delivered"
-                          : "Mark as Delivered"}
+                        {loading ? (
+                          <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
+                        ) : order?.data.orderStatus === "Delivered" ? (
+                          "Marked as Delivered"
+                        ) : (
+                          "Mark as Delivered"
+                        )}
                       </Button>
                     </div>
                   </div>
