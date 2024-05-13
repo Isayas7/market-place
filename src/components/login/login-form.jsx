@@ -46,6 +46,7 @@ export default function LoginForm() {
               password,
               callbackUrl: localStorage.getItem("prevpath"),
             });
+            setLoading(!loading);
           }
           // signIn("credentials", values, { callbackUrl: "/cart" })
         )}
@@ -107,7 +108,6 @@ export default function LoginForm() {
         <Button
           className="w-full text-xl py-4 "
           type="submit"
-          onClick={() => setLoading(!loading)}
           disabled={loading}
         >
           {loading ? (

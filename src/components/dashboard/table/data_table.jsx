@@ -220,6 +220,9 @@ export function DataTable({
               <Button variant="outline"> +New Category</Button>
             </Link>
           )}
+
+          <Button variant="outline"> +New Category</Button>
+
           {rendered === "role" && (
             <Button variant="outline" onClick={handleSave}>
               Save
