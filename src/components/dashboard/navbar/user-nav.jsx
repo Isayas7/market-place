@@ -14,9 +14,11 @@ import {
 import { hasBuyerRole, hasPDRole, hasSellerRole } from "@/middleware";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useState } from "react";
 
 export function UserNav() {
   const session = useSession();
+  const [loading, setLoading] = useState(false);
 
   return (
     <DropdownMenu>

@@ -20,6 +20,7 @@ import useStore from "@/store/use-store";
 import NavbarMenu from "./navbar-menu";
 import Notification from "../../notification/notification";
 import { hasAdminRole, hasBuyerRole, hasSellerRole } from "@/middleware";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const links = [
   {
@@ -30,6 +31,8 @@ const links = [
 ];
 
 const Navbar = () => {
+  const [loading, setLoading] = useState(false);
+
   const currentUrl = usePathname();
   const session = useSession();
   const [open, setOpen] = useState(false);
@@ -152,7 +155,15 @@ const Navbar = () => {
 
             {session.status === "authenticated" &&
               hasAdminRole(session?.data?.user) && (
-                <Link href={"/dashboard"}>Dashboard</Link>
+                <Link href={"/dashboard"} onClick={() => setLoading(!loading)}>
+                  {loading ? (
+                    <div className="flex items-center justify-center h-1/2">
+                      <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
+                    </div>
+                  ) : (
+                    "Dashboard"
+                  )}
+                </Link>
               )}
             {session.status === "authenticated" && <UserNav />}
             <ModeToggle />

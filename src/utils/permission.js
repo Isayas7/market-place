@@ -31,14 +31,6 @@ export const permissions = {
     "update-all-role",
     "deactivate-role",
   ],
-  storefront: [
-    "view-single-storefront",
-    "view-all-storefront",
-    "create-storefront",
-    "update-single-storefront",
-    "update-all-storefront",
-    "deactivate-storefront",
-  ],
 };
 
 export const roleData = {
@@ -64,7 +56,6 @@ export const orderStatus = {
 };
 
 const admin = {
-  _id: "123456789",
   firstName: "Isayas",
   middleName: "Melkamu",
   email: "isaias@gmail.com",

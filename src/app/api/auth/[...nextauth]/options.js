@@ -6,20 +6,12 @@ import User from "@/models/User";
 import connect from "@/utils/db";
 import { loginSchema } from "@/validationschema/user";
 import Role from "@/models/Role";
-import admin, { roleData, statusData } from "@/utils/permission";
+import { roleData, statusData } from "@/utils/permission";
 
 const Login = async (credentials) => {
   const validationResult = loginSchema.safeParse(credentials);
   if (!validationResult.success) {
     throw new Error("Invalid Credentials!");
-  }
-
-  if (
-    credentials.email === admin.email &&
-    credentials.password === admin.password
-  ) {
-    const user = admin;
-    return user;
   }
 
   await connect();
@@ -103,10 +95,6 @@ export const options = {
           token.myrole = rolesAndPermissions;
           token.name = userExist.firstName + " " + userExist.middleName;
         }
-      } else if (token?.email === admin.email) {
-        token.id = admin._id;
-        token.role = admin.role;
-        token.name = admin.firstName + " " + admin.middleName;
       }
       return token;
     },
