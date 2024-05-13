@@ -19,6 +19,7 @@ import { useCart } from "@/store/cart-store";
 import useStore from "@/store/use-store";
 import NavbarMenu from "./navbar-menu";
 import Notification from "../../notification/notification";
+import { hasAdminRole, hasBuyerRole, hasSellerRole } from "@/middleware";
 
 const links = [
   {
@@ -119,16 +120,13 @@ const Navbar = () => {
             className="rounded-md lg:w-[400px] "
           />
           <div className="hidden lg:flex items-center space-x-4 lg:space-x-6  xl:space-x-8">
-            {session.status === "authenticated" && (
-              <Button variant="outline">
-                <Link href={"/storefront"}>Sell</Link>
-              </Button>
-            )}
-            {session.status === "authenticated" && (
-              <Button>
-                <Link href={"/seller"}>My Store</Link>
-              </Button>
-            )}
+            {session.status === "authenticated" &&
+              hasBuyerRole(session?.data?.user) &&
+              session?.data?.user.myrole.length === 1 && (
+                <Button variant="outline">
+                  <Link href={"/storefront"}>Sell</Link>
+                </Button>
+              )}
 
             {session.status === "unauthenticated" && (
               <Link
@@ -152,9 +150,10 @@ const Navbar = () => {
               </Badge>
             </Link>
 
-            {session.status === "authenticated" && (
-              <Link href={"/dashboard"}>Dashboard</Link>
-            )}
+            {session.status === "authenticated" &&
+              hasAdminRole(session?.data?.user) && (
+                <Link href={"/dashboard"}>Dashboard</Link>
+              )}
             {session.status === "authenticated" && <UserNav />}
             <ModeToggle />
           </div>

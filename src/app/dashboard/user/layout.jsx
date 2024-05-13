@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 
 const Users = ({ children }) => {
   const path = usePathname();
+  console.log(path.includes("user/seller"));
   return (
     <div>
       <div className="w-full flex justify-between">
@@ -19,7 +20,7 @@ const Users = ({ children }) => {
           </Link>
           <Link href="/dashboard/user/seller">
             <Button
-              variant={`${path === "/dashboard/user/seller" ? "" : "outline"}`}
+              variant={`${path.includes("user/seller") ? "" : "outline"}`}
             >
               Seller
             </Button>
@@ -27,7 +28,7 @@ const Users = ({ children }) => {
           <Link href="/dashboard/user/deliverypersonnel">
             <Button
               variant={`${
-                path === "/dashboard/user/deliverypersonnel" ? "" : "outline"
+                path.includes("user/deliverypersonnel") ? "" : "outline"
               }`}
             >
               Pesonnel Delivery

@@ -22,22 +22,9 @@ const NewUser = () => {
   return (
     <div className="pb-2 overflow-y-visible">
       <div className="mb-2">
-        <div className="text-xl my-2 font-bold "> User Creation</div>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <Link href="/dashboard">Dashboard</Link>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <Link href="/dashboard/user">User</Link>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>User Creation</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <div className="text-xl my-2 font-bold ">
+          Personnel Delivery Creation
+        </div>
       </div>
       <NewDeliveryPersonnelForm />
     </div>

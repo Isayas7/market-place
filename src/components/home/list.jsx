@@ -14,7 +14,7 @@ const List = ({ handleClick }) => {
 
   return (
     <>
-      {product_category?.data.map((category, index) => (
+      {product_category?.data?.map((category, index) => (
         <Accordion key={index} type="single" collapsible>
           <AccordionItem value={category.categoryName}>
             <div className="py-2">

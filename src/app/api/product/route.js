@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import ProductCategory from "@/models/ProductCategory";
 import User from "@/models/User";
 import { usePathname } from "next/navigation";
+import Review from "@/models/Review";
 
 export const GET = async (request) => {
   const { searchParams } = new URL(request.url);
@@ -17,7 +18,14 @@ export const GET = async (request) => {
 
   const sortBy = query.sort === "priceDesc" ? "desc" : "asc";
 
+  const maxPriceValue =
+    query.maxPrice !== undefined ? parseInt(query.maxPrice) : 1000000000000000;
+  const minPriceValue =
+    query.minPrice !== undefined ? parseInt(query.minPrice) : 0;
+
   delete query.sort;
+  delete query.maxPrice;
+  delete query.minPrice;
 
   try {
     await connect();
@@ -33,7 +41,13 @@ export const GET = async (request) => {
       delete query.categoryName;
     }
 
-    const products = await Product.find(query).sort({ price: sortBy });
+    const products = await Product.find({
+      price: {
+        $gte: minPriceValue,
+        $lte: maxPriceValue,
+      },
+      ...query,
+    }).sort({ price: sortBy });
 
     const productData = await Promise.all(
       products.map(async (product) => {
@@ -42,13 +56,13 @@ export const GET = async (request) => {
         );
 
         const userData = await User.findById(product.user.toString());
-        const reviewData = await User.find({ productId: product._id });
+        const reviewData = await Review.find({ productId: product._id });
 
         const totalStars = reviewData?.reduce(
           (sum, rate) => sum + rate.star,
           0
         );
-        const averageStar = totalStars / product?.ratings?.length;
+        const averageStar = totalStars / reviewData.length;
 
         const countByStar = reviewData?.reduce((acc, cur) => {
           const star = cur.star;
@@ -60,7 +74,7 @@ export const GET = async (request) => {
         const percentages = {};
         for (const star in countByStar) {
           percentages[star] = (
-            (countByStar[star] / product?.ratings?.length) *
+            (countByStar[star] / reviewData.length) *
             100
           ).toFixed(0);
         }
@@ -85,7 +99,6 @@ export const POST = async (request) => {
   const values = await request.json();
 
   const validationResult = await productSchema.safeParse(values);
-  console.log("validationResult", validationResult);
 
   if (!validationResult.success) {
     return new NextResponse("Invalid", { status: 400 });

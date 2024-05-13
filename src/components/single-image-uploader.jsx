@@ -1,5 +1,5 @@
+"use client";
 import { CldUploadWidget } from "next-cloudinary";
-import { CardContent } from "./ui/card";
 import Image from "next/image";
 import { XIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -11,9 +11,11 @@ const CustomSingleImageIpload = ({
   name,
   onRemove,
 }) => {
-  const onUpload = (result) => {
+  const onUpload = (result, widget) => {
     onChange(result.info.secure_url);
+    widget.close();
   };
+
   return (
     <div className="flex flex-col gap-5">
       <div className=" flex justify-center items-center ">
@@ -41,12 +43,17 @@ const CustomSingleImageIpload = ({
               </>
             </div>
           ) : (
-            <CldUploadWidget uploadPreset="tzsilibg" onUpload={onUpload}>
-              {({ open }) => (
-                <button type="button" onClick={open}>
-                  {name}
-                </button>
-              )}
+            <CldUploadWidget
+              uploadPreset="tzsilibg"
+              onSuccess={(result, { widget }) => onUpload(result, widget)}
+            >
+              {({ open }) => {
+                return (
+                  <button type="button" onClick={() => open()}>
+                    {name}
+                  </button>
+                );
+              }}
             </CldUploadWidget>
           )}
         </div>

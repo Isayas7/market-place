@@ -71,11 +71,11 @@ export const useUserQuery = () => {
 };
 
 // get single user
-export const useSingleUserQuery = (id) => {
+export const useSingleUserQuery = (userId) => {
   return useQuery({
-    queryKey: ["user", id],
+    queryKey: ["user", userId],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/api/user/${id}`);
+      const res = await axios.get(`http://localhost:3000/api/user/${userId}`);
       return res;
     },
   });
@@ -92,30 +92,69 @@ export const useUserRegisterQuery = () => {
 };
 
 // update user
-export const useUserUpdateQuery = (id) => {
-  const queryClient = useQueryClient();
+export const useUserUpdateQuery = (userId) => {
   const search = useSearchParams();
-  const queryString = new URLSearchParams(search).toString();
+  const params = new URLSearchParams(search);
+  const pathname = usePathname();
+
+  let query = {};
+  params.forEach((value, key) => {
+    query[key] = value;
+  });
+
+  const role =
+    pathname === "/dashboard/user"
+      ? roleData.Buyer
+      : pathname === "/dashboard/user/seller"
+      ? roleData.Seller
+      : roleData.Personnel_Delivery;
+
+  query.role = role;
+  query.page = !query.page ? 1 : query.page;
+
+  const queryClient = useQueryClient();
+  const queryString = new URLSearchParams(query).toString();
+
   return useMutation({
     mutationFn: ({ userInfo, id }) => {
       return axios.put(`http://localhost:3000/api/user/${id}`, userInfo);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["users", queryString]);
+      queryClient.invalidateQueries(["user", userId]);
     },
   });
 };
 
-export const useUserDeactivateQuery = () => {
-  const queryClient = useQueryClient();
+export const useUserDeactivateQuery = (userId) => {
   const search = useSearchParams();
-  const queryString = new URLSearchParams(search).toString();
+  const params = new URLSearchParams(search);
+  const pathname = usePathname();
+
+  let query = {};
+  params.forEach((value, key) => {
+    query[key] = value;
+  });
+
+  const role =
+    pathname === "/dashboard/user"
+      ? roleData.Buyer
+      : pathname === "/dashboard/user/seller"
+      ? roleData.Seller
+      : roleData.Personnel_Delivery;
+
+  query.role = role;
+  query.page = !query.page ? 1 : query.page;
+
+  const queryClient = useQueryClient();
+  const queryString = new URLSearchParams(query).toString();
   return useMutation({
     mutationFn: (id) => {
       return axios.delete(`http://localhost:3000/api/user/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["users", queryString]);
+      queryClient.invalidateQueries(["user", userId]);
     },
   });
 };
@@ -130,7 +169,6 @@ export const UseBankQuery = () => {
     },
   });
 };
-
 
 // withdrawal post
 export const useMailerQuery = () => {

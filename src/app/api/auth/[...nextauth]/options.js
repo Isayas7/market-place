@@ -82,6 +82,7 @@ export const options = {
         session.user.role = token.role;
         session.user.name = token.name;
         session.user.image = token.image;
+        session.user.myrole = token.myrole;
       }
       return session;
     },
@@ -89,10 +90,17 @@ export const options = {
     async jwt({ token, user }) {
       if (user) {
         const userExist = await User.findOne({ email: user?.email });
+        const rolePromise = await Role.find({ _id: { $in: userExist.role } });
+
+        const rolesAndPermissions = rolePromise.map((role) => {
+          return { role: role.role, permission: role.permission };
+        });
+
         if (userExist) {
           token.id = userExist._id;
           token.image = userExist.profileImage;
           token.role = userExist.role;
+          token.myrole = rolesAndPermissions;
           token.name = userExist.firstName + " " + userExist.middleName;
         }
       } else if (token?.email === admin.email) {

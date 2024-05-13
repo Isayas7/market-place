@@ -170,7 +170,6 @@ const Review = () => {
                           <ReactStars
                             {...field}
                             count={5}
-                            value={3}
                             size={24}
                             activeColor="#ffd700"
                           />
@@ -223,7 +222,7 @@ const Review = () => {
                     </div>
                     <ReactStars
                       count={5}
-                      value={review?.star}
+                      value={parseInt(review?.star)}
                       size={24}
                       edit={false}
                       activeColor="#ffd700"

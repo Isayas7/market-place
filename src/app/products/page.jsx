@@ -90,8 +90,15 @@ const Variants = ({ searchParams }) => {
               <h3 className="text-lg font-medium mb-2">Price</h3>
               <Slider
                 className="w-full "
-                defaultValue={[100, 300]}
-                max={500}
+                defaultValue={[100, 500]}
+                onValueChange={(value) => {
+                  const params = new URLSearchParams(search.toString());
+                  params.set("minPrice", value[0]);
+                  params.set("maxPrice", value[1]);
+
+                  router.push(pathname + "?" + params.toString());
+                }}
+                max={10000}
                 min={0}
                 step={10}
               />
@@ -100,50 +107,54 @@ const Variants = ({ searchParams }) => {
                 <span>$500</span>
               </div>
             </div>
-            <div>
-              <h3 className="text-lg font-medium mb-2">Color</h3>
-              <RadioGroup>
-                {Array.from(uniqueColors).map((color, index) => (
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem
-                      value={color}
-                      id={color}
-                      key={index}
-                      className=""
-                      onClick={() =>
-                        router.push(
-                          pathname + "?" + createQueryString("color", color)
-                        )
-                      }
-                    />
-                    <Label htmlFor={color}>{color}</Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium mb-2">Size</h3>
-              <div className="flex flex-wrap gap-2">
+            {search.get("variants") !== null && (
+              <div>
+                <h3 className="text-lg font-medium mb-2">Color</h3>
                 <RadioGroup>
-                  {Array.from(uniqueSizes).map((size, index) => (
+                  {Array.from(uniqueColors).map((color, index) => (
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem
-                        value={size}
-                        id={size}
+                        value={color}
+                        id={color}
                         key={index}
                         className=""
                         onClick={() =>
                           router.push(
-                            pathname + "?" + createQueryString("size", size)
+                            pathname + "?" + createQueryString("color", color)
                           )
                         }
                       />
-                      <Label htmlFor={size}>{size}</Label>
+                      <Label htmlFor={color}>{color}</Label>
                     </div>
                   ))}
                 </RadioGroup>
               </div>
-            </div>
+            )}
+            {search.get("variants") !== null && (
+              <div>
+                <h3 className="text-lg font-medium mb-2">Size</h3>
+                <div className="flex flex-wrap gap-2">
+                  <RadioGroup>
+                    {Array.from(uniqueSizes).map((size, index) => (
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value={size}
+                          id={size}
+                          key={index}
+                          className=""
+                          onClick={() =>
+                            router.push(
+                              pathname + "?" + createQueryString("size", size)
+                            )
+                          }
+                        />
+                        <Label htmlFor={size}>{size}</Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                </div>
+              </div>
+            )}
           </div>
         </Card>
       </div>

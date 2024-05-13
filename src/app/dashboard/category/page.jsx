@@ -11,6 +11,11 @@ const Category = () => {
   const { data: product_category, isLoading } = UseCategoryQuery();
   const { data: category_data, isFetching } = useAllCategoryDataQuery();
 
+  console.log(
+    "product_category?.data?.productCategories",
+    product_category?.data?.productCategories
+  );
+
   return (
     <div>
       <DataTable

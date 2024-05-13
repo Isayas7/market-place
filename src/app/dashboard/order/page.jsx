@@ -5,7 +5,6 @@ import { useOrderQuery } from "@/hooks/use-order-query";
 
 const Orders = () => {
   const { data: order_product, isLoading } = useOrderQuery();
-  console.log(order_product);
 
   return (
     <div>

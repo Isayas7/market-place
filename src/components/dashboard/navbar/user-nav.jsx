@@ -11,12 +11,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { hasBuyerRole, hasPDRole, hasSellerRole } from "@/middleware";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 export function UserNav() {
-  const router = useRouter();
   const session = useSession();
 
   return (
@@ -42,15 +41,28 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="border-b dark:border-gray-600 border-dashed" />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Link href={"/profile"}>Profile</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href="/products/order">Order</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href="/delivery">Delivery</Link>
-          </DropdownMenuItem>
+          {session?.status === "authenticated" && (
+            <DropdownMenuItem>
+              <Link href={"/profile"}>Profile</Link>
+            </DropdownMenuItem>
+          )}
+          {session?.status === "authenticated" &&
+            hasSellerRole(session?.data?.user) && (
+              <DropdownMenuItem>
+                <Link href={"/seller"}>My Store</Link>
+              </DropdownMenuItem>
+            )}
+          {hasBuyerRole(session?.data?.user) &&
+            session?.data?.user.myrole.length === 1 && (
+              <DropdownMenuItem>
+                <Link href="/products/order">Order</Link>
+              </DropdownMenuItem>
+            )}
+          {hasPDRole(session?.data?.user) && (
+            <DropdownMenuItem>
+              <Link href="/delivery">Delivery</Link>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="border-b dark:border-gray-600 border-dashed" />
         <DropdownMenuItem

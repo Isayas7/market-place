@@ -58,7 +58,7 @@ const BrandForm = ({ searchParams }) => {
   };
 
   if (isSuccess) {
-    router.push("/dashboard/product");
+    router.push("/dashboard/variant");
   }
 
   const addTextField = () => {

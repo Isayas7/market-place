@@ -144,7 +144,7 @@ export const delivery_columns = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-            <Link href={`view/${user._id}`}>
+            <Link href={`deliverypersonnel/${user._id}`}>
               <DropdownMenuItem>View</DropdownMenuItem>
             </Link>
             <DropdownMenuItem onClick={() => setOpen(true)}>

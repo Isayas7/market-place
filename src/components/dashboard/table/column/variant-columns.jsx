@@ -135,7 +135,7 @@ export const variant_columns = [
           href={{
             pathname: "variant/new",
             query: {
-              variantName: row.original.variantName,
+              categoryName: row.original.categoryName,
               variants: row.original.name,
             },
           }}

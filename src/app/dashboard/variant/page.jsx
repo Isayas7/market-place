@@ -17,8 +17,6 @@ const Products = () => {
     categoryId: item._id,
   }));
 
-  console.log(allVariants);
-
   return (
     <div>
       <DataTable

@@ -9,6 +9,11 @@ const Products = () => {
   const { data: category_data, isFetching } = useAllCategoryDataQuery();
   const { data: product_data, isLoading } = useProductForAdminQuery();
 
+  console.log(
+    "product_data?.data?.productData",
+    product_data?.data?.productData
+  );
+
   return (
     <div>
       <DataTable

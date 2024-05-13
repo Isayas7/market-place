@@ -60,6 +60,7 @@ import MarkerIcon from "../../../node_modules/leaflet/dist/images/marker-icon.pn
 import MarkerShadow from "../../../node_modules/leaflet/dist/images/marker-shadow.png";
 import { useSession } from "next-auth/react";
 import { useToast } from "../ui/use-toast";
+import { hasBuyerRole } from "@/middleware";
 
 const PersonalInformation = () => {
   const session = useSession();
@@ -313,44 +314,46 @@ const PersonalInformation = () => {
                 render={({ field }) => (
                   <FormItem>
                     <>
-                      {coord && (
-                        <div className="row">
-                          <div className="col ">
-                            <h2> Get your location</h2>
-                            <div className="col">
-                              <MapContainer
-                                ref={mapRef}
-                                center={coord}
-                                zoom={13}
-                                scrollWheelZoom={false}
-                                className="flex-1 w-full h-[300px] z-0"
-                              >
-                                <TileLayer
-                                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                />
-                                {location?.loaded && !location?.error && (
-                                  <Marker
-                                    icon={
-                                      new L.Icon({
-                                        iconUrl: MarkerIcon.src,
-                                        iconRetinaUrl: MarkerIcon.src,
-                                        iconSize: [25, 41],
-                                        iconAnchor: [12.5, 41],
-                                        popupAnchor: [0, -41],
-                                        shadowUrl: MarkerShadow.src,
-                                        shadowSize: [41, 41],
-                                      })
-                                    }
-                                    position={coord}
-                                  ></Marker>
-                                )}
-                                <LocationMarker />
-                              </MapContainer>
+                      {coord &&
+                        hasBuyerRole(session?.data?.user) &&
+                        session?.data?.user.myrole.length > 1 && (
+                          <div className="row">
+                            <div className="col ">
+                              <h2> Get your location</h2>
+                              <div className="col">
+                                <MapContainer
+                                  ref={mapRef}
+                                  center={coord}
+                                  zoom={13}
+                                  scrollWheelZoom={false}
+                                  className="flex-1 w-full h-[300px] z-0"
+                                >
+                                  <TileLayer
+                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                  />
+                                  {location?.loaded && !location?.error && (
+                                    <Marker
+                                      icon={
+                                        new L.Icon({
+                                          iconUrl: MarkerIcon.src,
+                                          iconRetinaUrl: MarkerIcon.src,
+                                          iconSize: [25, 41],
+                                          iconAnchor: [12.5, 41],
+                                          popupAnchor: [0, -41],
+                                          shadowUrl: MarkerShadow.src,
+                                          shadowSize: [41, 41],
+                                        })
+                                      }
+                                      position={coord}
+                                    ></Marker>
+                                  )}
+                                  <LocationMarker />
+                                </MapContainer>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )}
+                        )}
                       <div className="row my-4">
                         <div className="col d-flex justify-content-center">
                           <Button type="button" onClick={showMyLocation}>

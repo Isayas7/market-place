@@ -2,8 +2,6 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-// delete mongoose.connection.models["Role"];
-
 const roleSchema = new Schema(
   {
     role: {

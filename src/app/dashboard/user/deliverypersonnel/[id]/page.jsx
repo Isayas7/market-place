@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { RiEdit2Line } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+
 import {
   UseApproveQuery,
   UseBankQuery,
@@ -14,13 +14,6 @@ import {
   useUserUpdateQuery,
 } from "@/hooks/use-users-query";
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import dynamic from "next/dynamic";
@@ -37,16 +30,9 @@ const ViewUser = ({ params }) => {
 
   const handleUpdateUser = () => {
     const { isSeller, ...other } = user?.data;
-
     const updateUser = { isSeller: true, ...other };
-
     approve({ userInfo: updateUser, id: user?.data?._id });
   };
-
-  function getBankNameById(bankId) {
-    const bank = banks.data.data.find((b) => b.id === bankId);
-    return bank ? bank.name : "Bank not found";
-  }
 
   const Map = dynamic(() => import("@/components/map/map"), {
     ssr: false,
@@ -54,24 +40,6 @@ const ViewUser = ({ params }) => {
 
   return (
     <div>
-      <div>
-        <div className="text-xl my-2 font-bold "> User information</div>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <Link href="/dashboard">Dashboard</Link>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <Link href="/dashboard/user">User</Link>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>User Detail</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
       <div className="flex flex-col w-full md:flex-row gap-5 mt-2">
         <Card className=" w-full p-7  items-center ">
           <div className="relative flex flex-col justify-center items-center">
@@ -79,10 +47,7 @@ const ViewUser = ({ params }) => {
               <AvatarImage src="https://github.com/shadcn.png" alt="man" />
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
-            <Link
-              href={`/dashboard/user/update/${params.id}`}
-              className="bg-primary"
-            >
+            <Link href={`update/${params.id}`} className="bg-primary">
               <RiEdit2Line className="absolute top-2 right-3  text-3xl bg-primary text-white rounded-full p-1 hover:bg-swansdown hover:text-jade" />
             </Link>
             <div className="text-xl font-bold">
@@ -90,11 +55,12 @@ const ViewUser = ({ params }) => {
               {user?.data.middleName && user.data.middleName + " "}
               {user?.data.lastName && user.data.lastName}
             </div>
-            <div className="bg-primary px-2 text-white rounded-sm">Seller</div>
+            <div className="bg-primary px-2 mt-3 text-white rounded-sm">
+              Delivery personnel
+            </div>
           </div>
           <CardContent className=" w-full mt-8 ">
             <div className="mt-4">
-              <div>User attribute</div>
               <div className="text-md my-4 flex">
                 <div className="w-1/2">Email</div>
                 <div>{user?.data.email} </div>
@@ -165,22 +131,6 @@ const ViewUser = ({ params }) => {
                 alt="id"
               />
             </div>
-          </CardContent>
-          <CardContent>
-            {user?.data?.isSeller ? (
-              <div>Already Approved Seller</div>
-            ) : (
-              <Button
-                className="bg-destructive min-w-12"
-                onClick={handleUpdateUser}
-              >
-                {isLoading ? (
-                  <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
-                ) : (
-                  " Approve"
-                )}
-              </Button>
-            )}
           </CardContent>
         </Card>
       </div>

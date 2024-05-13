@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import ProductCategory from "@/models/ProductCategory";
 import User from "@/models/User";
 import { usePathname } from "next/navigation";
+import Review from "@/models/Review";
 
 export const GET = async (request) => {
   const { searchParams } = new URL(request.url);
@@ -44,17 +45,37 @@ export const GET = async (request) => {
         const categoryData = await ProductCategory.findById(
           product.categoryId.toString()
         );
+
         const userData = await User.findById(product.user.toString());
-        const totalStars = product?.ratings.reduce(
+        const reviewData = await Review.find({ productId: product._id });
+
+        const totalStars = reviewData?.reduce(
           (sum, rate) => sum + rate.star,
           0
         );
-        const averageStar = totalStars / product?.ratings?.length;
+
+        const averageStar = totalStars / reviewData?.length;
+
+        const countByStar = reviewData?.reduce((acc, cur) => {
+          const star = cur.star;
+          acc[star] = (acc[star] || 0) + 1;
+          return acc;
+        }, {});
+
+        // Calculate the percentage of each unique star rating
+        const percentages = {};
+        for (const star in countByStar) {
+          percentages[star] = (
+            (countByStar[star] / reviewData?.length) *
+            100
+          ).toFixed(0);
+        }
 
         return {
           firstName: userData.firstName,
           categoryName: categoryData.categoryName,
           averageStar: averageStar,
+          ratingPercentages: percentages,
           ...product._doc,
         };
       })

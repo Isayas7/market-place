@@ -103,10 +103,6 @@ export const columns = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <Link href={`user/view/${user._id}`}>
-              <DropdownMenuItem>View</DropdownMenuItem>
-            </Link>
-
             <DropdownMenuItem onClick={() => setOpen(true)}>
               {status === statusData.Active ? "Deactivate" : "Activate"}
             </DropdownMenuItem>

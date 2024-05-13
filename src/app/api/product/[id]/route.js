@@ -20,10 +20,6 @@ export const GET = async (request, { params }) => {
 
     const reviewData = await Review.find({ productId: id });
 
-    // const totalStars2 = reviewData?.map((review) =>
-    //   review.reduce((sum, rate) => sum + rate.star, 0)
-    // );
-
     const totalStars = reviewData?.reduce((sum, rate) => sum + rate.star, 0);
 
     const averageStar = totalStars / reviewData?.length;
