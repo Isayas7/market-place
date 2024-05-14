@@ -10,10 +10,10 @@ export const POST = async (request) => {
 
   try {
     await connect();
-    // const exist = await checkEmailExistence(values.email);
-    // if (!exist) {
-    //   return new NextResponse("Invalid email", { status: 400 });
-    // }
+    const exist = await checkEmailExistence(values.email);
+    if (!exist) {
+      return new NextResponse("Invalid email", { status: 400 });
+    }
 
     const user = await User.findOne({ email: values.email });
 

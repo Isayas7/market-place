@@ -16,12 +16,23 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const SellerPayment = () => {
   const session = useSession();
-  const { data: seller } = useSingleUserQuery(session?.data?.user?.id);
+  const { data: seller, isLoading: sellerLoading } = useSingleUserQuery(
+    session?.data?.user?.id
+  );
 
-  const { data: banks } = UseBankQuery();
+  const { data: banks, isLoading: bankLoading } = UseBankQuery();
+
+  if (sellerLoading || bankLoading) {
+    return (
+      <div className="flex items-center justify-center h-1/2">
+        <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
@@ -31,7 +42,7 @@ const SellerPayment = () => {
             <CardTitle>Revenue</CardTitle>
           </CardHeader>
           <CardContent className="flex items-center justify-between">
-            <span className="text-4xl font-bold">$25,000</span>
+            <span className="text-4xl font-bold">25,000 ETB</span>
             <ArrowUpIcon className="h-6 w-6 text-green-500" />
           </CardContent>
         </Card>
@@ -40,7 +51,7 @@ const SellerPayment = () => {
             <CardTitle>Spent</CardTitle>
           </CardHeader>
           <CardContent className="flex items-center justify-between">
-            <span className="text-4xl font-bold">$12,500</span>
+            <span className="text-4xl font-bold">12,500 ETB</span>
             <ArrowDownIcon className="h-6 w-6 text-red-500" />
           </CardContent>
         </Card>

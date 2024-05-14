@@ -39,9 +39,13 @@ export default function SetPassword() {
 
   const newPassword = z
     .object({
-      new_password: z.string().min(2, {
-        message: "new password required",
-      }),
+      new_password: z
+        .string()
+        .min(8, { message: "Password must be at least 8 characters long" })
+        .regex(
+          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/,
+          "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
+        ),
       confirm_password: z.string().min(2, {
         message: "password required",
       }),

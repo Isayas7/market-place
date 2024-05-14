@@ -6,6 +6,26 @@ import { useUserQuery } from "@/hooks/use-users-query";
 const Buyer = () => {
   const { data: userData } = useUserQuery();
 
+  const exportedData = userData?.data?.users?.map(
+    ({
+      role,
+      otp,
+      _id,
+      password,
+      createdAt,
+      updatedAt,
+      __v,
+      isSeller,
+      location,
+      profileImage,
+      nationalId,
+      identificationCard,
+      balance,
+      bankInfo,
+      ...rest
+    }) => rest
+  );
+
   return (
     <DataTable
       userGroup="user"
@@ -14,6 +34,7 @@ const Buyer = () => {
       totalPage={userData?.data?.totalPage}
       currentPage={userData?.data?.currentPage}
       searchBy="email"
+      exportedData={exportedData}
     />
   );
 };

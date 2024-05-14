@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Separator } from "../../ui/separator";
 import { Button } from "@/components/ui/button";
 import { GoPlus } from "react-icons/go";
@@ -19,10 +19,11 @@ import ReactStars from "react-rating-stars-component";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import formatDate from "@/utils/formatDate";
+import { useToast } from "@/components/ui/use-toast";
 
 export const ProductDesc = ({ descriptions }) => {
-  console.log("descriptions", descriptions);
   const session = useSession();
+  const { toast } = useToast();
 
   const pathname = usePathname();
   const pathArray = pathname.split("/");
@@ -31,6 +32,9 @@ export const ProductDesc = ({ descriptions }) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSlectedColor] = useState();
   const [selectedSize, setSelectedSize] = useState();
+
+  const [isExisting, setIsExisting] = useState(false);
+  const [isClciked, setIsClciked] = useState(false);
 
   const cart = useStore(useCart, (state) => state);
 
@@ -51,6 +55,24 @@ export const ProductDesc = ({ descriptions }) => {
     new Date(descriptions?.promotion?.expireDate) > new Date()
       ? descriptions?.promotion?.amount
       : 0;
+
+  const handleAddItem = (product) => {
+    const exist = cart?.cartItems?.some(
+      (cartItem) => cartItem?.item?._id === product?._id
+    );
+    setIsExisting(exist);
+    exist && setIsClciked(!isClciked);
+  };
+
+  useEffect(() => {
+    isExisting &&
+      isClciked &&
+      toast({
+        className: " border-2 text-white bg-[#FFCC00]",
+        description:
+          "Item exists in the cart. Go to the cart to increase quantity.",
+      });
+  }, [isExisting, isClciked]);
 
   return (
     <div className=" flex flex-col">
@@ -236,6 +258,8 @@ export const ProductDesc = ({ descriptions }) => {
             color: selectedColor,
             size: selectedSize,
           });
+
+          handleAddItem(cartDescription);
         }}
       >
         Add to cart

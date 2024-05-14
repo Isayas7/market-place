@@ -20,15 +20,9 @@ import { useState } from "react";
 
 const Category = () => {
   const [selectedOption, setSelectedOption] = useState("user");
-
   const { data: roles } = UseRoleQuery();
   usePermissionStore.setState({ permission: roles?.data });
-  // const data = usePermissionStore((state) => state.permission);
   const columns = role_columns(selectedOption);
-
-  console.log(" roles?.data", roles?.data);
-
-  // console.log("roles?.data", roles?.data);
 
   if (roles) {
     return (

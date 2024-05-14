@@ -105,7 +105,6 @@ export const Price = ({ price, seller, productId, promotion }) => {
               className=" flex justify-center items-center gap-2 w-full"
               onClick={() => {
                 setContact(seller?.phoneNumber);
-                console.log("seller?.phoneNumber", seller?.phoneNumber);
               }}
             >
               <PhoneIcon />

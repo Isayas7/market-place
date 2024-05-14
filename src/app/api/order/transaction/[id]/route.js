@@ -7,7 +7,9 @@ export const GET = async (request, { params }) => {
   try {
     await connect();
 
-    const transaction = await Transaction.find({ user: id });
+    const transaction = await Transaction.find({ user: id }).sort({
+      createdAt: -1,
+    });
     return new NextResponse(JSON.stringify(transaction), { status: 200 });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });

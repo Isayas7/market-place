@@ -33,14 +33,18 @@ import {
   useWithdrawalQuery,
 } from "@/hooks/use-order-query";
 import formatDate from "@/utils/formatDate";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Withrawal = () => {
   const router = useRouter();
   const session = useSession();
   const { toast } = useToast();
 
-  const { data: seller } = useSingleUserQuery(session?.data?.user?.id);
-  const { data: transaction } = useTransactionQuery(session?.data?.user?.id);
+  const { data: seller, isLoading: sellerLoading } = useSingleUserQuery(
+    session?.data?.user?.id
+  );
+  const { data: transaction, isLoading: transactionLoading } =
+    useTransactionQuery(session?.data?.user?.id);
   const {
     mutate: withdraw,
     isSuccess,
@@ -49,9 +53,7 @@ const Withrawal = () => {
     error,
     isError,
   } = useWithdrawalQuery(session?.data?.user?.id);
-  const { data: banks } = UseBankQuery();
-
-  console.log(banks);
+  const { data: banks, isLoading: loading } = UseBankQuery();
 
   const form = useForm({
     resolver: zodResolver(wathdrawalform),
@@ -96,6 +98,14 @@ const Withrawal = () => {
       });
     }
   }, [isSuccess, error, isError, data, toast]);
+
+  if (loading || transactionLoading || sellerLoading) {
+    return (
+      <div className="flex items-center justify-center h-1/2">
+        <AiOutlineLoading3Quarters className="text-5xl text-jade animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -226,25 +236,33 @@ const Withrawal = () => {
                   className="w-full ml-auto text-xl"
                   type="submit"
                 >
-                  Withdraw
+                  {isLoading ? (
+                    <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
+                  ) : (
+                    "Withdraw"
+                  )}
                 </Button>
               </form>
             </Form>
           </CardContent>
         </Card>
-        <Card className="w-full h-[50%] flex flex-col items-center p-2 overflow-y-scroll">
+        <Card className="w-full h-[640px] flex flex-col items-center p-2 overflow-y-scroll">
           <div className="p-2 text-xl font-bold">Withdrawal History</div>
-          {transaction?.data?.map((tran) => (
-            <div className="w-full flex  justify-between items-center p-2 hover:bg-slate-200 hover:dark:bg-mirage-500 cursor-pointer">
-              <div className=" ">
-                <div>TRA-{tran?._id.slice(0, 4)}</div>
-                <div>{formatDate(tran?.createdAt)}</div>
-              </div>
+          {transaction?.data?.length !== 0 ? (
+            transaction?.data?.map((tran) => (
+              <div className="w-full flex  justify-between items-center p-2 hover:bg-slate-200 hover:dark:bg-mirage-500 cursor-pointer">
+                <div className=" ">
+                  <div>TRA-{tran?._id.slice(0, 4)}</div>
+                  <div>{formatDate(tran?.createdAt)}</div>
+                </div>
 
-              <div>{tran?.name}</div>
-              <div className="">{tran?.amount} ETB</div>
-            </div>
-          ))}
+                <div>{tran?.name}</div>
+                <div className="">{tran?.amount} ETB</div>
+              </div>
+            ))
+          ) : (
+            <div className="mt-5">No Transaction history yet!</div>
+          )}
         </Card>
       </div>
     </div>

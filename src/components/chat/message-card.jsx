@@ -31,6 +31,8 @@ const Message = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [amount, setAmount] = useState(false);
+  const [amountWarning, setAmountWarning] = useState(false);
+  const [dateWarninig, setDateWarning] = useState(false);
   const [expireDate, setExpireDate] = useState(false);
 
   const router = useRouter();
@@ -161,6 +163,11 @@ const Message = ({
                                     setAmount(e.target.value);
                                   }}
                                 />
+                                {amountWarning && (
+                                  <div className="text-red-500">
+                                    Invalid amount
+                                  </div>
+                                )}
                                 Expire Date
                                 <Input
                                   placeholder="Expire Date"
@@ -171,6 +178,11 @@ const Message = ({
                                     setExpireDate(e.target.value);
                                   }}
                                 />
+                                {dateWarninig && (
+                                  <div className="text-red-500">
+                                    Invalid date
+                                  </div>
+                                )}
                                 <div className=" flex gap-2 justify-end">
                                   <Button
                                     className="bg-red-500"
@@ -182,16 +194,30 @@ const Message = ({
                                   </Button>
                                   <Button
                                     onClick={() => {
-                                      makeDiscount({
-                                        discountInfo: {
-                                          amount,
-                                          userId: conversation.sender,
-                                          expireDate: expireDate,
-                                        },
-                                        id: conversation.product._id,
-                                      });
+                                      const mydate = new Date(expireDate);
+                                      const today = new Date();
+                                      if (
+                                        amount > conversation?.product?.price ||
+                                        !amount
+                                      ) {
+                                        setAmountWarning(!amountWarning);
+                                      } else if (
+                                        today > mydate ||
+                                        !expireDate
+                                      ) {
+                                        setDateWarning(!amountWarning);
+                                      } else {
+                                        makeDiscount({
+                                          discountInfo: {
+                                            amount,
+                                            userId: conversation.sender,
+                                            expireDate: expireDate,
+                                          },
+                                          id: conversation?.product._id,
+                                        });
 
-                                      setIsOpen(false);
+                                        setIsOpen(false);
+                                      }
                                     }}
                                   >
                                     Set

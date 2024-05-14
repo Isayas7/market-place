@@ -15,7 +15,6 @@ export const useCart = create(
             (cartItem) => cartItem.item._id === item._id
           );
           if (isExisting) {
-            console.log("Product already exists in the cart.");
             return state;
           }
           return {

@@ -9,18 +9,18 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// // Function to check if an email exists
-// export function checkEmailExistence(email) {
-//   return new Promise((resolve, reject) => {
-//     emailExistence.check(email, function (error, response) {
-//       if (error) {
-//         reject(error);
-//       } else {
-//         resolve(response);
-//       }
-//     });
-//   });
-// }
+// Function to check if an email exists
+export function checkEmailExistence(email) {
+  return new Promise((resolve, reject) => {
+    emailExistence.check(email, function (error, response) {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
 
 const sendEmail = async (receiverEmail, code) => {
   try {

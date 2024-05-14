@@ -99,7 +99,7 @@ const Cart = () => {
   };
 
   return (
-    <div className="flex gap-20 py-16 px-10 max-lg:flex-col max-sm:px-3">
+    <div className="flex gap-20  px-10 max-lg:flex-col max-sm:px-3">
       <div className="w-2/3 max-lg:w-full">
         <p className="text-xl">Shopping Cart</p>
         <Separator className="my-6" />
