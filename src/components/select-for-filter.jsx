@@ -17,7 +17,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { statusData } from "@/utils/permission";
+import { orderStatus, statusData } from "@/utils/permission";
 import { useCallback, useEffect, useState } from "react";
 
 const SellectForFilter = ({ dataInfo, filter, rendered, clear, setClear }) => {
@@ -127,6 +127,78 @@ const SellectForFilter = ({ dataInfo, filter, rendered, clear, setClear }) => {
               {item.categoryName}
             </CommandItem>
           ))}
+
+        {rendered === "order" && (
+          <>
+            {" "}
+            <CommandItem
+              value={orderStatus.Pending}
+              onSelect={(currentValue) => {
+                const capitalizedValue =
+                  currentValue.charAt(0).toUpperCase() + currentValue.slice(1);
+                setValue(capitalizedValue === value ? "" : capitalizedValue);
+                setOpen(false);
+                router.push(
+                  pathname +
+                    "?" +
+                    createQueryString("orderStatus", orderStatus.Pending)
+                );
+              }}
+            >
+              <Check
+                className={cn(
+                  "mr-4 h-4 w-4",
+                  value === orderStatus.Pending ? "opacity-100" : "opacity-0"
+                )}
+              />
+              {orderStatus.Pending}
+            </CommandItem>
+            <CommandItem
+              value={orderStatus.Shipping}
+              onSelect={(currentValue) => {
+                const capitalizedValue =
+                  currentValue.charAt(0).toUpperCase() + currentValue.slice(1);
+                setValue(capitalizedValue === value ? "" : capitalizedValue);
+                setOpen(false);
+                router.push(
+                  pathname +
+                    "?" +
+                    createQueryString("orderStatus", orderStatus.Shipping)
+                );
+              }}
+            >
+              <Check
+                className={cn(
+                  "mr-4 h-4 w-4",
+                  value === orderStatus.Shipping ? "opacity-100" : "opacity-0"
+                )}
+              />
+              {orderStatus.Shipping}
+            </CommandItem>
+            <CommandItem
+              value={orderStatus.Delivered}
+              onSelect={(currentValue) => {
+                const capitalizedValue =
+                  currentValue.charAt(0).toUpperCase() + currentValue.slice(1);
+                setValue(capitalizedValue === value ? "" : capitalizedValue);
+                setOpen(false);
+                router.push(
+                  pathname +
+                    "?" +
+                    createQueryString("orderStatus", orderStatus.Delivered)
+                );
+              }}
+            >
+              <Check
+                className={cn(
+                  "mr-4 h-4 w-4",
+                  value === orderStatus.Delivered ? "opacity-100" : "opacity-0"
+                )}
+              />
+              {orderStatus.Delivered}
+            </CommandItem>
+          </>
+        )}
       </>
     );
   };

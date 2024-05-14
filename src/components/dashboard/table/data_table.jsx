@@ -146,14 +146,6 @@ export function DataTable({
     <div>
       <div className="flex items-center py-4">
         <div className="flex gap-2 items-center">
-          <Input
-            placeholder={"Search table..."}
-            value={table.getColumn(searchBy)?.getFilterValue()}
-            onChange={(event) =>
-              table.getColumn(searchBy)?.setFilterValue(event.target.value)
-            }
-            className="w-44"
-          />
           <span>Filter By: </span>
           {(rendered === "category" || rendered === "product") && (
             <>
@@ -180,6 +172,18 @@ export function DataTable({
                 />
               </>
             )}
+
+          {rendered === "order" && (
+            <>
+              <SellectForFilter
+                clear={clear}
+                setClear={setClear}
+                rendered="order"
+                filter="Order status"
+                dataInfo={dataInfo}
+              />
+            </>
+          )}
 
           <RenderResetButton />
         </div>
@@ -220,8 +224,6 @@ export function DataTable({
               <Button variant="outline"> +New Category</Button>
             </Link>
           )}
-
-          <Button variant="outline"> +New Category</Button>
 
           {rendered === "role" && (
             <Button variant="outline" onClick={handleSave}>

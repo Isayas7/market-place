@@ -21,7 +21,6 @@ import { useSession } from "next-auth/react";
 import formatDate from "@/utils/formatDate";
 
 export const ProductDesc = ({ descriptions }) => {
-  console.log("descriptions", descriptions);
   const session = useSession();
 
   const pathname = usePathname();
@@ -29,8 +28,8 @@ export const ProductDesc = ({ descriptions }) => {
   const lastPath = pathArray[pathArray.length - 1];
 
   const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSlectedColor] = useState();
-  const [selectedSize, setSelectedSize] = useState();
+  const [selectedColor, setSlectedColor] = useState(descriptions?.color[0]);
+  const [selectedSize, setSelectedSize] = useState(descriptions?.size[0]);
 
   const cart = useStore(useCart, (state) => state);
 
@@ -226,6 +225,7 @@ export const ProductDesc = ({ descriptions }) => {
         </Button>
       </div>
       <Button
+        disabled={descriptions?.user === session?.data?.user?.id}
         onClick={() => {
           const { price, ...others } = descriptions;
           const lastPrice = descriptions.price - promotionalDiscount - discount;

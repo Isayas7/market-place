@@ -245,3 +245,15 @@ export const usePromotionQuery = (query) => {
     },
   });
 };
+
+// get all product
+export const useTrendingProductQuery = () => {
+  return useQuery({
+    queryKey: ["treandingProducts"],
+    queryFn: async () => {
+      const res = await axios.get(`http://localhost:3000/api/product/trending`);
+
+      return res;
+    },
+  });
+};

@@ -32,28 +32,6 @@ import { useVariantDeactivateQuery } from "@/hooks/use-product-category-query";
 
 export const variant_columns = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     accessorKey: "Image",
     cell: ({ row }) => {
       const image = row.original.image;
@@ -115,18 +93,13 @@ export const variant_columns = [
     cell: ({ row }) => {
       const status = row.original.status;
       if (status === statusData.Active) {
-        return <Badge>Active</Badge>;
+        return <Badge variant="secondary">Active</Badge>;
       } else {
         return <Badge variant="destructive">Banned</Badge>;
       }
     },
   },
-  {
-    accessorKey: "creator",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Creator" />
-    ),
-  },
+
   {
     id: "branding",
     cell: ({ row }) => {

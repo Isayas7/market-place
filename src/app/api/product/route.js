@@ -26,11 +26,10 @@ export const GET = async (request) => {
   delete query.sort;
   delete query.maxPrice;
   delete query.minPrice;
-  console.log("mmmmmm", query);
 
   try {
     await connect();
-
+  
     if (query.categoryName) {
       const foundCategory = await ProductCategory.findOne({
         categoryName: query.categoryName,

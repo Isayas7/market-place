@@ -13,7 +13,13 @@ import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { PhoneIcon } from "lucide-react";
 
-export const Price = ({ price, seller, productId, promotion }) => {
+export const Price = ({
+  price,
+  seller,
+  productId,
+  promotion,
+  descriptions,
+}) => {
   const [contact, setContact] = useState("Show Contact");
   const session = useSession();
   const router = useRouter();
@@ -72,7 +78,12 @@ export const Price = ({ price, seller, productId, promotion }) => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Button className="  w-full  text-base  ">Request call back</Button>
+            <Button
+              disabled={descriptions?.user === session?.data?.user?.id}
+              className="  w-full  text-base  "
+            >
+              Request call back
+            </Button>
           </CardContent>
         </Card>
 
@@ -102,16 +113,20 @@ export const Price = ({ price, seller, productId, promotion }) => {
           </div>
           <CardContent>
             <Button
+              disabled={descriptions?.user === session?.data?.user?.id}
               className=" flex justify-center items-center gap-2 w-full"
               onClick={() => {
                 setContact(seller?.phoneNumber);
-                console.log("seller?.phoneNumber", seller?.phoneNumber);
               }}
             >
               <PhoneIcon />
               <div> {contact}</div>
             </Button>
-            <Button className="  w-full mt-3" onClick={handleStart}>
+            <Button
+              disabled={descriptions?.user === session?.data?.user?.id}
+              className="  w-full mt-3"
+              onClick={handleStart}
+            >
               Start chat
             </Button>
           </CardContent>

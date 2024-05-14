@@ -10,7 +10,7 @@ const Orders = () => {
     <div>
       <DataTable
         columns={order_columns}
-        data={order_product?.data}
+        data={order_product?.data?.orders}
         rendered="order"
         totalPage={order_product?.data?.totalPage}
         currentPage={order_product?.data?.currentPage}

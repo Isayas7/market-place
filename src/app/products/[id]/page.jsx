@@ -32,6 +32,7 @@ export default function SingleProduct({ params }) {
           </div>
           <div className="w-full lg:w-[340px]  ">
             <Price
+              descriptions={product?.data}
               price={product?.data.price}
               seller={product?.data.seller}
               productId={product?.data._id}

@@ -8,28 +8,6 @@ import React, { useState } from "react";
 
 export const product_columns = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     accessorKey: "Image",
     cell: ({ row }) => {
       const image = row.original.productImage[0];
@@ -89,6 +67,11 @@ export const product_columns = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Rating" />
     ),
+    cell: ({ row }) => {
+      return row.original?.averageStar
+        ? row.original?.averageStar
+        : "not rated";
+    },
   },
   {
     accessorKey: "firstName",

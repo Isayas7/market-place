@@ -7,28 +7,6 @@ import { CircleIcon, EyeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const order_columns = [
-  //   {
-  //     id: "select",
-  //     header: ({ table }) => (
-  //       <Checkbox
-  //         checked={
-  //           table.getIsAllPageRowsSelected() ||
-  //           (table.getIsSomePageRowsSelected() && "indeterminate")
-  //         }
-  //         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-  //         aria-label="Select all"
-  //       />
-  //     ),
-  //     cell: ({ row }) => (
-  //       <Checkbox
-  //         checked={row.getIsSelected()}
-  //         onCheckedChange={(value) => row.toggleSelected(!!value)}
-  //         aria-label="Select row"
-  //       />
-  //     ),
-  //     enableSorting: false,
-  //     enableHiding: false,
-  //   },
   {
     accessorKey: "_id",
     header: ({ column }) => (
@@ -87,7 +65,7 @@ export const order_columns = [
       return (
         row.original?.deliveryPersonnelId?.firstName +
         " " +
-        row.original?.deliveryPersonnelId?.lastName
+        row.original?.deliveryPersonnelId?.middleName
       );
     },
   },
@@ -138,16 +116,6 @@ export const order_columns = [
           </Badge>
         );
       }
-    },
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      return (
-        <Button size="sm">
-          <EyeIcon className="text-xs" />
-        </Button>
-      );
     },
   },
 ];
