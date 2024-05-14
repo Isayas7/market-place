@@ -12,9 +12,13 @@ export const registerSchema = z
     email: z.string().min(2, {
       message: "please enter email",
     }),
-    password: z.string().min(2, {
-      message: "password required",
-    }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long" })
+      .regex(
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/,
+        "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
+      ),
     confirm_password: z.string().min(2, {
       message: "password required",
     }),
@@ -170,9 +174,13 @@ export const passwordChange = z
     current_password: z.string().min(2, {
       message: "current password required",
     }),
-    new_password: z.string().min(2, {
-      message: "new password required",
-    }),
+    new_password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long" })
+      .regex(
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/,
+        "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
+      ),
     confirm_password: z.string().min(2, {
       message: "password required",
     }),
@@ -219,3 +227,32 @@ export const shippingSchema = z.object({
     message: "Please provide your location.",
   }),
 });
+
+export function discountSchema(maxPrice) {
+  return z.object({
+    amount: z
+      .string()
+      .min(1, {
+        message: "amount required in ETB",
+      })
+      .refine(
+        (value) => {
+          const parsedAmount = parseInt(value, 10);
+          return !isNaN(parsedAmount) && parsedAmount <= maxPrice;
+        },
+        {
+          message: `amount should not exceed ${maxPrice} ETB`,
+        }
+      ),
+    expireDate: z.string().refine(
+      (value) => {
+        const expireDate = new Date(value);
+        const today = new Date();
+        return expireDate >= today;
+      },
+      {
+        message: "Date must be today or later",
+      }
+    ),
+  });
+}

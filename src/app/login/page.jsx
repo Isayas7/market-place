@@ -49,21 +49,21 @@ export default function Login() {
           <div className="grid grid-cols-2 gap-6">
             <Button
               variant="outline"
-              // onClick={() =>
-              //   signIn("google", {
-              //     callbackUrl: localStorage.getItem("prevpath"),
-              //   })
-              // }
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl: localStorage.getItem("prevpath"),
+                })
+              }
             >
               <FcGoogle className="text-2xl" />
             </Button>
             <Button
               variant="outline"
-              // onClick={() =>
-              //   signIn("google", {
-              //     callbackUrl: localStorage.getItem("prevpath"),
-              //   })
-              // }
+              onClick={() =>
+                signIn("facebook", {
+                  callbackUrl: localStorage.getItem("prevpath"),
+                })
+              }
             >
               <FaSquareFacebook className="text-blue-500 text-2xl" />
             </Button>

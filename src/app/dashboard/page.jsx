@@ -17,21 +17,10 @@ import {
   Card,
   CardDescription,
 } from "@/components/ui/card";
-import {
-  TableHead,
-  TableRow,
-  TableHeader,
-  TableCell,
-  TableBody,
-  Table,
-} from "@/components/ui/table";
 
 import { ResponsiveBar } from "@nivo/bar";
 import { ResponsivePie } from "@nivo/pie";
 import { ResponsiveLine } from "@nivo/line";
-
-import { Badge } from "@/components/ui/badge";
-import { CircleIcon } from "lucide-react";
 
 import { VscGraph } from "react-icons/vsc";
 import { MdAutoGraph } from "react-icons/md";
@@ -128,7 +117,7 @@ const Dashboard = () => {
               +2.6%
             </CardDescription>
             <CardTitle className="font-bold text-4xl">
-              {transaction?.data} ETB
+              {transaction?.totalAmount} ETB
             </CardTitle>
           </CardContent>
           <VscGraph className="text-6xl text-jade" />
@@ -142,7 +131,9 @@ const Dashboard = () => {
               <VscGraphLine className="text-lg text-red-500" />
               +2.6%
             </CardDescription>
-            <CardTitle className="font-bold text-4xl">4,250</CardTitle>
+            <CardTitle className="font-bold text-4xl">
+              {transaction?.userCount} sales
+            </CardTitle>
           </CardContent>
           <BsGraphDownArrow className="text-6xl text-jade" />
         </Card>
@@ -155,7 +146,9 @@ const Dashboard = () => {
               <MdAutoGraph className="text-lg text-jade" />
               +2.6%
             </CardDescription>
-            <CardTitle className="font-bold text-4xl">765</CardTitle>
+            <CardTitle className="font-bold text-4xl">
+              {transaction?.userCount} users
+            </CardTitle>
           </CardContent>
           <VscGraph className="text-6xl text-jade" />
         </Card>
@@ -191,133 +184,6 @@ const Dashboard = () => {
             <CardContent>
               <LineChart className="aspect-[4/3]" />
             </CardContent>
-          </Card>
-        </div>
-        <div>
-          <Card>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Order #</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <Link
-                      className="text-jade hover:underline dark:text-jade"
-                      href="#"
-                    >
-                      #12345
-                    </Link>
-                  </TableCell>
-                  <TableCell>John Doe</TableCell>
-                  <TableCell>$250.00</TableCell>
-                  <TableCell>
-                    <Badge
-                      className="border-jade bg-white dark:bg-gray-950"
-                      variant="outline"
-                    >
-                      <CircleIcon className="h-3 w-3 -translate-x-1 animate-pulse fill-green-300 text-green-300" />
-                      Paid
-                    </Badge>
-                  </TableCell>
-                  <TableCell>2023-04-15</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <Link
-                      className="text-jade hover:underline dark:text-jade"
-                      href="#"
-                    >
-                      #12346
-                    </Link>
-                  </TableCell>
-                  <TableCell>Jane Smith</TableCell>
-                  <TableCell>$150.00</TableCell>
-                  <TableCell>
-                    <Badge
-                      className="border-yellow-600 bg-white dark:bg-gray-950"
-                      variant="outline"
-                    >
-                      <CircleIcon className="h-3 w-3 -translate-x-1 animate-pulse fill-yellow-300 text-yellow-300" />
-                      Cancel
-                    </Badge>
-                  </TableCell>
-                  <TableCell>2023-04-12</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <Link
-                      className="text-jade hover:underline dark:text-jade"
-                      href="#"
-                    >
-                      #12347
-                    </Link>
-                  </TableCell>
-                  <TableCell>Bob Johnson</TableCell>
-                  <TableCell>$350.00</TableCell>
-                  <TableCell>
-                    <Badge
-                      className="border-red-600 bg-white dark:bg-gray-950"
-                      variant="outline"
-                    >
-                      <CircleIcon className="h-3 w-3 -translate-x-1 animate-pulse fill-red-300 text-red-300" />
-                      Cancelled
-                    </Badge>
-                  </TableCell>
-                  <TableCell>2023-04-10</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <Link
-                      className="text-jade hover:underline dark:text-jade"
-                      href="#"
-                    >
-                      #12348
-                    </Link>
-                  </TableCell>
-                  <TableCell>Sarah Lee</TableCell>
-                  <TableCell>$450.00</TableCell>
-                  <TableCell>
-                    <Badge
-                      className="border-jade bg-white dark:bg-gray-950"
-                      variant="outline"
-                    >
-                      <CircleIcon className="h-3 w-3 -translate-x-1 animate-pulse fill-green-300 text-green-300" />
-                      Delivered
-                    </Badge>
-                  </TableCell>
-                  <TableCell>2023-04-05</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <Link
-                      className="text-jade hover:underline dark:text-jade"
-                      href="#"
-                    >
-                      #12349
-                    </Link>
-                  </TableCell>
-                  <TableCell>Michael Brown</TableCell>
-                  <TableCell>$550.00</TableCell>
-                  <TableCell>
-                    <Badge
-                      className="border-jade bg-white dark:bg-gray-950"
-                      variant="outline"
-                    >
-                      <CircleIcon className="h-3 w-3 -translate-x-1 animate-pulse fill-green-300 text-green-300" />
-                      Delivered
-                    </Badge>
-                  </TableCell>
-                  <TableCell>2023-04-01</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
           </Card>
         </div>
       </div>

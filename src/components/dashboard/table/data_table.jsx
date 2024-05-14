@@ -35,6 +35,7 @@ import { useRoleUpdateQuery } from "@/hooks/use-role-query";
 import SellectForFilter from "@/components/select-for-filter";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { CSVLink } from "react-csv";
 
 export function DataTable({
   currentPage,
@@ -45,6 +46,7 @@ export function DataTable({
   rendered,
   userGroup,
   searchBy,
+  exportedData,
 }) {
   const [sorting, setSorting] = useState();
   const [columnFilters, setColumnFilters] = useState();
@@ -142,6 +144,12 @@ export function DataTable({
     usePermissionStore.setState({ updatedPermission: {} });
   };
 
+  const csvData = [
+    ["firstname", "lastname", "email"],
+    ["John", "Doe", "john.doe@xyz.com"],
+    ["Jane", "Doe", "jane.doe@xyz.com"],
+  ];
+
   return (
     <div>
       <div className="flex items-center py-4">
@@ -149,6 +157,7 @@ export function DataTable({
           <span>Filter By: </span>
           {(rendered === "category" || rendered === "product") && (
             <>
+              <span>Filter By: </span>
               <SellectForFilter
                 clear={clear}
                 setClear={setClear}
@@ -223,6 +232,14 @@ export function DataTable({
             <Link href="category/new">
               <Button variant="outline"> +New Category</Button>
             </Link>
+          )}
+
+          {exportedData && (
+            <CSVLink data={exportedData}>
+              <Button variant="outline" size="sm">
+                Export
+              </Button>
+            </CSVLink>
           )}
 
           {rendered === "role" && (

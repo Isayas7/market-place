@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useCreateConversation, useSendMessage } from "@/hooks/use-chat-query";
 import { useSellerSingleOrderQuery } from "@/hooks/use-order-query";
 import formatDate from "@/utils/formatDate";
 import {
@@ -27,8 +28,29 @@ const OrderDetail = ({ params }) => {
   const { data: orders } = useSellerSingleOrderQuery();
   const order = orders?.data[0];
 
-  console.log(order);
+  const {
+    mutateAsync: createConversation,
+    isSuccess,
+    isLoading,
+    data,
+  } = useCreateConversation();
+  const { mutate: sendMessage } = useSendMessage();
 
+  const handleStart = async (seller) => {
+    const conversation = {
+      senderId: session?.data?.user?.id,
+      receiverId: seller,
+    };
+    const response = await createConversation(conversation);
+
+    const message = {
+      sender: session?.data?.user.id,
+      conversationId: response?.data._id,
+      text: "You have orders from my store",
+    };
+    sendMessage(message);
+    router.push("/chat");
+  };
   return !order ? (
     <OrderDetailSkeleton />
   ) : (
@@ -89,7 +111,9 @@ const OrderDetail = ({ params }) => {
                       <br />
                       {order?.buyerId?.email}
                     </div>
-                    <Button size="sm">Make Chat</Button>
+                    <Button size="sm" onClick={() => handleStart(buyerId._id)}>
+                      Make Chat
+                    </Button>
                   </div>
                 </div>
                 <Separator />

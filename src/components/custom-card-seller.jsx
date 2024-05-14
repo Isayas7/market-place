@@ -32,6 +32,19 @@ import { useState } from "react";
 import { Separator } from "./ui/separator";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { discountSchema } from "@/validationschema/user";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const CustomCardSeller = ({
   product,
@@ -42,13 +55,28 @@ export const CustomCardSeller = ({
   const { mutate: deactivate, isLoading } = useProoductDeactivateQuery();
   const [open, setOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [amount, setAmount] = useState(false);
-  const [expireDate, setExpireDate] = useState(false);
 
-  const { mutate: promote } = usePromotionQuery(product.variants);
+  const { mutate: promote, isLoading: loading } = usePromotionQuery(
+    product.variants
+  );
+
+  const form = useForm({
+    resolver: zodResolver(discountSchema(product?.price)),
+    defaultValues: {
+      amount: "",
+      expireDate: "",
+    },
+  });
+
+  const onSubmit = (data) => {
+    promote({
+      promotionInfo: data,
+      id: product._id,
+    });
+    setDialogOpen(false);
+  };
 
   return (
-    // <Link href={`${!open || !dialogOpen ? `/products/${product._id}` : ""}`}>
     <Card
       className={cn(
         "space-y-3 relative rounded-sm overflow-hidden h-full  border-none shadow",
@@ -102,51 +130,63 @@ export const CustomCardSeller = ({
             <DialogContent className="flex flex-col dark:bg-mirage-500">
               <DialogTitle>Put Discount percentage and expire date</DialogTitle>
               <Separator />
-              Amount
-              <Input
-                placeholder="Discount amount"
-                autoComplete="off"
-                type="number"
-                autoFocus
-                onChange={(e) => {
-                  setAmount(e.target.value);
-                }}
-              />
-              Expire Date
-              <Input
-                placeholder="Expire Date"
-                autoComplete="off"
-                type="date"
-                autoFocus
-                onChange={(e) => {
-                  setExpireDate(e.target.value);
-                }}
-              />
-              <div className=" flex gap-2 justify-end">
-                <Button
-                  className="bg-red-500"
-                  onClick={() => {
-                    setDialogOpen(false);
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={() => {
-                    promote({
-                      promotionInfo: {
-                        amount,
-                        expireDate: expireDate,
-                      },
-                      id: product._id,
-                    });
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit((data) => onSubmit(data))}>
+                  <FormField
+                    control={form.control}
+                    name={"amount"}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Amount</FormLabel>
+                        <FormControl>
+                          <Input
+                            className="p-3"
+                            type={"number"}
+                            placeholder={"Amount"}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-red-500" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={"expireDate"}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Date</FormLabel>
+                        <FormControl>
+                          <Input
+                            className="p-3"
+                            type={"date"}
+                            placeholder={"Date"}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-red-500" />
+                      </FormItem>
+                    )}
+                  />
 
-                    setDialogOpen(false);
-                  }}
-                >
-                  Set
-                </Button>
-              </div>
+                  <div className="flex gap-2 justify-end">
+                    <Button
+                      className="w-fit mt-4 text-xl bg-red-500"
+                      type="button"
+                      onClick={() => setDialogOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button className="w-fit mt-4  text-xl" type="submit">
+                      {loading ? (
+                        <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
+                      ) : (
+                        "Set"
+                      )}
+                    </Button>
+                  </div>
+                </form>
+              </Form>
             </DialogContent>
           </Dialog>
           <AlertDialog open={open} onOpenChange={setOpen}>

@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { signIn, useSession } from "next-auth/react";
 import { loginSchema } from "@/validationschema/user";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
@@ -27,6 +27,8 @@ export default function LoginForm() {
 
   const session = useSession();
   const router = useRouter();
+  const search = useSearchParams();
+  const params = new URLSearchParams(search);
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -34,7 +36,6 @@ export default function LoginForm() {
       password: "",
     },
   });
-  console.log(session.status);
   return (
     <Form {...form}>
       <form
@@ -104,13 +105,17 @@ export default function LoginForm() {
             Forgot password?
           </Link>
         </div>
-
+        {params.get("error") === "CredentialsSignin" && (
+          <div className="w-full text-center text-red-400">
+            Invalid Credential
+          </div>
+        )}
         <Button
           className="w-full text-xl py-4 "
           type="submit"
           disabled={loading}
         >
-          {loading ? (
+          {params.get("error") === "CredentialsSignin" && loading ? (
             <AiOutlineLoading3Quarters className=" text-white  animate-spin" />
           ) : (
             "Login"

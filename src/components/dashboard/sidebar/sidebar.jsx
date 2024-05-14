@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
+import { ShoppingBasket } from "lucide-react";
 
 export const menuUtems = [
   {
@@ -38,7 +39,7 @@ export const menuUtems = [
   {
     title: "product",
     path: "/dashboard/product",
-    icon: <MdProductionQuantityLimits />,
+    icon: <ShoppingBasket />,
   },
   {
     title: "Order",
