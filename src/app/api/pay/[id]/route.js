@@ -1,7 +1,6 @@
 import axios from "axios";
 import { NextResponse } from "next/server";
 
-const CHAPA_URL = "https://api.chapa.co/v1/transaction/initialize";
 const config = {
   headers: {
     Authorization: process.env.CHAPA_BEARER,
