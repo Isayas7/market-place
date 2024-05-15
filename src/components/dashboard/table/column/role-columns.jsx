@@ -37,7 +37,7 @@ export const RoleColumns = (operation) => {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title={mycolumn.title} />
         ),
-        Cell: ({ row }) => {
+        cell: ({ row }) => {
           const [isChecked, setIsChecked] = useState(
             row.original.permission.includes(mycolumn.accessorKey)
           );
