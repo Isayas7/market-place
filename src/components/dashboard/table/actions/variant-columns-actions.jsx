@@ -18,15 +18,23 @@ import {
 } from "@/components/ui/alert-dialog";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 import { statusData } from "@/utils/permission";
-import { useUserDeactivateQuery } from "@/hooks/use-users-query";
+import { useVariantDeactivateQuery } from "@/hooks/use-product-category-query";
 
-const BuyerColumnsActions = ({ row }) => {
+const VariantColumnsActions = ({ row }) => {
   const [open, setOpen] = useState(false);
-  const user = row.original;
-  const { status } = user;
 
-  const { mutate: deactivate, isSuccess, isLoading } = useUserDeactivateQuery();
+  const variant = row.original;
+  const brandlength = variant?.brands.length;
+
+  const { status } = variant;
+
+  const {
+    mutate: deactivate,
+    isSuccess,
+    isLoading,
+  } = useVariantDeactivateQuery();
 
   return (
     <DropdownMenu>
@@ -38,6 +46,21 @@ const BuyerColumnsActions = ({ row }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+        <Link
+          className={`${brandlength < 1 && "opacity-50 pointer-events-none"}`}
+          href={`variant/view/${variant._id}`}
+        >
+          <DropdownMenuItem>View</DropdownMenuItem>
+        </Link>
+
+        <Link
+          className={`${brandlength < 1 && "opacity-50 pointer-events-none"}`}
+          href={`variant/update/${variant._id}`}
+        >
+          <DropdownMenuItem>Update</DropdownMenuItem>
+        </Link>
+
         <DropdownMenuItem onClick={() => setOpen(true)}>
           {status === statusData.Active ? "Deactivate" : "Activate"}
         </DropdownMenuItem>
@@ -62,7 +85,7 @@ const BuyerColumnsActions = ({ row }) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => deactivate(user._id)}>
+            <AlertDialogAction onClick={() => deactivate(variant._id)}>
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -72,6 +95,4 @@ const BuyerColumnsActions = ({ row }) => {
   );
 };
 
-export default BuyerColumnsActions;
-
-import React from "react";
+export default VariantColumnsActions;

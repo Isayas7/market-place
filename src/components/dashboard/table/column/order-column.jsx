@@ -3,8 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "../data-table-column-header";
 import formatDate from "@/utils/formatDate";
-import { CircleIcon, EyeIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CircleIcon } from "lucide-react";
 
 export const order_columns = [
   {

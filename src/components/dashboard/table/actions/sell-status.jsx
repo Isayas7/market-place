@@ -1,11 +1,4 @@
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { useSocket } from "@/components/socketprovider/socket-provider";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,44 +9,60 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { MoreHorizontal } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { useUserUpdateQuery } from "@/hooks/use-users-query";
 import { useState } from "react";
-import { statusData } from "@/utils/permission";
-import { useUserDeactivateQuery } from "@/hooks/use-users-query";
+import { notificationType, statusData } from "@/utils/permission";
 
-const BuyerColumnsActions = ({ row }) => {
+const SellStatus = ({ row }) => {
   const [open, setOpen] = useState(false);
   const user = row.original;
-  const { status } = user;
+  const { isSeller, ...other } = user;
 
-  const { mutate: deactivate, isSuccess, isLoading } = useUserDeactivateQuery();
+  const socket = useSocket();
 
+  const {
+    mutate: approve,
+    isSuccess,
+    isLoading,
+  } = useUserUpdateQuery(user._id);
+
+  const handleUpdateUser = () => {
+    const updateUser = { isSeller: !isSeller, ...other };
+    approve({ userInfo: updateUser, id: user._id });
+    socket?.emit("sendStoreApproved", {
+      seller: user._id,
+      type: notificationType.approvalRequest,
+      createdAt: Date.now(),
+    });
+  };
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Open menu</span>
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => setOpen(true)}>
-          {status === statusData.Active ? "Deactivate" : "Activate"}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
+    <>
+      {isSeller ? (
+        <Badge className="cursor-pointer" onClick={() => setOpen(true)}>
+          Approved
+        </Badge>
+      ) : (
+        <Badge
+          className="cursor-pointer"
+          onClick={() => setOpen(true)}
+          variant="secondary"
+        >
+          Pending
+        </Badge>
+      )}
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {status === statusData.Active
+              {isSeller
                 ? " Are you sure do you want to deactivate this user?"
                 : " Are you sure do you want to activate this user?"}
             </AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently deactivate
               this account and hide some data from our users.
-              {status === statusData.Active
+              {isSeller
                 ? "  This action cannot be undone. This will  deactivate" +
                   "this account and hide some data from our users."
                 : "  This action cannot be undone. This will  activate" +
@@ -62,16 +71,14 @@ const BuyerColumnsActions = ({ row }) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => deactivate(user._id)}>
+            <AlertDialogAction onClick={handleUpdateUser}>
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </DropdownMenu>
+    </>
   );
 };
 
-export default BuyerColumnsActions;
-
-import React from "react";
+export default SellStatus;

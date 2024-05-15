@@ -1,10 +1,8 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "../data-table-column-header";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import React, { useState } from "react";
 
 export const product_columns = [
   {

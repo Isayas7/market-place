@@ -18,10 +18,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 import { statusData } from "@/utils/permission";
 import { useUserDeactivateQuery } from "@/hooks/use-users-query";
 
-const BuyerColumnsActions = ({ row }) => {
+const DpColumnsActions = ({ row }) => {
   const [open, setOpen] = useState(false);
   const user = row.original;
   const { status } = user;
@@ -38,6 +39,10 @@ const BuyerColumnsActions = ({ row }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+        <Link href={`deliverypersonnel/${user._id}`}>
+          <DropdownMenuItem>View</DropdownMenuItem>
+        </Link>
         <DropdownMenuItem onClick={() => setOpen(true)}>
           {status === statusData.Active ? "Deactivate" : "Activate"}
         </DropdownMenuItem>
@@ -72,6 +77,4 @@ const BuyerColumnsActions = ({ row }) => {
   );
 };
 
-export default BuyerColumnsActions;
-
-import React from "react";
+export default DpColumnsActions;

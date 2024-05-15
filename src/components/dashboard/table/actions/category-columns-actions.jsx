@@ -19,14 +19,20 @@ import {
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import { statusData } from "@/utils/permission";
-import { useUserDeactivateQuery } from "@/hooks/use-users-query";
+import { useCategoryDeactivateQuery } from "@/hooks/use-product-category-query";
+import Link from "next/link";
 
-const BuyerColumnsActions = ({ row }) => {
+const CategoryColumnsActions = ({ row }) => {
   const [open, setOpen] = useState(false);
-  const user = row.original;
-  const { status } = user;
 
-  const { mutate: deactivate, isSuccess, isLoading } = useUserDeactivateQuery();
+  const categoryData = row.original;
+  const { status } = categoryData;
+
+  const {
+    mutate: deactivate,
+    isSuccess,
+    isLoading,
+  } = useCategoryDeactivateQuery();
 
   return (
     <DropdownMenu>
@@ -38,6 +44,13 @@ const BuyerColumnsActions = ({ row }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <Link href={`category/view/${categoryData._id}`}>
+          <DropdownMenuItem>View</DropdownMenuItem>
+        </Link>
+        <Link href={`category/update/${categoryData._id}`}>
+          <DropdownMenuItem>Update</DropdownMenuItem>
+        </Link>
+
         <DropdownMenuItem onClick={() => setOpen(true)}>
           {status === statusData.Active ? "Deactivate" : "Activate"}
         </DropdownMenuItem>
@@ -62,7 +75,7 @@ const BuyerColumnsActions = ({ row }) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => deactivate(user._id)}>
+            <AlertDialogAction onClick={() => deactivate(categoryData._id)}>
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -72,6 +85,4 @@ const BuyerColumnsActions = ({ row }) => {
   );
 };
 
-export default BuyerColumnsActions;
-
-import React from "react";
+export default CategoryColumnsActions;

@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "../data-table-column-header";
-import usePermissionStore from "@/store/role-store";
 import { permissions } from "@/utils/permission";
+import RoleColumnsActions from "../actions/role-columns-actions";
 
 export const RoleColumns = (operation) => {
   const userPermissions = permissions[operation];
@@ -15,14 +13,6 @@ export const RoleColumns = (operation) => {
       .join(" "),
   }));
 
-  const updatePermission = usePermissionStore(
-    (state) => state.updatePermission
-  );
-
-  const handleCheckboxChange = (role, permission, value) => {
-    updatePermission(role, permission, value);
-    return value;
-  };
   if (dynamicColumns) {
     return [
       {
@@ -37,27 +27,7 @@ export const RoleColumns = (operation) => {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title={mycolumn.title} />
         ),
-        Cell: ({ row }) => {
-          const [isChecked, setIsChecked] = useState(
-            row.original.permission.includes(mycolumn.accessorKey)
-          );
-
-          return (
-            <Checkbox
-              checked={isChecked}
-              onCheckedChange={(value) =>
-                setIsChecked(
-                  handleCheckboxChange(
-                    row.original.role,
-                    mycolumn.accessorKey,
-                    value
-                  )
-                )
-              }
-              aria-label="Select row"
-            />
-          );
-        },
+        cell: ({ row }) => <RoleColumnsActions row={row} mycolumn={mycolumn} />,
       })),
     ];
   }
