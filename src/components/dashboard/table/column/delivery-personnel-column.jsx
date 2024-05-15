@@ -100,7 +100,7 @@ export const delivery_columns = [
 
   {
     id: "actions",
-    cell: ({ row }) => {
+    Cell: ({ row }) => {
       const [open, setOpen] = useState(false);
       const user = row.original;
       const { status } = user;

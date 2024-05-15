@@ -130,11 +130,10 @@ const Variants = ({ searchParams }) => {
                   <h3 className="text-lg font-medium mb-2">Color</h3>
                   <RadioGroup>
                     {Array.from(uniqueColors).map((color, index) => (
-                      <div className="flex items-center space-x-2">
+                      <div key={index} className="flex items-center space-x-2">
                         <RadioGroupItem
                           value={color}
                           id={color}
-                          key={index}
                           className=""
                           onClick={() =>
                             router.push(
@@ -154,11 +153,13 @@ const Variants = ({ searchParams }) => {
                   <div className="flex flex-wrap gap-2">
                     <RadioGroup>
                       {Array.from(uniqueSizes).map((size, index) => (
-                        <div className="flex items-center space-x-2">
+                        <div
+                          key={index}
+                          className="flex items-center space-x-2"
+                        >
                           <RadioGroupItem
                             value={size}
                             id={size}
-                            key={index}
                             className=""
                             onClick={() =>
                               router.push(
@@ -182,8 +183,9 @@ const Variants = ({ searchParams }) => {
         {currentBrands?.length > 0 && (
           <div className="bg-jade rounded-md  ">
             <div className="container mx-auto flex flex-wrap items-center gap-8  py-2 mb-2 ">
-              {currentBrands?.map((brand) => (
+              {currentBrands?.map((brand, index) => (
                 <Button
+                  key={index}
                   className={`flex flex-col items-center space-y-1 bg-none hover:bg-jade-200 py-3 px-5 hover:rounded-md size-20 ${
                     params.get("brand") === brand.name ? "bg-jade-200" : ""
                   }`}

@@ -65,6 +65,7 @@ const Sidebar = ({ isCollapsed, open, setOpen }) => {
         <div className={`ml-3 py-4`}>
           <Link href="/">
             <Image
+              alt="ICON"
               src={"/icon.png"}
               width={100}
               height={100}
@@ -96,6 +97,7 @@ const Sidebar = ({ isCollapsed, open, setOpen }) => {
             <ul>
               <div className={`ml-3 py-4`}>
                 <Image
+                  alt="ICON"
                   src={"/icon.png"}
                   width={100}
                   height={100}

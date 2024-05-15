@@ -130,7 +130,7 @@ const PersonalInformation = () => {
         title: "Failed to update",
       });
     }
-  }, [isSuccess, isError, toast]);
+  }, [isSuccess, isError, toast, form]);
 
   const selectedBankName = banks?.data?.data?.find(
     (b) => b.name === selectedBank

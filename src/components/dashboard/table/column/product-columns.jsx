@@ -13,6 +13,7 @@ export const product_columns = [
       const image = row.original.productImage[0];
       return (
         <Image
+          alt="Image"
           src={image || "/nullid.jpg"}
           width={500}
           height={500}

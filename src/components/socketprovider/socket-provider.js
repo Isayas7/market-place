@@ -22,7 +22,7 @@ const SocketProvider = ({ url, options, children }) => {
   useEffect(() => {
     session.status === "authenticated" &&
       socket?.emit("addUser", session?.data?.user);
-  }, [session]);
+  }, [session, socket]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>

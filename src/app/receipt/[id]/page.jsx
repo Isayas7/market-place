@@ -30,7 +30,7 @@ const Reciept = ({ params }) => {
     cart;
     order;
     payout;
-  }, []);
+  }, [cart, order, payout]);
 
   const recentOrders =
     orders && orders.data && Array.isArray(orders.data)

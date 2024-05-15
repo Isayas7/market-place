@@ -146,13 +146,13 @@ export const Price = ({
                 Meet with the seller at a safe public place <br />
               </li>
               <li>
-                Inspect the item and ensure it's exactly what you want <br />
+                Inspect the item and ensure it is exactly what you want <br />
               </li>
               <li>
-                Make sure that the packed item is the one you've inspected{" "}
+                Make sure that the packed item is the one you have inspected{" "}
                 <br />
               </li>
-              <li> Only pay if you're satisfied</li>
+              <li> Only pay if you are satisfied</li>
             </div>
           </CardContent>
         </Card>

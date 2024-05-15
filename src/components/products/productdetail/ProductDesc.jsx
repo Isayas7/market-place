@@ -72,7 +72,7 @@ export const ProductDesc = ({ descriptions }) => {
         description:
           "Item exists in the cart. Go to the cart to increase quantity.",
       });
-  }, [isExisting, isClciked]);
+  }, [isExisting, isClciked, toast]);
 
   return (
     <div className=" flex flex-col">

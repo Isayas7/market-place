@@ -44,15 +44,14 @@ const SellerProduct = () => {
             </Link>
             {uniqueCategoryNames?.map((category, index) => (
               <Link
+                key={index}
                 href={{
                   query: {
                     categoryName: category,
                   },
                 }}
               >
-                <Button variant="outline" key={index}>
-                  {category}
-                </Button>
+                <Button variant="outline">{category}</Button>
               </Link>
             ))}
           </div>

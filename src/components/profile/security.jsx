@@ -69,7 +69,7 @@ function Security() {
         title: "Currect password is incorrect",
       });
     }
-  }, [isSuccess, isError, toast]);
+  }, [isSuccess, isError, toast, data.data, from]);
 
   return (
     <div className="w-full flex  p-2">

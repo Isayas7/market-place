@@ -75,7 +75,7 @@ export const seller_column = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Bank" />
     ),
-    cell: ({ row }) => {
+    Cell: ({ row }) => {
       const { data: banks } = UseBankQuery();
 
       return banks?.data?.data?.find((b) => b.id === row.original.bankInfo)
@@ -93,7 +93,7 @@ export const seller_column = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Sell Status" />
     ),
-    cell: ({ row }) => {
+    Cell: ({ row }) => {
       const [open, setOpen] = useState(false);
       const user = row.original;
       const { isSeller, ...other } = user;
@@ -181,7 +181,7 @@ export const seller_column = [
 
   {
     id: "actions",
-    cell: ({ row }) => {
+    Cell: ({ row }) => {
       const [open, setOpen] = useState(false);
       const user = row.original;
       const { status } = user;

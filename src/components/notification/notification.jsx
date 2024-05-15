@@ -41,7 +41,7 @@ const Notification = () => {
     socket?.on("getOrderStatus", (data) => {
       setNotificationCounter((prevCounter) => prevCounter + 1);
     });
-  }, [socket]);
+  }, [socket, AdminRole, session?.data?.user?.role]);
 
   return (
     <div>

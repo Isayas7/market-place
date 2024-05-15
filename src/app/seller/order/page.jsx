@@ -18,12 +18,6 @@ import Link from "next/link";
 const SellerOrder = () => {
   const session = useSession();
 
-  const [clickedRowIndex, setClickedRowIndex] = useState(null);
-
-  const handleRowClick = (index) => {
-    setClickedRowIndex(clickedRowIndex === index ? null : index);
-  };
-
   const { data: order } = useSellerOrderQuery(session?.data.user?.id);
 
   return (
@@ -71,7 +65,7 @@ const SellerOrder = () => {
 
                     <TableCell>
                       {order?.items.map((item, index) => (
-                        <div>{item.title + " | "}</div>
+                        <div key={index}>{item.title + " | "}</div>
                       ))}
                     </TableCell>
 

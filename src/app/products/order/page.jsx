@@ -39,8 +39,8 @@ export default function Order() {
         </div>
       ) : (
         <div className="space-y-4 md:space-y-6">
-          {orders?.data?.map((order) => (
-            <Card className="border rounded-lg shadow-sm dark:border-gray-800">
+          {orders?.data?.map((order,index) => (
+            <Card key={index} className="border rounded-lg shadow-sm dark:border-gray-800">
               <div className="flex items-center justify-between px-4 py-3 border-b dark:border-gray-800">
                 <div className="flex items-center gap-2">
                   <div className="font-medium">
@@ -85,8 +85,8 @@ export default function Order() {
                 </div>
               </div>
               <div className="p-4 space-y-2">
-                {order?.items?.map((item) => (
-                  <div className="flex items-center justify-between">
+                {order?.items?.map((item,index) => (
+                  <div key={index} className="flex items-center justify-between">
                     <div>
                       <h3 className="font-medium">
                         {item?.productId?.variants}

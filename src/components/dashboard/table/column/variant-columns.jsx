@@ -37,6 +37,7 @@ export const variant_columns = [
       const image = row.original.image;
       return (
         <Image
+          alt="VarinantImage"
           src={image || "/nullid.jpg"}
           width={500}
           height={500}
@@ -120,7 +121,7 @@ export const variant_columns = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
+    Cell: ({ row }) => {
       const [open, setOpen] = useState(false);
 
       const variant = row.original;

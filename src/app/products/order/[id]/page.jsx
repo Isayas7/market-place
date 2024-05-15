@@ -231,8 +231,8 @@ const OrderDetail = ({ params }) => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {order?.data?.items.map((item) => (
-                        <TableRow>
+                      {order?.data?.items.map((item, index) => (
+                        <TableRow key={index}>
                           <TableCell className="hidden md:table-cell">
                             <Image
                               alt="Product image"

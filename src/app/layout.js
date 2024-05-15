@@ -37,10 +37,7 @@ export default async function RootLayout({ children }) {
             <AuthProvider session={session}>
               <SocketProvider url={socketurl}>
                 <Navbar />
-            <Main>
-                {children}
-            </Main>
-             
+                <Main>{children}</Main>
                 <Toaster />
                 <Footer />
               </SocketProvider>

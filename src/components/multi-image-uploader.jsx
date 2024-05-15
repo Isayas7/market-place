@@ -24,8 +24,8 @@ const CustomMultiImageIpload = ({ value, onChange, onRemove }) => {
       </div>
 
       <CardContent className="flex flex-wrap gap-3 justify-center ">
-        {value?.map((url) => (
-          <div className="rounded-md overflow-hidden relative">
+        {value?.map((url, index) => (
+          <div key={index} className="rounded-md overflow-hidden relative">
             <>
               <Image
                 width={300}

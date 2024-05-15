@@ -8,7 +8,7 @@ const ProfileHeader = ({ bio, profilePicture }) => {
       <div className="absolute bottom-[0px] right-20 bg-white dark:bg-mirage p-4 rounded-sm">
         <Image
           src={session?.data?.user?.image}
-          alt={`${session?.data?.user?.name}'s profile picture`}
+          alt={`profile picture`}
           width={80}
           height={80}
           className=" size-28 rounded-full object-cover z-50"

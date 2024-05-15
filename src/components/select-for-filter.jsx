@@ -45,7 +45,7 @@ const SellectForFilter = ({ dataInfo, filter, rendered, clear, setClear }) => {
       setValue("");
       setClear(false);
     }
-  }, [clear]);
+  }, [clear, setClear]);
 
   const RenderedFilter = () => {
     return (

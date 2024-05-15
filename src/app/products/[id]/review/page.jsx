@@ -77,7 +77,7 @@ const Review = () => {
       });
       form.reset();
     }
-  }, [isSuccess]);
+  }, [isSuccess, data?.data, form, toast]);
 
   const containsUserId = (data, userId) => {
     return data?.some((item) => item.userId === userId);
