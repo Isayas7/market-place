@@ -118,7 +118,7 @@ const DeliveryPersonnelBalance = () => {
           </CardHeader>
           <CardContent className="text-xl font-bold text-jade">
             <Link href="https://chapa.co">
-              <Image src={"/chapa.png"} width={200} height={200} />
+              <Image src={"/chapa.png"} alt="Chapa" width={200} height={200} />
             </Link>
           </CardContent>
         </Card>
