@@ -11,8 +11,8 @@ const config = {
 export const POST = async (request) => {
   const values = await request.json();
 
-  const CALLBACK_URL = "/api/pay/";
-  const RETURN_URL = `/receipt/${values?.payouts?.length}`;
+  const CALLBACK_URL = "https://market-place-wku.vercel.app/api/pay/";
+  const RETURN_URL = `https://market-place-wku.vercel.app/receipt/${values?.payouts?.length}`;
   const TEXT_REF = "tx-myecommerce12345-" + Date.now();
 
   const payData = {
