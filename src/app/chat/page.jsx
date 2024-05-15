@@ -79,7 +79,7 @@ const Chat = () => {
     socket?.on("getUsers", (users) => {
       setOnlneUser(users);
     });
-  }, [session]);
+  }, [session,socket]);
 
   if (session.status === "unauthenticated") {
     route.replace("/");
