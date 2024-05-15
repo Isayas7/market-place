@@ -72,8 +72,8 @@ const ViewBrands = ({ params }) => {
           </div>
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {variantData?.brands?.map((brand) => (
-            <Card className="rounded-lg border p-4 shadow-sm relative">
+          {variantData?.brands?.map((brand, index) => (
+            <Card   key={index} className="rounded-lg border p-4 shadow-sm relative">
               <div className="flex items-center justify-between">
                 <>
                   <Image
