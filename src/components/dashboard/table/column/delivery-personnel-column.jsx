@@ -4,6 +4,7 @@ import { statusData } from "@/utils/permission";
 import { Badge } from "@/components/ui/badge";
 import BankInfo from "../actions/bank-info";
 import DpColumnsActions from "../actions/dp-columns-actions";
+import React from "react";
 
 export const delivery_columns = [
   {

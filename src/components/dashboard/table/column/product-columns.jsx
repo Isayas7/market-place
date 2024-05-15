@@ -3,6 +3,7 @@
 import { DataTableColumnHeader } from "../data-table-column-header";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import React from "react";
 
 export const product_columns = [
   {

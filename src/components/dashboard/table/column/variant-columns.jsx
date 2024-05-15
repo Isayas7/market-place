@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { statusData } from "@/utils/permission";
 import VariantColumnsActions from "../actions/variant-columns-actions";
+import { DataTableColumnHeader } from "../data-table-column-header";
+import React from "react";
 
 export const variant_columns = [
   {

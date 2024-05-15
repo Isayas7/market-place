@@ -6,6 +6,7 @@ import { statusData } from "@/utils/permission";
 import SellerColumnsActions from "../actions/seller-columns-actions";
 import SellStatus from "../actions/sell-status";
 import BankInfo from "../actions/bank-info";
+import React from "react";
 
 export const seller_column = [
   {

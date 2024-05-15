@@ -4,6 +4,7 @@ import { DataTableColumnHeader } from "../data-table-column-header";
 import { statusData } from "@/utils/permission";
 import { Badge } from "@/components/ui/badge";
 import BuyerColumnsActions from "../actions/buyer-columns-actions";
+import React from "react";
 
 export const columns = [
   {

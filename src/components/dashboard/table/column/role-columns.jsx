@@ -1,6 +1,7 @@
 import { DataTableColumnHeader } from "../data-table-column-header";
 import { permissions } from "@/utils/permission";
 import RoleColumnsActions from "../actions/role-columns-actions";
+import React from "react";
 
 export const RoleColumns = (operation) => {
   const userPermissions = permissions[operation];

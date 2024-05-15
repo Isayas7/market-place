@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { statusData } from "@/utils/permission";
 import CategoryColumnsActions from "../actions/category-columns-actions";
+import React from "react";
 
 export const category_columns = [
   {
