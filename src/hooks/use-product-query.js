@@ -143,7 +143,10 @@ export const useProductUpdateQuery = () => {
 
   return useMutation({
     mutationFn: ({ productInfo, id }) => {
-      return axios.put(`${process.env.BASE_URL}/api/product/${id}`, productInfo);
+      return axios.put(
+        `${process.env.BASE_URL}/api/product/${id}`,
+        productInfo
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["products_With_Out_FIlter"]);
@@ -251,7 +254,7 @@ export const useTrendingProductQuery = () => {
   return useQuery({
     queryKey: ["treandingProducts"],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.BASE_URL}/api/product/trending`);
+      const res = await axios.get(`/api/product/trending`);
 
       return res;
     },

@@ -111,6 +111,15 @@ const Navbar = () => {
                 <div className=" w-[8px]  group-hover:hidden  " />
               </div>
             </div>
+            <Link href="/">
+              <Image
+                src={"/icon.png"}
+                alt="logo"
+                width={100}
+                height={100}
+                className="size-12"
+              />
+            </Link>
           </div>
 
           <Search
