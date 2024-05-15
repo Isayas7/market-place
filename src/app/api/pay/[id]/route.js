@@ -18,7 +18,7 @@ export const GET = async (request, { params }) => {
     );
 
     const orders = response?.data?.data?.meta;
-    const result = await axios.post("http://localhost:3000/api/order", orders);
+    const result = await axios.post("/api/order", orders);
 
     return new NextResponse(result, {
       status: 200,
