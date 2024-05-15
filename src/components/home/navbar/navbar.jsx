@@ -149,13 +149,14 @@ const Navbar = () => {
               </Link>
             )}
             {session.status === "authenticated" && <Notification />}
-
-            <Link href="/cart" className="relative">
-              <FaCartPlus className="size-6" />
-              <Badge className="absolute -top-2 -right-4 text-[10px] rounded-full">
-                {cartItems?.length}
-              </Badge>
-            </Link>
+            {!hasAdminRole(session?.data?.user) && (
+              <Link href="/cart" className="relative">
+                <FaCartPlus className="size-6" />
+                <Badge className="absolute -top-2 -right-4 text-[10px] rounded-full">
+                  {cartItems?.length}
+                </Badge>
+              </Link>
+            )}
 
             {session.status === "authenticated" &&
               hasAdminRole(session?.data?.user) && (

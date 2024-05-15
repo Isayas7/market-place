@@ -14,14 +14,6 @@ const Login = async (credentials) => {
     throw new Error("Invalid Credentials!");
   }
 
-  if (
-    credentials.email === admin.email &&
-    credentials.password === admin.password
-  ) {
-    const user = admin;
-    return user;
-  }
-
   await connect();
 
   try {
@@ -103,10 +95,6 @@ export const options = {
           token.myrole = rolesAndPermissions;
           token.name = userExist.firstName + " " + userExist.middleName;
         }
-      } else if (token?.email === admin.email) {
-        token.id = admin._id;
-        token.role = admin.role;
-        token.name = admin.firstName + " " + admin.middleName;
       }
       return token;
     },

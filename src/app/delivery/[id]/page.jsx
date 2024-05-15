@@ -42,7 +42,6 @@ export default function DeliveryDetail({ params }) {
             <p className="text-gray-500 dark:text-gray-400">
               {order?.data?.receiverInformation.phoneNumber}
             </p>
-            <Button>Contact Buyer</Button>
           </div>
           <div className="flex flex-col">
             <Button

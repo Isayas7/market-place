@@ -66,8 +66,8 @@ export default function Delivery() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Recipient</TableHead>
-                  <TableHead>Address</TableHead>
                   <TableHead>Delivery Code</TableHead>
+                  <TableHead>Address</TableHead>
                   <TableHead>Total Distance</TableHead>
                   <TableHead>Delivery Fee</TableHead>
                   <TableHead>Schedule</TableHead>
@@ -109,9 +109,7 @@ export default function Delivery() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button className="bg-secondary">
-                        {order?.orderStatus}
-                      </Button>
+                      <Button>{order?.orderStatus}</Button>
                     </TableCell>
 
                     <TableCell className="text-right">

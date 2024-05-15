@@ -25,7 +25,8 @@ const CategoryForm = () => {
   const [textFields, setTextFields] = useState([{ id: 0, isDefault: true }]);
 
   const router = useRouter();
-  const { data: user } = useSession();
+  const session = useSession();
+  console.log(session);
 
   const form = useForm({
     // resolver: zodResolver(categorySchema),
@@ -77,7 +78,7 @@ const CategoryForm = () => {
   } = useCategoryRegisterQuery();
 
   const onSubmit = async (formValues) => {
-    formValues.user = user?.user?.id;
+    formValues.user = session?.data?.user?.id;
     registerCategory(formValues);
   };
 
