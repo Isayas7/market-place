@@ -48,9 +48,7 @@ const UpdateProductForm = ({ productId }) => {
   const form = useForm({
     // resolver: zodResolver(productSchema),
     defaultValues: async () => {
-      const productData = await axios.get(
-        `${process.env.BASE_URL}/api/product/${productId}`
-      );
+      const productData = await axios.get(`/api/product/${productId}`);
       setSelectedCategory(productData?.data?.categoryId);
       setSelectedVariants(productData?.data?.variants);
       setSelectedBrand(productData?.data?.brand);

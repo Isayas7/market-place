@@ -8,7 +8,7 @@ export const useAllCategoryDataQuery = () => {
     queryKey: ["category_data"],
     queryFn: async () => {
       const res = await axios.get(
-        `${process.env.BASE_URL}/api/productcatagory`
+        `/api/productcatagory`
       );
       return res;
     },
@@ -36,7 +36,7 @@ export const UseCategoryQuery = () => {
     queryKey: ["product_category", queryString],
     queryFn: async () => {
       const res = await axios.get(
-        `${process.env.BASE_URL}/api/productcatagory?${queryString}`
+        `/api/productcatagory?${queryString}`
       );
       return res;
     },
@@ -50,7 +50,7 @@ export const UseCategoryQuery = () => {
         queryKey: ["product_category", incrementQueryString],
         queryFn: async () => {
           const res = await axios.get(
-            `${process.env.BASE_URL}/api/productcatagory?${incrementQueryString}`
+            `/api/productcatagory?${incrementQueryString}`
           );
           return res;
         },
@@ -64,7 +64,7 @@ export const UseCategoryQuery = () => {
         queryKey: ["product_category", decrementQueryString],
         queryFn: async () => {
           const res = await axios.get(
-            `${process.env.BASE_URL}/api/productcatagory?${decrementQueryString}`
+            `/api/productcatagory?${decrementQueryString}`
           );
           return res;
         },
@@ -79,7 +79,7 @@ export const UseSingleCategoryQuery = (id) => {
     queryKey: ["single_category"],
     queryFn: async () => {
       const res = await axios.get(
-        `${process.env.BASE_URL}/api/productcatagory/${id}`
+        `/api/productcatagory/${id}`
       );
       return res;
     },
@@ -91,7 +91,7 @@ export const useCategoryRegisterQuery = () => {
   return useMutation({
     mutationFn: (newCategory) => {
       return axios.post(
-        `${process.env.BASE_URL}/api/productcatagory`,
+        `/api/productcatagory`,
         newCategory
       );
     },
@@ -105,7 +105,7 @@ export const useCategoryUpdateQuery = () => {
   return useMutation({
     mutationFn: ({ categoryInfo, id }) => {
       return axios.put(
-        `${process.env.BASE_URL}/api/productcatagory/${id}`,
+        `/api/productcatagory/${id}`,
         categoryInfo
       );
     },
@@ -122,7 +122,7 @@ export const useCategoryDeactivateQuery = () => {
   const queryString = new URLSearchParams(search).toString();
   return useMutation({
     mutationFn: (id) => {
-      return axios.delete(`${process.env.BASE_URL}/api/productcatagory/${id}`);
+      return axios.delete(`/api/productcatagory/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["product_category", queryString]);
@@ -151,7 +151,7 @@ export const UseVariantsQuery = () => {
     queryKey: ["product_variant", queryString],
     queryFn: async () => {
       const res = await axios.get(
-        `${process.env.BASE_URL}/api/variant?${queryString}`
+        `/api/variant?${queryString}`
       );
       return res;
     },
@@ -165,7 +165,7 @@ export const UseVariantsQuery = () => {
         queryKey: ["product_variant", incrementQueryString],
         queryFn: async () => {
           const res = await axios.get(
-            `${process.env.BASE_URL}/api/variant?${incrementQueryString}`
+            `/api/variant?${incrementQueryString}`
           );
           return res;
         },
@@ -179,7 +179,7 @@ export const UseVariantsQuery = () => {
         queryKey: ["product_variant", decrementQueryString],
         queryFn: async () => {
           const res = await axios.get(
-            `${process.env.BASE_URL}/api/variant?${decrementQueryString}`
+            `/api/variant?${decrementQueryString}`
           );
           return res;
         },
@@ -193,7 +193,7 @@ export const UseSingleVariantQuery = (id) => {
   return useQuery({
     queryKey: ["single_variant"],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.BASE_URL}/api/variant/${id}`);
+      const res = await axios.get(`/api/variant/${id}`);
       return res;
     },
   });
@@ -203,7 +203,7 @@ export const UseSingleVariantQuery = (id) => {
 export const useBrandRegisterQuery = () => {
   return useMutation({
     mutationFn: ({ newBrand, id }) => {
-      return axios.post(`${process.env.BASE_URL}/api/variant/${id}`, newBrand);
+      return axios.post(`/api/variant/${id}`, newBrand);
     },
   });
 };
@@ -213,7 +213,7 @@ export const useBrandUpdateQuery = () => {
   return useMutation({
     mutationFn: ({ updatedBrand, id }) => {
       return axios.put(
-        `${process.env.BASE_URL}/api/variant/${id}`,
+        `/api/variant/${id}`,
         updatedBrand
       );
     },
@@ -226,7 +226,7 @@ export const useVariantDeactivateQuery = () => {
   const queryString = new URLSearchParams(search).toString();
   return useMutation({
     mutationFn: (id) => {
-      return axios.delete(`${process.env.BASE_URL}/api/variant/${id}`);
+      return axios.delete(`/api/variant/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["product_variant", queryString]);

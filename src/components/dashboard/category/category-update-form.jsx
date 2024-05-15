@@ -34,7 +34,7 @@ const CategoryUpdateForm = ({ categoryId }) => {
     // resolver: zodResolver(categorySchema),
     defaultValues: async () => {
       const categoryData = await axios.get(
-        `${process.env.BASE_URL}/api/productcatagory/${categoryId}`
+        `/api/productcatagory/${categoryId}`
       );
       return {
         _id: categoryData?.data?._id,

@@ -7,9 +7,7 @@ export const UseTransactionChartQuery = (id) => {
   return useQuery({
     queryKey: ["transaction"],
     queryFn: async () => {
-      const res = await axios.get(
-        `${process.env.BASE_URL}/api/analytics/transaction/`
-      );
+      const res = await axios.get(`/api/analytics/transaction/`);
       return res.data;
     },
   });

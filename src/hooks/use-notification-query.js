@@ -6,10 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 export const useCreateNotification = () => {
   return useMutation({
     mutationFn: async (notification) => {
-      const resoponse = await axios.post(
-        `${process.env.BASE_URL}/api/notification/`,
-        notification
-      );
+      const resoponse = await axios.post(`/api/notification/`, notification);
       return resoponse;
     },
   });
@@ -22,9 +19,7 @@ export const UseNotificationQuery = () => {
   return useQuery({
     queryKey: ["notification"],
     queryFn: async () => {
-      const res = await axios.get(
-        `${process.env.BASE_URL}/api/notification/${id}`
-      );
+      const res = await axios.get(`/api/notification/${id}`);
       return res.data;
     },
   });
@@ -34,10 +29,7 @@ export const UseNotificationQuery = () => {
 export const useNotificationUpdateQuery = () => {
   return useMutation({
     mutationFn: ({ notificationInfo, id }) => {
-      return axios.put(
-        `${process.env.BASE_URL}/api/notification/${id}`,
-        notificationInfo
-      );
+      return axios.put(`/api/notification/${id}`, notificationInfo);
     },
   });
 };
@@ -47,7 +39,7 @@ export const useFeedbackQuery = () => {
   return useMutation({
     mutationFn: (feedback) => {
       console.log(feedback);
-      return axios.post(`${process.env.BASE_URL}/api/feedback/`, feedback);
+      return axios.post(`/api/feedback/`, feedback);
     },
   });
 };

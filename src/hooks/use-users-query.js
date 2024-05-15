@@ -33,7 +33,7 @@ export const useUserQuery = () => {
     queryKey: ["users", queryString],
     queryFn: async () => {
       const res = await axios.get(
-        `${process.env.BASE_URL}/api/user?${queryString}`
+        `/api/user?${queryString}`
       );
       return res;
     },
@@ -47,7 +47,7 @@ export const useUserQuery = () => {
         queryKey: ["users", incrementQueryString],
         queryFn: async () => {
           const res = await axios.get(
-            `${process.env.BASE_URL}/api/user?${incrementQueryString}`
+            `/api/user?${incrementQueryString}`
           );
           return res;
         },
@@ -61,7 +61,7 @@ export const useUserQuery = () => {
         queryKey: ["users", decrementQueryString],
         queryFn: async () => {
           const res = await axios.get(
-            `${process.env.BASE_URL}/api/user?${decrementQueryString}`
+            `/api/user?${decrementQueryString}`
           );
           return res;
         },
@@ -75,7 +75,7 @@ export const useSingleUserQuery = (userId) => {
   return useQuery({
     queryKey: ["user", userId],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.BASE_URL}/api/user/${userId}`);
+      const res = await axios.get(`/api/user/${userId}`);
       return res;
     },
   });
@@ -85,7 +85,7 @@ export const useSingleUserQuery = (userId) => {
 export const useUserRegisterQuery = () => {
   return useMutation({
     mutationFn: async (newUser) => {
-      const res = await axios.post(`${process.env.BASE_URL}/api/user`, newUser);
+      const res = await axios.post(`/api/user`, newUser);
       return res;
     },
   });
@@ -117,7 +117,7 @@ export const useUserUpdateQuery = (userId) => {
 
   return useMutation({
     mutationFn: ({ userInfo, id }) => {
-      return axios.put(`${process.env.BASE_URL}/api/user/${id}`, userInfo);
+      return axios.put(`/api/user/${id}`, userInfo);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["users", queryString]);
@@ -150,7 +150,7 @@ export const useUserDeactivateQuery = (userId) => {
   const queryString = new URLSearchParams(query).toString();
   return useMutation({
     mutationFn: (id) => {
-      return axios.delete(`${process.env.BASE_URL}/api/user/${id}`);
+      return axios.delete(`/api/user/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["users", queryString]);
@@ -164,7 +164,7 @@ export const UseBankQuery = () => {
   return useQuery({
     queryKey: ["bank"],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.BASE_URL}/api/bank`);
+      const res = await axios.get(`/api/bank`);
       return res;
     },
   });
@@ -175,7 +175,7 @@ export const useMailerQuery = () => {
   return useMutation({
     mutationFn: (email) => {
       return axios.post(
-        `${process.env.BASE_URL}/api/password/forgotpassword/mailer`,
+        `/api/password/forgotpassword/mailer`,
         email
       );
     },
@@ -188,7 +188,7 @@ export const useOTPQuery = (email) => {
     queryKey: ["otp"],
     queryFn: async () => {
       const res = await axios.get(
-        `${process.env.BASE_URL}/api/password/forgotpassword/otp/${email}`
+        `/api/password/forgotpassword/otp/${email}`
       );
       return res;
     },
@@ -200,7 +200,7 @@ export const useSetNewPasswordQuery = () => {
   return useMutation({
     mutationFn: (values) => {
       return axios.post(
-        `${process.env.BASE_URL}/api/password/forgotpassword/otp/${values.email}`,
+        `/api/password/forgotpassword/otp/${values.email}`,
         values
       );
     },
@@ -212,7 +212,7 @@ export const useChangePasswordQuery = () => {
   return useMutation({
     mutationFn: ({ passwordInfo, id }) => {
       return axios.put(
-        `${process.env.BASE_URL}/api/password/changepassword/${id}`,
+        `/api/password/changepassword/${id}`,
         passwordInfo
       );
     },

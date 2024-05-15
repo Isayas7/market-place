@@ -7,7 +7,7 @@ export const useCreateConversation = () => {
   return useMutation({
     mutationFn: async (conversation) => {
       const resoponse = await axios.post(
-        `${process.env.BASE_URL}/api/chat/conversation/`,
+        `/api/chat/conversation/`,
         conversation
       );
       return resoponse;
@@ -20,7 +20,7 @@ export const useDeleteMessageQuery = (currentConversation) => {
 
   return useMutation({
     mutationFn: (id) => {
-      return axios.delete(`${process.env.BASE_URL}/api/chat/message/${id}`);
+      return axios.delete(`/api/chat/message/${id}`);
     },
   });
 };
@@ -32,9 +32,7 @@ export const UseConversationQuery = () => {
   return useQuery({
     queryKey: ["conversation"],
     queryFn: async () => {
-      const res = await axios.get(
-        `${process.env.BASE_URL}/api/chat/conversation/${id}`
-      );
+      const res = await axios.get(`/api/chat/conversation/${id}`);
       return res.data;
     },
   });
@@ -45,9 +43,7 @@ export const UseChatQuery = (id) => {
   return useQuery({
     queryKey: ["chat", id],
     queryFn: async () => {
-      const res = await axios.get(
-        `${process.env.BASE_URL}/api/chat/message/${id}`
-      );
+      const res = await axios.get(`/api/chat/message/${id}`);
       return res.data;
     },
   });
@@ -58,7 +54,7 @@ export const useSendMessage = (id) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (message) => {
-      return axios.post(`${process.env.BASE_URL}/api/chat/message/`, message);
+      return axios.post(`/api/chat/message/`, message);
     },
     // onSuccess: () => {
     //   queryClient.invalidateQueries(["chat", id]);
