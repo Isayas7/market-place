@@ -10,7 +10,7 @@ export const useWithdrawalQuery = (id) => {
 
   return useMutation({
     mutationFn: (transfer) => {
-      return axios.post("http://localhost:3000/api/bank", transfer);
+      return axios.post("${process.env.BASE_URL}/api/bank", transfer);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["transaction", id]);
@@ -35,7 +35,7 @@ export const useOrderQuery = () => {
     queryKey: ["orders", queryString],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/order?${queryString}`
+        `${process.env.BASE_URL}/api/order?${queryString}`
       );
       return res;
     },
@@ -48,7 +48,7 @@ export const useDeliveryQuery = (deliveryPersonnelId) => {
     queryKey: ["delivery", deliveryPersonnelId],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/order/delivery/${deliveryPersonnelId}`
+        `${process.env.BASE_URL}/api/order/delivery/${deliveryPersonnelId}`
       );
       return res;
     },
@@ -62,7 +62,7 @@ export const useDeliveryUpdateQuery = (deliveryPersonnelId) => {
 
   return useMutation({
     mutationFn: ({ orderInfo, id }) => {
-      return axios.put(`http://localhost:3000/api/order/${id}`, orderInfo);
+      return axios.put(`${process.env.BASE_URL}/api/order/${id}`, orderInfo);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["delivery", deliveryPersonnelId]);
@@ -77,7 +77,7 @@ export const useBuyerOrderQuery = (buyerId) => {
     queryKey: ["buyerorder", buyerId],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/order/buyerorder/${buyerId}`
+        `${process.env.BASE_URL}/api/order/buyerorder/${buyerId}`
       );
       return res;
     },
@@ -92,7 +92,7 @@ export const useConfirmDeliveryQuery = (orderId) => {
   return useMutation({
     mutationFn: ({ orderInfo, id }) => {
       return axios.put(
-        `http://localhost:3000/api/order/confirmation/${id}`,
+        `${process.env.BASE_URL}/api/order/confirmation/${id}`,
         orderInfo
       );
     },
@@ -109,7 +109,7 @@ export const useSellerOrderQuery = (sellerId) => {
     queryKey: ["sellerorder", sellerId],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/order/sellerorder/${sellerId}`
+        `${process.env.BASE_URL}/api/order/sellerorder/${sellerId}`
       );
       return res;
     },
@@ -126,7 +126,7 @@ export const useSellerSingleOrderQuery = () => {
     queryKey: ["sellersingleorder"],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/order/sellerorder/orderdetail?${queryString}`
+        `${process.env.BASE_URL}/api/order/sellerorder/orderdetail?${queryString}`
       );
       return res;
     },
@@ -140,7 +140,7 @@ export const useOrderUpdateQuery = () => {
   const queryString = new URLSearchParams(search).toString();
   return useMutation({
     mutationFn: ({ orderInfo, id }) => {
-      return axios.put(`http://localhost:3000/api/order/${id}`, orderInfo);
+      return axios.put(`${process.env.BASE_URL}/api/order/${id}`, orderInfo);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["orders", queryString]);
@@ -153,7 +153,7 @@ export const useSingleOrderQuery = (id) => {
   return useQuery({
     queryKey: ["order", id],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/api/order/${id}`);
+      const res = await axios.get(`${process.env.BASE_URL}/api/order/${id}`);
       return res;
     },
     enabled: !!id,
@@ -164,7 +164,7 @@ export const useSingleOrderQuery = (id) => {
 export const useOrderRegisterQuery = () => {
   return useMutation({
     mutationFn: async (newOrder) => {
-      const res = await axios.post("http://localhost:3000/api/order", newOrder);
+      const res = await axios.post(`${process.env.BASE_URL}/api/order`, newOrder);
       return res;
     },
   });
@@ -175,7 +175,7 @@ export const useSingleDeliveryQuery = (id) => {
   return useQuery({
     queryKey: ["delivery"],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/api/delivery/${id}`);
+      const res = await axios.get(`${process.env.BASE_URL}/api/delivery/${id}`);
       return res;
     },
   });
@@ -187,7 +187,7 @@ export const useTransactionQuery = (id) => {
     queryKey: ["transaction", id],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/order/transaction/${id}`
+        `${process.env.BASE_URL}/api/order/transaction/${id}`
       );
       return res;
     },

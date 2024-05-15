@@ -21,7 +21,7 @@ export const useAllProductDataQuery = () => {
     ],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/product?categoryName=${decodedParams.categoryName}&variants=${decodedParams.variants}`
+        `${process.env.BASE_URL}/api/product?categoryName=${decodedParams.categoryName}&variants=${decodedParams.variants}`
       );
       return res;
     },
@@ -44,7 +44,7 @@ export const useProductQuery = () => {
     queryKey: ["products", queryString],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/product?${queryString}`
+        `${process.env.BASE_URL}/api/product?${queryString}`
       );
 
       return res;
@@ -73,7 +73,7 @@ export const useProductForAdminQuery = () => {
     queryKey: ["products_for_admin", queryString],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/productforadmin?${queryString}`
+        `${process.env.BASE_URL}/api/productforadmin?${queryString}`
       );
 
       return res;
@@ -88,7 +88,7 @@ export const useProductForAdminQuery = () => {
         queryKey: ["products_for_admin", incrementQueryString],
         queryFn: async () => {
           const res = await axios.get(
-            `http://localhost:3000/api/productforadmin?${incrementQueryString}`
+            `${process.env.BASE_URL}/api/productforadmin?${incrementQueryString}`
           );
 
           return res;
@@ -103,7 +103,7 @@ export const useProductForAdminQuery = () => {
         queryKey: ["products_for_admin", decrementQueryString],
         queryFn: async () => {
           const res = await axios.get(
-            `http://localhost:3000/api/productforadmin?${decrementQueryString}`
+            `${process.env.BASE_URL}/api/productforadmin?${decrementQueryString}`
           );
 
           return res;
@@ -118,7 +118,7 @@ export const UseSingleProductQuery = (id) => {
   return useQuery({
     queryKey: ["single_product", id],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/api/product/${id}`);
+      const res = await axios.get(`${process.env.BASE_URL}/api/product/${id}`);
       return res;
     },
     enabled: !!id,
@@ -130,7 +130,7 @@ export const useProductCreateQuery = () => {
   return useMutation({
     mutationFn: async (newProduct) => {
       const res = await axios.post(
-        "http://localhost:3000/api/product",
+        `${process.env.BASE_URL}/api/product`,
         newProduct
       );
       return res;
@@ -143,7 +143,7 @@ export const useProductUpdateQuery = () => {
 
   return useMutation({
     mutationFn: ({ productInfo, id }) => {
-      return axios.put(`http://localhost:3000/api/product/${id}`, productInfo);
+      return axios.put(`${process.env.BASE_URL}/api/product/${id}`, productInfo);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["products_With_Out_FIlter"]);
@@ -159,7 +159,7 @@ export const useProoductDeactivateQuery = () => {
   const queryString = new URLSearchParams(search).toString();
   return useMutation({
     mutationFn: (id) => {
-      return axios.delete(`http://localhost:3000/api/product/${id}`);
+      return axios.delete(`${process.env.BASE_URL}/api/product/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["currentSellerProduct", id, queryString]);
@@ -172,7 +172,7 @@ export const useSimilarProducQuery = (query) => {
     queryKey: ["SimilarProduct", query],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/product?variants=${query}`
+        `${process.env.BASE_URL}/api/product?variants=${query}`
       );
 
       return res;
@@ -189,7 +189,7 @@ export const useCurrentSellerProductQuery = (id) => {
     queryKey: ["currentSellerProduct", id, queryString],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/product?user=${id}&${queryString}`
+        `${process.env.BASE_URL}/api/product?user=${id}&${queryString}`
       );
       return res;
     },
@@ -202,7 +202,7 @@ export const useCurrentSellerAllProductQuery = (id) => {
     queryKey: ["products_With_Out_FIlter"],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/product?user=${id}`
+        `${process.env.BASE_URL}/api/product?user=${id}`
       );
       return res;
     },
@@ -212,7 +212,7 @@ export const useCurrentSellerAllProductQuery = (id) => {
 export const usePayQuery = () => {
   return useMutation({
     mutationFn: async (payment) => {
-      const res = await axios.post("http://localhost:3000/api/pay", payment);
+      const res = await axios.post(`${process.env.BASE_URL}/api/pay`, payment);
       return res;
     },
   });
@@ -222,7 +222,7 @@ export const useDiscountQuery = () => {
   return useMutation({
     mutationFn: ({ discountInfo, id }) => {
       return axios.put(
-        `http://localhost:3000/api/product/discount/${id}`,
+        `${process.env.BASE_URL}/api/product/discount/${id}`,
         discountInfo
       );
     },
@@ -235,7 +235,7 @@ export const usePromotionQuery = (query) => {
   return useMutation({
     mutationFn: ({ promotionInfo, id }) => {
       return axios.put(
-        `http://localhost:3000/api/product/promotion/${id}`,
+        `${process.env.BASE_URL}/api/product/promotion/${id}`,
         promotionInfo
       );
     },
@@ -251,7 +251,7 @@ export const useTrendingProductQuery = () => {
   return useQuery({
     queryKey: ["treandingProducts"],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/api/product/trending`);
+      const res = await axios.get(`${process.env.BASE_URL}/api/product/trending`);
 
       return res;
     },

@@ -34,7 +34,7 @@ const BrandUpdateForm = ({ variantId }) => {
     // resolver: zodResolver(categorySchema),
     defaultValues: async () => {
       const variantData = await axios.get(
-        `http://localhost:3000/api/variant/${variantId}`
+        `${process.env.BASE_URL}/api/variant/${variantId}`
       );
 
       return {

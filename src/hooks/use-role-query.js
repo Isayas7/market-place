@@ -6,7 +6,7 @@ export const UseRoleQuery = () => {
   return useQuery({
     queryKey: ["role"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:3000/api/role");
+      const res = await axios.get(`${process.env.BASE_URL}/api/role`);
       return res;
     },
   });
@@ -17,7 +17,7 @@ export const useRoleRegisterQuery = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (newRole) => {
-      return await axios.post("http://localhost:3000/api/role", newRole);
+      return await axios.post(`${process.env.BASE_URL}/api/role`, newRole);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["role"]);
@@ -31,7 +31,7 @@ export const useRoleUpdateQuery = () => {
   return useMutation({
     mutationFn: async (updatePermission) => {
       const result = await axios.put(
-        "http://localhost:3000/api/role",
+        `${process.env.BASE_URL}/api/role`,
         updatePermission
       );
       if (result.status === 200) {

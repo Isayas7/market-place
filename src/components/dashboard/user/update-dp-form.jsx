@@ -70,7 +70,9 @@ const UpdateDeliveryPersonnelForm = ({ userId }) => {
   const form = useForm({
     // resolver: zodResolver(deliveryPersonnelSchema),
     defaultValues: async () => {
-      const user = await axios.get(`http://localhost:3000/api/user/${userId}`);
+      const user = await axios.get(
+        `${process.env.BASE_URL}/api/user/${userId}`
+      );
       setSelectedBank(user?.data?.bankInfo);
       setCoord(user?.data?.location);
       console.log(coord);

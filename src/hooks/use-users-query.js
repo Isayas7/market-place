@@ -33,7 +33,7 @@ export const useUserQuery = () => {
     queryKey: ["users", queryString],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/user?${queryString}`
+        `${process.env.BASE_URL}/api/user?${queryString}`
       );
       return res;
     },
@@ -47,7 +47,7 @@ export const useUserQuery = () => {
         queryKey: ["users", incrementQueryString],
         queryFn: async () => {
           const res = await axios.get(
-            `http://localhost:3000/api/user?${incrementQueryString}`
+            `${process.env.BASE_URL}/api/user?${incrementQueryString}`
           );
           return res;
         },
@@ -61,7 +61,7 @@ export const useUserQuery = () => {
         queryKey: ["users", decrementQueryString],
         queryFn: async () => {
           const res = await axios.get(
-            `http://localhost:3000/api/user?${decrementQueryString}`
+            `${process.env.BASE_URL}/api/user?${decrementQueryString}`
           );
           return res;
         },
@@ -75,7 +75,7 @@ export const useSingleUserQuery = (userId) => {
   return useQuery({
     queryKey: ["user", userId],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/api/user/${userId}`);
+      const res = await axios.get(`${process.env.BASE_URL}/api/user/${userId}`);
       return res;
     },
   });
@@ -85,7 +85,7 @@ export const useSingleUserQuery = (userId) => {
 export const useUserRegisterQuery = () => {
   return useMutation({
     mutationFn: async (newUser) => {
-      const res = await axios.post("http://localhost:3000/api/user", newUser);
+      const res = await axios.post(`${process.env.BASE_URL}/api/user`, newUser);
       return res;
     },
   });
@@ -117,7 +117,7 @@ export const useUserUpdateQuery = (userId) => {
 
   return useMutation({
     mutationFn: ({ userInfo, id }) => {
-      return axios.put(`http://localhost:3000/api/user/${id}`, userInfo);
+      return axios.put(`${process.env.BASE_URL}/api/user/${id}`, userInfo);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["users", queryString]);
@@ -150,7 +150,7 @@ export const useUserDeactivateQuery = (userId) => {
   const queryString = new URLSearchParams(query).toString();
   return useMutation({
     mutationFn: (id) => {
-      return axios.delete(`http://localhost:3000/api/user/${id}`);
+      return axios.delete(`${process.env.BASE_URL}/api/user/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["users", queryString]);
@@ -164,7 +164,7 @@ export const UseBankQuery = () => {
   return useQuery({
     queryKey: ["bank"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:3000/api/bank");
+      const res = await axios.get(`${process.env.BASE_URL}/api/bank`);
       return res;
     },
   });
@@ -175,7 +175,7 @@ export const useMailerQuery = () => {
   return useMutation({
     mutationFn: (email) => {
       return axios.post(
-        `http://localhost:3000/api/password/forgotpassword/mailer`,
+        `${process.env.BASE_URL}/api/password/forgotpassword/mailer`,
         email
       );
     },
@@ -188,7 +188,7 @@ export const useOTPQuery = (email) => {
     queryKey: ["otp"],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/password/forgotpassword/otp/${email}`
+        `${process.env.BASE_URL}/api/password/forgotpassword/otp/${email}`
       );
       return res;
     },
@@ -200,7 +200,7 @@ export const useSetNewPasswordQuery = () => {
   return useMutation({
     mutationFn: (values) => {
       return axios.post(
-        `http://localhost:3000/api/password/forgotpassword/otp/${values.email}`,
+        `${process.env.BASE_URL}/api/password/forgotpassword/otp/${values.email}`,
         values
       );
     },
@@ -212,7 +212,7 @@ export const useChangePasswordQuery = () => {
   return useMutation({
     mutationFn: ({ passwordInfo, id }) => {
       return axios.put(
-        `http://localhost:3000/api/password/changepassword/${id}`,
+        `${process.env.BASE_URL}/api/password/changepassword/${id}`,
         passwordInfo
       );
     },

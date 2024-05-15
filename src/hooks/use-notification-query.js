@@ -7,7 +7,7 @@ export const useCreateNotification = () => {
   return useMutation({
     mutationFn: async (notification) => {
       const resoponse = await axios.post(
-        `http://localhost:3000/api/notification/`,
+        `${process.env.BASE_URL}/api/notification/`,
         notification
       );
       return resoponse;
@@ -23,7 +23,7 @@ export const UseNotificationQuery = () => {
     queryKey: ["notification"],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/notification/${id}`
+        `${process.env.BASE_URL}/api/notification/${id}`
       );
       return res.data;
     },
@@ -35,7 +35,7 @@ export const useNotificationUpdateQuery = () => {
   return useMutation({
     mutationFn: ({ notificationInfo, id }) => {
       return axios.put(
-        `http://localhost:3000/api/notification/${id}`,
+        `${process.env.BASE_URL}/api/notification/${id}`,
         notificationInfo
       );
     },
@@ -47,7 +47,7 @@ export const useFeedbackQuery = () => {
   return useMutation({
     mutationFn: (feedback) => {
       console.log(feedback);
-      return axios.post(`http://localhost:3000/api/feedback/`, feedback);
+      return axios.post(`${process.env.BASE_URL}/api/feedback/`, feedback);
     },
   });
 };

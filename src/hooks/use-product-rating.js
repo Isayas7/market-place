@@ -6,7 +6,7 @@ export const UseProductReviewQuery = (productId) => {
     queryKey: ["product_review", productId],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/api/review/${productId}`
+        `${process.env.BASE_URL}/api/review/${productId}`
       );
       return res;
     },
@@ -18,7 +18,7 @@ export const useProductReviewCreate = (productId) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (reviewInfo) => {
-      return axios.post(`http://localhost:3000/api/review`, reviewInfo);
+      return axios.post(`${process.env.BASE_URL}/api/review`, reviewInfo);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["product_review", productId]);
@@ -32,7 +32,7 @@ export const useProductReviewUpdateQuery = (productId) => {
 
   return useMutation({
     mutationFn: ({ reviewInfo, id }) => {
-      return axios.put(`http://localhost:3000/api/review/${id}`, reviewInfo);
+      return axios.put(`${process.env.BASE_URL}/api/review/${id}`, reviewInfo);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["product_review", productId]);
