@@ -190,9 +190,10 @@ const Chat = () => {
             onClick={() => setIsHidden(!isHidden)}
           />
           {onlineUser.map(
-            (user) =>
+            (user,index) =>
               user?.user?.id !== session?.data?.user?.id && (
                 <OnlineCustomer
+                  key={index}
                   src="https://github.com/shadcn.png"
                   alt="@shadcn"
                   name={
