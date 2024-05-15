@@ -4,7 +4,7 @@ import { DataTableColumnHeader } from "../data-table-column-header";
 import usePermissionStore from "@/store/role-store";
 import { permissions } from "@/utils/permission";
 
-export const role_columns = (operation) => {
+export const RoleColumns = (operation) => {
   const userPermissions = permissions[operation];
 
   const dynamicColumns = userPermissions?.map((permission) => ({

@@ -18,30 +18,12 @@ const Notification = () => {
 
   const { data: notification } = UseNotificationQuery();
 
-  const { data: rolesData, isFetching } = UseRoleQuery();
-  const AdminRole = () => {
-    const role = rolesData.data.find((item) => item.role === roleData.Admin);
-    return role ? role._id : null;
-  };
-
   useEffect(() => {
     if (!socket) return;
     socket?.on("getMessageNotification", (data) => {
       setNotificationCounter((prevCounter) => prevCounter + 1);
     });
-
-    session?.data?.user?.role === AdminRole &&
-      socket?.on("getStoreApprovalRequest", (data) => {
-        setNotificationCounter((prevCounter) => prevCounter + 1);
-      });
-
-    socket?.on("getStoreApproved", (data) => {
-      setNotificationCounter((prevCounter) => prevCounter + 1);
-    });
-    socket?.on("getOrderStatus", (data) => {
-      setNotificationCounter((prevCounter) => prevCounter + 1);
-    });
-  }, [socket, AdminRole, session?.data?.user?.role]);
+  }, [socket]);
 
   return (
     <div>

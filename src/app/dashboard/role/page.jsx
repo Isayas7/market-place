@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/dashboard/table/data_table";
-import { role_columns } from "@/components/dashboard/table/column/role-columns";
+import { RoleColumns } from "@/components/dashboard/table/column/role-columns";
 import RoleForm from "@/components/dashboard/role/role-form";
 import { UseRoleQuery } from "@/hooks/use-role-query";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -22,7 +22,7 @@ const Category = () => {
   const [selectedOption, setSelectedOption] = useState("user");
   const { data: roles } = UseRoleQuery();
   usePermissionStore.setState({ permission: roles?.data });
-  const columns = role_columns(selectedOption);
+  const columns = RoleColumns(selectedOption);
 
   if (roles) {
     return (
