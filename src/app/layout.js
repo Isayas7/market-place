@@ -22,7 +22,7 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const session = await getServerSession(options);
-  const socketurl = "ws://localhost:8900";
+  const socketurl = "ws://marketplace-socket.vercel.app/";
 
   return (
     <html lang="en" suppressHydrationWarning>
