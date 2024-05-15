@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 const config = {
   headers: {
     Authorization: process.env.CHAPA_BEARER,
+    "Content-Type": "application/json",
   },
 };
 

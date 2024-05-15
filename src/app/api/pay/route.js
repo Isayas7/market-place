@@ -5,6 +5,7 @@ const CHAPA_URL = "https://api.chapa.co/v1/transaction/initialize";
 const config = {
   headers: {
     Authorization: process.env.CHAPA_BEARER,
+    "Content-Type": "application/json",
   },
 };
 
