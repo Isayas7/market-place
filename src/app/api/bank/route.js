@@ -7,6 +7,7 @@ export const GET = async (request) => {
     const response = await fetch("https://api.chapa.co/v1/banks", {
       headers: {
         Authorization: process.env.CHAPA_BEARER,
+        "Content-Type": "application/json",
       },
     });
 
