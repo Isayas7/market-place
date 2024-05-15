@@ -249,8 +249,8 @@ const Withrawal = () => {
         <Card className="w-full h-[640px] flex flex-col items-center p-2 overflow-y-scroll">
           <div className="p-2 text-xl font-bold">Withdrawal History</div>
           {transaction?.data?.length !== 0 ? (
-            transaction?.data?.map((tran) => (
-              <div className="w-full flex  justify-between items-center p-2 hover:bg-slate-200 hover:dark:bg-mirage-500 cursor-pointer">
+            transaction?.data?.map((tran, index) => (
+              <div   key={index} className="w-full flex  justify-between items-center p-2 hover:bg-slate-200 hover:dark:bg-mirage-500 cursor-pointer">
                 <div className=" ">
                   <div>TRA-{tran?._id.slice(0, 4)}</div>
                   <div>{formatDate(tran?.createdAt)}</div>
