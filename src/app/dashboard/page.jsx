@@ -132,7 +132,7 @@ const Dashboard = () => {
               +2.6%
             </CardDescription>
             <CardTitle className="font-bold text-4xl">
-              {transaction?.userCount} sales
+              {transaction?.orderCount} sales
             </CardTitle>
           </CardContent>
           <BsGraphDownArrow className="text-6xl text-jade" />
