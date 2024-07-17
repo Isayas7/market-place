@@ -238,3 +238,15 @@ export const useTrendingProductQuery = () => {
     },
   });
 };
+
+// get all product
+export const useAllProductQuery = () => {
+  return useQuery({
+    queryKey: ["AllProducts"],
+    queryFn: async () => {
+      const res = await axios.get(`/api/product`);
+
+      return res;
+    },
+  });
+};
